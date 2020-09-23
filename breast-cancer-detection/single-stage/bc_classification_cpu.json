@@ -1,0 +1,32 @@
+{
+    "pipeline": {
+        "name": "bc_classification_cpu"
+    },
+    "description": "Run breast cancer classification.",
+    "input": {
+        "cross": [
+            {
+              "pfs": {
+                "repo": "sample_data",
+                "glob": "/*"
+              }
+            },
+            {
+              "pfs": {
+                "repo": "models",
+                "glob": "/"
+              }
+            }
+          ]
+    },
+    "transform": {
+        "cmd": [
+            "/bin/bash",
+            "run.sh", "cpu"
+        ],
+        "image": "jimmywhitaker/breast_cancer_classifier:dev0.25"
+    },
+    "parallelism_spec": {
+      "constant": 4
+    }
+}
