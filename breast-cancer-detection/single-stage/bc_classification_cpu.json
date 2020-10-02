@@ -24,7 +24,7 @@
             "/bin/bash",
             "run.sh", "cpu"
         ],
-        "image": "jimmywhitaker/breast_cancer_classifier:dev0.25"
+        "image": "jimmywhitaker/breast_cancer_classifier:dev0.31"
     },
     "parallelism_spec": {
       "constant": 4

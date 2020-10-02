@@ -5,5 +5,8 @@ RUN apt-get update && apt-get install -y libgl1-mesa-glx libglib2.0-0
 WORKDIR /workspace
 RUN git clone https://github.com/jimmywhitaker/breast_cancer_classifier.git /workspace
 RUN pip install --upgrade pip && pip install -r requirements.txt
+RUN pip install matplotlib --ignore-installed
+
+RUN apt-get -y install tree
 
 COPY . /workspace

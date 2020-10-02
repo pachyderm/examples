@@ -13,8 +13,8 @@
   "transform": {
     "cmd": [
       "/bin/bash",
-      "pachyderm/multi-stage/crop.sh"
+      "multi-stage/crop.sh"
     ],
-    "image": "jimmywhitaker/breast_cancer_classifier:dev0.25"
+    "image": "jimmywhitaker/breast_cancer_classifier:dev0.31"
   }
 }

@@ -23,7 +23,7 @@
     "cmd": [
       "/bin/bash", "run.sh", "gpu"
     ],
-    "image": "jimmywhitaker/breast_cancer_classifier:dev0.25"
+    "image": "jimmywhitaker/breast_cancer_classifier:dev0.31"
   },
   "standby": true,
   "resource_limits": {

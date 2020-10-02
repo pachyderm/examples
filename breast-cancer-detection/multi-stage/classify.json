@@ -42,9 +42,9 @@
   "transform": {
     "cmd": [
       "/bin/bash",
-      "pachyderm/multi-stage/classify.sh"
+      "multi-stage/classify.sh"
     ],
-    "image": "jimmywhitaker/breast_cancer_classifier:dev0.25"
+    "image": "jimmywhitaker/breast_cancer_classifier:dev0.31"
   },
   "resource_limits": {
     "gpu": {
