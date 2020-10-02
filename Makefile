@@ -196,12 +196,14 @@ bc-multi-stage:
 	$(PACHCTL) create pipeline -f breast-cancer-detection/multi-stage/crop.json
 	$(PACHCTL) create pipeline -f breast-cancer-detection/multi-stage/extract_centers.json
 	$(PACHCTL) create pipeline -f breast-cancer-detection/multi-stage/generate_heatmaps.json
+	$(PACHCTL) create pipeline -f breast-cancer-detection/multi-stage/visualize_heatmaps.json
 	$(PACHCTL) create pipeline -f breast-cancer-detection/multi-stage/classify.json
 
 bc-delete:
 	$(PACHCTL) delete pipeline bc_classification
 	$(PACHCTL) delete pipeline bc_classification_cpu
 	$(PACHCTL) delete pipeline classify
+	$(PACHCTL) delete pipeline visualize_heatmaps
 	$(PACHCTL) delete pipeline generate_heatmaps
 	$(PACHCTL) delete pipeline extract_centers
 	$(PACHCTL) delete pipeline crop

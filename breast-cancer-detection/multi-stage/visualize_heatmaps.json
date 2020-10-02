@@ -1,0 +1,37 @@
+{
+  "pipeline": {
+    "name": "visualize_heatmaps"
+  },
+  "description": "Generate visualizations of benign and malignant heatmaps.",
+  "input": {
+    "join": [
+      {
+        "pfs": {
+          "repo": "crop",
+          "branch": "master",
+          "glob": "/(*)",
+          "join_on": "$1"
+        }
+      },
+      {
+        "pfs": {
+          "repo": "generate_heatmaps",
+          "branch": "master",
+          "glob": "/(*)",
+          "join_on": "$1"
+        }
+      }
+    ]
+  },
+  "standby": true,
+  "transform": {
+    "cmd": [
+      "/bin/bash",
+      "multi-stage/visualize_heatmaps.sh"
+    ],
+    "image": "jimmywhitaker/breast_cancer_classifier:dev0.31"
+  },
+    "parallelism_spec": {
+      "constant": 4
+    }
+}
