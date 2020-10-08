@@ -40,7 +40,7 @@
       "/bin/bash",
       "multi-stage/generate_heatmaps.sh"
     ],
-    "image": "jimmywhitaker/breast_cancer_classifier:dev0.31"
+    "image": "pachyderm/breast_cancer_classifier:1.11.4"
   },
   "resource_limits": {
     "gpu": {
