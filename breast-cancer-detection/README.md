@@ -81,9 +81,9 @@ We can connect data repositories to pipelines in various ways. The configuration
 
 The [cross](https://docs.pachyderm.com/latest/concepts/pipeline-concepts/datum/cross-union/) operator combines gives the worker access to every combination of the two repos datums.
 
-A [datum](https://docs.pachyderm.com/latest/concepts/pipeline-concepts/datum/relationship-between-datums/) is an abstract way to think about how data should be mapped into a pipeline. The [glob pattern](https://docs.pachyderm.com/latest/concepts/pipeline-concepts/datum/glob-pattern/) specifies what a repo's dataums are. In the configuration above, the glob pattern treats all of the `models` repo's data as a single datum, meaning it will be available to every job. The sample data glob pattern defines specifies that every top-level file (in our case an exam directory) is a datum. And each job will get one datum.
+A [datum](https://docs.pachyderm.com/latest/concepts/pipeline-concepts/datum/relationship-between-datums/) is an abstract way to think about how data should be mapped into a pipeline. The [glob pattern](https://docs.pachyderm.com/latest/concepts/pipeline-concepts/datum/glob-pattern/) specifies what a repo's dataums are. In the configuration above, the glob pattern treats all of the `models` repo's data as a single datum, meaning it will be available to every job. The sample data glob pattern defined, `/*`, specifies that every top-level file (in our case an exam directory) is a datum. Each of those datums can be processed in parallel by separate workers allowing your inference engine to scale seamlessly and proportionally to the number of exams.
 
-We can deploy the example to our Pachyderm cluster by running the following code snippet. This will create the needed repos, copy the data into them, and deploy our pipeline. Once the pipeline is deployed it will automatically start running on the data that has been pushed to the `sample_data` repo - one job for each breast exam.
+We can deploy the example to our Pachyderm cluster by running the following code snippet. This will create the needed repos, copy the data into them, and deploy our pipeline. Once the pipeline is deployed it will automatically start running on the data that has been pushed to the `sample_data` repo - one datum for each breast exam.
 
 ```bash
 pachctl create repo models
@@ -149,6 +149,7 @@ Additionally, when pipelines are updated, Pachyderm can **optionally** (alternat
 
 For more information on how the pipeline system works, see [Pipeline Concepts](https://docs.pachyderm.com/latest/concepts/pipeline-concepts/).
 
+Check out our similar projects in our [Bio-tech kit](https://www.pachyderm.com/use-cases/bio-tech/), or [connect with us on slack](https://www.pachyderm.com/slack/) to learn how to apply these techniques to your life science-related use case.
 ## Citations
 
 **Deep Neural Networks Improve Radiologists' Performance in Breast Cancer Screening**\
