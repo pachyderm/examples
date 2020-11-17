@@ -36,6 +36,20 @@ bc-delete:
 	$(PACHCTL) delete repo sample_data
 	$(PACHCTL) delete repo models
 
+housing-prices-base:
+	$(PACHCTL) create repo housing_data
+	$(PACHCTL) create pipeline -f housing-prices/regression.json
+
+housing-prices-1:
+	$(PACHCTL) put file housing_data@master:housing-simplified.csv -f housing-prices/data/housing-simplified-1.csv
+
+housing-prices-2:
+	$(PACHCTL) put file housing_data@master:housing-simplified.csv -f housing-prices/data/housing-simplified-2.csv --overwrite
+
+housing-prices-delete:
+		$(PACHCTL) delete pipeline regression
+		$(PACHCTL) delete repo housing_data 
+
 delete:
 	yes | $(PACHCTL) delete all
 
