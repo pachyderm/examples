@@ -4,3 +4,4 @@
 ## Machine Learning
 
 - [Breast Cancer Detection](./breast-cancer-detection) - A breast cancer detection system based on radiology scans scaled and visualized using Pachyderm.
+- [Boston Housing Prices](./housing-prices) - A machine learning pipeline to train a regression model on the Boston Housing Dataset to predict the value of homes.
