@@ -150,7 +150,7 @@ in this repo.
    ```
    $ pachctl put file housing_data@staging:housing-simplified.csv -f housing-simplified-ac.csv
    housing-simplified-ac.csv: 2.49 KiB / 2.49 KiB [==============================================================================================] 100.00% ? p/s 0s
-   $ pachctl list branch
+   $ pachctl list branch housing_data
    BRANCH  HEAD                             TRIGGER              
    staging 61a636555ea74871941c92e429f808cf -                    
    master  d15eadb6c277406b836c435fd40c07af staging on Size(3KB) 
@@ -197,7 +197,7 @@ in this repo.
    ```
    $ pachctl put file housing_data@staging:housing-simplified.csv -f housing-simplified-ad.csv
    housing-simplified-ad.csv: 2.49 KiB / 2.49 KiB [==============================================================================================] 100.00% ? p/s 0s
-   $ pachctl list branch
+   $ pachctl list branch housing_data
    BRANCH  HEAD                             TRIGGER              
    staging d15eadb6c277406b836c435fd40c07af -                    
    master  6602a67208494bccbf7d5654899ff43a staging on Size(3KB) 
@@ -217,7 +217,7 @@ in this repo.
    ```
    $ pachctl put file housing_data@staging:housing-simplified.csv -f housing-simplified-ae.csv
    housing-simplified-ae.csv: 2.26 KiB / 2.26 KiB [==============================================================================================] 100.00% ? p/s 0s
-   $ pachctl list branch
+   $ pachctl list branch housing_data
    BRANCH  HEAD                             TRIGGER              
    staging 6cbcc0a071bc49ee8968b660109dfea1 -                    
    master  6cbcc0a071bc49ee8968b660109dfea1 staging on Size(3KB) 
@@ -263,7 +263,7 @@ in this repo.
    ```
    $ pachctl put file housing_data@staging:housing-simplified.csv -f housing-simplified-ac.csv
    housing-simplified-ac.csv: 2.49 KiB / 2.49 KiB [==============================================================================================] 100.00% ? p/s 0s
-   $ pachctl list branch
+   $ pachctl list branch housing_data
    BRANCH  HEAD                             TRIGGER              
    staging 2b8680e4f856479da785e3115721417e -                    
    master  6cbcc0a071bc49ee8968b660109dfea1 staging on Size(3KB) 
@@ -273,7 +273,7 @@ in this repo.
    5808786945414be8aa7d8dd2add7cbef regression 5 minutes ago  12 seconds 0       1 + 0 / 1 4.946KiB 1.758MiB success 
    $ pachctl put file housing_data@staging:housing-simplified.csv -f housing-simplified-ae.csv
    housing-simplified-ae.csv: 2.26 KiB / 2.26 KiB [==============================================================================================] 100.00% ? p/s 0s
-   $ pachctl list branch
+   $ pachctl list branch housing_data
    BRANCH  HEAD                             TRIGGER              
    staging f8b033d4ef3c43d0993cdd73097943f4 -                    
    master  f8b033d4ef3c43d0993cdd73097943f4 staging on Size(3KB) 
