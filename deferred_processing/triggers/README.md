@@ -31,7 +31,9 @@ when a set of conditions is reached based on
 >    * the `--trigger` flag specifying the staging branch. 
 >    * `--trigger-size` the condition to meet to update the HEAD of master. *(see documentation for more options)*
 >
->    ????????????????? NOT SURE TO UNDERSTAND THIS - To use this for deferred processing, a pipeline must subscribe to that named branch.
+>   To use this triggger for deferred processing, 
+>   a pipeline must subscribe to the branch you create here. 
+>   Data to be processed is committed to the branch specified in the `--trigger` argument.
 >
 > **B**. _In a pipeline specification:_ Adding a `trigger` attribute and parameters
    to a PFS input 
