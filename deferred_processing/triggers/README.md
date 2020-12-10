@@ -385,7 +385,7 @@ in this repo.
    Create the housing_data repo.
    
 ```shell 
-$ pachctl create repo housing_data
+   $ pachctl create repo housing_data
 ```
    
    Create the pipeline `regression` with the embedded trigger.
@@ -394,69 +394,94 @@ $ pachctl create repo housing_data
    $ pachctl create pipeline -f regression-trigger.json
 ```
    
-<<<<<<< HEAD
-   Add some data to the branch the pipeline is subscribed to
-   and check to see if it's triggered.
-   
-   ***NOTE*** work in progress below this line, waiting for a build to test this.
-   
-=======
-1. Add some data to the master branch.
-   Check the branches on `housing_data`.
-   Look at the branch the pipeline is subscribed to,
+***Step 2*** - Add some data to the master branch:
+
+```shell
+   pachctl put file housing_data@master:housing-simplified.csv -f housing-simplified-aa.csv
+
+   housing-simplified-aa.csv: 2.49 KiB / 2.49 KiB [==============================================================================================] 100.00% ? p/s 0s
+```
+   - Check the branches on `housing_data`.
+   - Look at the branch the pipeline is subscribed to,
    `housing_data@regression-trigger-1`,
    and check to see if it's triggered:
-   Does it have a head commit now?
-   Are there any files in the `housing_data@regression-trigger-1` branch?
+      - Does it have a head commit now?
+      - Are there any files in the `housing_data@regression-trigger-1` branch?
 
->>>>>>> 1482b33f3f69bc9a56dbe753ee3686be5eb2e7a9
-   ```
-   pachctl put file housing_data@master:housing-simplified.csv -f housing-simplified-aa.csv
-   housing-simplified-aa.csv: 2.49 KiB / 2.49 KiB [==============================================================================================] 100.00% ? p/s 0s
+```shell
    $ pachctl list branch housing_data 
+
    BRANCH               HEAD                             TRIGGER             
    master               e0ace165894f45b0bc863cf6f40798fb -                   
    regression-trigger-1 -                                master on Size(3KB) 
+```
+
+```shell
    $ pachctl list job
+
    ID PIPELINE STARTED DURATION RESTART PROGRESS DL UL STATE
+```
+```shell
    $ pachctl list file housing_data@regression-trigger-1
+
    the branch "regression-trigger-1" has no head (create one with 'start commit')
-   ```
+```
    
-1. Now add some more data to the master branch,
+***Step 3*** - Now add some more data to the master branch,
    enough to fire the trigger.
    
-   ```
+```shell
    pachctl put file housing_data@master:housing-simplified.csv -f housing-simplified-ab.csv
+
    housing-simplified-ab.csv: 2.49 KiB / 2.49 KiB [==============================================================================================] 100.00% ? p/s 0s
-   $ pachctl list branch housing_data 
+```
+
+```shell
+   $ pachctl list branch housing_data
+
    BRANCH               HEAD                             TRIGGER             
    master               cf325e2813af4331bc983619dd842392 -                   
-   regression-trigger-1 cf325e2813af4331bc983619dd842392 master on Size(3KB) 
+   regression-trigger-1 cf325e2813af4331bc983619dd842392 master on Size(3KB)
+```
+
+```shell
    $ pachctl list job
+
    ID                               PIPELINE   STARTED       DURATION RESTART PROGRESS  DL UL STATE   
    511d63b3b78e4a53a634a1f01f5401f6 regression 3 seconds ago -        0       0 + 0 / 1 0B 0B running 
-   ```
+```
      
-1. Add more data,
+***Step 4*** - Add more data,
    but not enough to fire the trigger.
    
-   ```
+```shell
    $ pachctl put file housing_data@master:housing-simplified.csv -f housing-simplified-ac.csv
+
    housing-simplified-ac.csv: 2.45 KiB / 2.45 KiB [==============================================================================================] 100.00% ? p/s 0s
+```
+
+```shell
    $ pachctl list branch housing_data
+
    BRANCH               HEAD                             TRIGGER             
    master               2f62be8c3ea8437c9ccc57347a7f9914 -                   
-   regression-trigger-1 cf325e2813af4331bc983619dd842392 master on Size(3KB) 
+   regression-trigger-1 cf325e2813af4331bc983619dd842392 master on Size(3KB)
+```
+
+```shell
    $ pachctl list job
+
    ID                               PIPELINE   STARTED        DURATION   RESTART PROGRESS  DL       UL       STATE   
    511d63b3b78e4a53a634a1f01f5401f6 regression 18 seconds ago 11 seconds 0       1 + 0 / 1 4.946KiB 1.757MiB success 
+```
 
+We have shown you two ways to implement triggers:
 
-We've shown two ways to implement triggers:
+ * using `pachctl create branch` with appropriate flags (run the command with `--help` to see an up-to-date list).
 
- * using `pachctl create branch` with appropriate flags (run the command with `--help` to see an up-to-date list) and
- * embedding the trigger in the pipeline specification (see the Pipeline Specification for an up-to-date list)
+ and
+
+ * embedding the trigger in the pipeline specification (see the [Pipeline Specification](https://docs.pachyderm.com/latest/reference/pipeline_spec/) for an exhaustive list of all your options).
  
  
 
