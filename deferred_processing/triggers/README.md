@@ -311,30 +311,68 @@ in this repo.
    $ pachctl create pipeline -f regression-trigger.json
    ```
    
-1. Add some data to the branch the pipeline is subscribed to
-   and check to see if it's triggered.
-   
-   ***NOTE*** work in progress below this line, waiting for a build to test this.
-   
+1. Add some data to the master branch.
+   Check the branches on `housing_data`.
+   Look at the branch the pipeline is subscribed to,
+   `housing_data@regression-trigger-1`,
+   and check to see if it's triggered:
+   Does it have a head commit now?
+   Are there any files in the `housing_data@regression-trigger-1` branch?
+
    ```
-   pachctl put file housing_data@regression-trigger-1:housing-simplified.csv -f housing-simplified-aa.csv
+   pachctl put file housing_data@master:housing-simplified.csv -f housing-simplified-aa.csv
    housing-simplified-aa.csv: 2.49 KiB / 2.49 KiB [==============================================================================================] 100.00% ? p/s 0s
    $ pachctl list branch housing_data 
-   BRANCH  HEAD                             TRIGGER
-   regression-trigger-1 3199d1d6a6c0499da198932fcb9c3bad -
-   master  -                                staging on Size(3KB)
+   BRANCH               HEAD                             TRIGGER             
+   master               e0ace165894f45b0bc863cf6f40798fb -                   
+   regression-trigger-1 -                                master on Size(3KB) 
    $ pachctl list job
    ID PIPELINE STARTED DURATION RESTART PROGRESS DL UL STATE
-   $ pachctl list file housing@staging
-   NAME                    TYPE SIZE
-   /housing-simplified.csv file 2.459KiB
-   $ pachctl list file housing_data@master
-   the branch "master" has no head (create one with 'start commit')
+   $ pachctl list file housing_data@regression-trigger-1
+   the branch "regression-trigger-1" has no head (create one with 'start commit')
    ```
    
+1. Now add some more data to the master branch,
+   enough to fire the trigger.
+   
+   ```
+   pachctl put file housing_data@master:housing-simplified.csv -f housing-simplified-ab.csv
+   housing-simplified-ab.csv: 2.49 KiB / 2.49 KiB [==============================================================================================] 100.00% ? p/s 0s
+   $ pachctl list branch housing_data 
+   BRANCH               HEAD                             TRIGGER             
+   master               cf325e2813af4331bc983619dd842392 -                   
+   regression-trigger-1 cf325e2813af4331bc983619dd842392 master on Size(3KB) 
+   $ pachctl list job
+   ID                               PIPELINE   STARTED       DURATION RESTART PROGRESS  DL UL STATE   
+   511d63b3b78e4a53a634a1f01f5401f6 regression 3 seconds ago -        0       0 + 0 / 1 0B 0B running 
+   $ pachctl list file housing_data@regression-trigger-1
+   NAME                    TYPE SIZE
+   /housing-simplified.csv file 2.459KiB
+   $ pachctl list file housing_data@regression-trigger-1
+   the branch "regression-trigger-1" has no head (create one with 'start commit')
+   ```
+     
+1. Add more data,
+   but not enough to fire the trigger.
+   
+   ```
+   $ pachctl put file housing_data@master:housing-simplified.csv -f housing-simplified-ac.csv
+   housing-simplified-ac.csv: 2.45 KiB / 2.45 KiB [==============================================================================================] 100.00% ? p/s 0s
+   $ pachctl list branch housing_data
+   BRANCH               HEAD                             TRIGGER             
+   master               2f62be8c3ea8437c9ccc57347a7f9914 -                   
+   regression-trigger-1 cf325e2813af4331bc983619dd842392 master on Size(3KB) 
+   $ pachctl list job
+   ID                               PIPELINE   STARTED        DURATION   RESTART PROGRESS  DL       UL       STATE   
+   511d63b3b78e4a53a634a1f01f5401f6 regression 18 seconds ago 11 seconds 0       1 + 0 / 1 4.946KiB 1.757MiB success 
 
 
+We've shown two ways to implement triggers:
 
+ * using `pachctl create branch` with appropriate flags (run the command with `--help` to see an up-to-date list) and
+ * embedding the trigger in the pipeline specification (see the Pipeline Specification for an up-to-date list)
+ 
+ 
 
 
 
