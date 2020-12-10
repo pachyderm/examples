@@ -345,11 +345,6 @@ in this repo.
    $ pachctl list job
    ID                               PIPELINE   STARTED       DURATION RESTART PROGRESS  DL UL STATE   
    511d63b3b78e4a53a634a1f01f5401f6 regression 3 seconds ago -        0       0 + 0 / 1 0B 0B running 
-   $ pachctl list file housing_data@regression-trigger-1
-   NAME                    TYPE SIZE
-   /housing-simplified.csv file 2.459KiB
-   $ pachctl list file housing_data@regression-trigger-1
-   the branch "regression-trigger-1" has no head (create one with 'start commit')
    ```
      
 1. Add more data,
