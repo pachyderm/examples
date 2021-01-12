@@ -22,24 +22,24 @@ to a commit in the staging branch.
 for automating deferred processing**.
 You may automatically move a branch to a new commit
 when a set of conditions is reached based on
- a combination of time, size, number of commits.
->
->Triggers can be created two ways:
->
-> **A**. _By creating the branch separately:_ `pachctl create branch <my_repo_name>@master --trigger <my_staging_branch_name> --trigger-size <1MB>`
->
->    * the `--trigger` flag specifying the staging branch. 
->    * `--trigger-size` the condition to meet to update the HEAD of master. *(see documentation for more options)*
->
->   To use this triggger for deferred processing, 
->   a pipeline must subscribe to the branch you create here. 
->   Data to be processed is committed to the branch specified in the `--trigger` argument.
->
-> **B**. _In a pipeline specification:_ Adding a `trigger` attribute and parameters
+a combination of time, size, number of commits.
+
+Triggers can be created two ways:
+
+ - **A**. _By creating the branch separately:_ `pachctl create branch <my_repo_name>@master --trigger <my_staging_branch_name> --trigger-size <1MB>`
+
+    * the `--trigger` flag specifying the staging branch. 
+    * `--trigger-size` the condition to meet to update the HEAD of master. *(see documentation for more options)*
+
+   To use this triggger for deferred processing, 
+   a pipeline must subscribe to the branch you create here. 
+   Data to be processed is committed to the branch specified in the `--trigger` argument.
+
+ - **B**. _In a pipeline specification:_ Adding a `trigger` attribute and parameters
    to a PFS input 
    in the pipeline's specification.
->
->  Pachyderm will create the trigger and a branch
+
+  Pachyderm will create the trigger and a branch
    for the pipeline to subscribe to,
    using the naming convention `<pipeline-name>-trigger-n`.
 
