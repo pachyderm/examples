@@ -18,7 +18,7 @@ then submit accumulated changes **in one batch**
 by re-pointing the HEAD of your master branch 
 to a commit in the staging branch.
 
->[Triggers](https://docs.pachyderm.com/latest/concepts/advanced-concepts/deferred_processing.md#automate-deferred-processing-with-branch-triggers) are **a tool
+>[Triggers](https://docs.pachyderm.com/latest/concepts/advanced-concepts/deferred_processing#automate-deferred-processing-with-branch-triggers) are **a tool
 for automating deferred processing**.
 You may automatically move a branch to a new commit
 when a set of conditions is reached based on
