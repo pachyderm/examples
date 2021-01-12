@@ -50,7 +50,7 @@ We will first showcase the creation of the trigger on the branch, then reproduce
 - Familiarize yourself with [append file processing strategy](https://docs.pachyderm.com/latest/concepts/data-concepts/file/#file-processing-strategies), understand appending vs overwrite.
 - [Deferred processing](https://docs.pachyderm.com/latest/concepts/advanced-concepts/deferred_processing/#automate-deferred-processing-with-branch-triggers), especially its automation with triggers.
 
-You might also want to brush up your knowledge on [commit](https://docs.pachyderm.com/latest/concepts/data-concepts/commit/), [branch](https://docs.pachyderm.com/latest/concepts/data-concepts/branch/), and [provenance](https://docs.pachyderm.com/latest/concepts/data-concepts/provenance/). 
+Additionally, you might want to ckeck the following concepts: [commit](https://docs.pachyderm.com/latest/concepts/data-concepts/commit/), [branch](https://docs.pachyderm.com/latest/concepts/data-concepts/branch/), and [provenance](https://docs.pachyderm.com/latest/concepts/data-concepts/provenance/). 
 
 ***Pre-requisite***
 - Work through the [housing prices](../../housing-prices) example.
