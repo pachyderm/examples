@@ -26,22 +26,22 @@ a combination of time, size, number of commits.
 
 Triggers can be created two ways:
 
- - **A**. _By creating the branch separately:_ `pachctl create branch <my_repo_name>@master --trigger <my_staging_branch_name> --trigger-size <1MB>`
+ -  _By creating the branch separately:_ `pachctl create branch <my_repo_name>@master --trigger <my_staging_branch_name> --trigger-size <1MB>`
 
     * the `--trigger` flag specifying the staging branch. 
     * `--trigger-size` the condition to meet to update the HEAD of master. *(see documentation for more options)*
 
-   To use this triggger for deferred processing, 
-   a pipeline must subscribe to the branch you create here. 
-   Data to be processed is committed to the branch specified in the `--trigger` argument.
+    To use this triggger for deferred processing, 
+    a pipeline must subscribe to the branch you create here. 
+    Data to be processed is committed to the branch specified in the `--trigger` argument.
 
- - **B**. _In a pipeline specification:_ Adding a `trigger` attribute and parameters
+ -  _In a pipeline specification:_ Adding a `trigger` attribute and parameters
    to a PFS input 
    in the pipeline's specification.
 
-  Pachyderm will create the trigger and a branch
-   for the pipeline to subscribe to,
-   using the naming convention `<pipeline-name>-trigger-n`.
+    Pachyderm will create the trigger and a branch
+    for the pipeline to subscribe to,
+    using the naming convention `<pipeline-name>-trigger-n`.
 
 
 We will first showcase the creation of the trigger on the branch, then reproduce the same scenario by embedding the trigger in the pipeline specification's file.
@@ -50,7 +50,7 @@ We will first showcase the creation of the trigger on the branch, then reproduce
 - Familiarize yourself with [append file processing strategy](https://docs.pachyderm.com/latest/concepts/data-concepts/file/#file-processing-strategies), understand appending vs overwrite.
 - [Deferred processing](https://docs.pachyderm.com/latest/concepts/advanced-concepts/deferred_processing/#automate-deferred-processing-with-branch-triggers), especially its automation with triggers.
 
-Additionally, you might want to ckeck the following concepts: [commit](https://docs.pachyderm.com/latest/concepts/data-concepts/commit/), [branch](https://docs.pachyderm.com/latest/concepts/data-concepts/branch/), and [provenance](https://docs.pachyderm.com/latest/concepts/data-concepts/provenance/). 
+Additionally, you might want to check the following concepts: [commit](https://docs.pachyderm.com/latest/concepts/data-concepts/commit/), [branch](https://docs.pachyderm.com/latest/concepts/data-concepts/branch/), and [provenance](https://docs.pachyderm.com/latest/concepts/data-concepts/provenance/). 
 
 ***Pre-requisite***
 - Work through the [housing prices](../../housing-prices) example.
