@@ -1,0 +1,21 @@
+{
+    "pipeline": {
+        "name": "data_analysis"
+    },
+    "description": "Data analysis pipeline that creates pairplots and correlation matrices for csv files.",
+    "input": {
+        "pfs": {
+            "glob": "/*",
+            "repo": "housing_data"
+        }
+    },
+    "transform": {
+        "cmd": [
+            "python", "data_analysis.py",
+            "--input", "/pfs/housing_data/",
+            "--target-col", "MEDV",
+            "--output", "/pfs/out/"
+        ],
+        "image": "jimmywhitaker/housing-prices-int:dev0.2"
+    }
+}
