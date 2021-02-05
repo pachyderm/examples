@@ -15,21 +15,21 @@ The Pachyderm pipelines performs the following actions:
 5. Generates a learning curve and performance metrics to estimate the quality of the model.
 
 Table of Contents:
-- [Intermediate Boston Housing Prices Example](#intermediate-boston-housing-prices-example)
-  - [Housing Prices Dataset](#housing-prices-dataset)
-  - [Prerequisites](#prerequisites)
-  - [Pachyderm Pipelines](#pachyderm-pipelines)
-    - [Data Analysis Pipeline](#data-analysis-pipeline)
-    - [Split Pipeline](#split-pipeline)
-    - [Regression Pipeline](#regression-pipeline)
-    - [TLDR; Just give me the code](#tldr-just-give-me-the-code)
-    - [Step 1: Create an input data repository](#step-1-create-an-input-data-repository)
-    - [Step 2: Create the regression pipeline](#step-2-create-the-regression-pipeline)
-    - [Step 3: Add the housing dataset to the repo](#step-3-add-the-housing-dataset-to-the-repo)
-    - [Step 4: Download files once the pipeline has finished](#step-4-download-files-once-the-pipeline-has-finished)
-    - [Step 5: Update Dataset](#step-5-update-dataset)
-    - [Step 6: Inspect the data](#step-6-inspect-the-data)
-    - [Step 7: Roll back to the previous commit](#step-7-roll-back-to-the-previous-commit)
+- [Housing Prices Dataset](#housing-prices-dataset)
+- [Prerequisites](#prerequisites)
+- [Pachyderm Pipelines](#pachyderm-pipelines)
+  - [Data Analysis Pipeline](#data-analysis-pipeline)
+  - [Split Pipeline](#split-pipeline)
+  - [Regression Pipeline](#regression-pipeline)
+  - [TLDR; Just give me the code](#tldr-just-give-me-the-code)
+- [Detailed Walkthrough](#detailed-walkthrough)
+  - [Step 1: Create an input data repository](#step-1-create-an-input-data-repository)
+  - [Step 2: Create the regression pipeline](#step-2-create-the-regression-pipeline)
+  - [Step 3: Add the housing dataset to the repo](#step-3-add-the-housing-dataset-to-the-repo)
+  - [Step 4: Download files once the pipeline has finished](#step-4-download-files-once-the-pipeline-has-finished)
+  - [Step 5: Update Dataset](#step-5-update-dataset)
+  - [Step 6: Inspect the data](#step-6-inspect-the-data)
+  - [Step 7: Roll back to the previous commit](#step-7-roll-back-to-the-previous-commit)
   - [Step 8: Update our dataset](#step-8-update-our-dataset)
 
 ## Housing Prices Dataset
@@ -120,6 +120,7 @@ pachctl create branch csv_data@master --head master^
 pachctl put file csv_data@master:housing-simplified.csv -f data/housing-simplified-2.csv --overwrite
 
 ```
+## Detailed Walkthrough
 
 ### Step 1: Create an input data repository
 
@@ -264,7 +265,7 @@ $ pachctl create branch csv_data@master --head master^
 
 If we inspect the data_analysis output now, we can see that we're using the previous version of the dataset. 
 
-## Step 8: Update our dataset
+### Step 8: Update our dataset
 Now we can update our dataset with additional data not containing the error, and our pipelines will automatically update again.
 
 ```bash
