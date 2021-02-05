@@ -6,13 +6,13 @@
     "input": {
         "pfs": {
             "glob": "/*",
-            "repo": "housing_data"
+            "repo": "csv_data"
         }
     },
     "transform": {
         "cmd": [
             "python", "split.py",
-            "--input", "/pfs/housing_data/",
+            "--input", "/pfs/csv_data/",
             "--test-size", "0.1",
             "--output", "/pfs/out/"
         ],
