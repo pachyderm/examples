@@ -1,0 +1,2 @@
+#!/bin/sh
+label-studio start /my_text_project/ --source s3 --source-path master.raw_data --input-format=text --target s3-completions --target-path master.labeled_data --source-params "{\"use_blob_urls\": false, \"regex\": \".*\"}"

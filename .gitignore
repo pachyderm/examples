@@ -50,3 +50,5 @@ CVS
 # ENV #
 #######
 .env
+.aws/config
+.ipynb_checkpoints
