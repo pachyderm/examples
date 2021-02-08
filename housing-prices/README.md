@@ -253,7 +253,7 @@ When the job is complete we can download the new files and see that our model ha
 
 Note that because versions all of our input and output data automatically, we can continue to iterate on our data and code and Pachyderm will track all of our experiments. For any given output commit, Pachyderm will tell us exactly which input commit of data was run. In our simple example we only have 2 experiments run so far, but this becomes incredibly important and valuable when we do many more iterations.
 
-We can list out the commits to any repository by using the `list commit` commandand.
+We can list out the commits to any repository by using the `list commit` command.
 
 ```bash
 $ pachctl list commit housing_data@master
