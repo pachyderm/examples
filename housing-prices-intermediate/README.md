@@ -55,7 +55,7 @@ Sample:
 Before you can deploy this example you need to have the following components:
 
 1. A clone of this Pachyderm repository on your local computer. (could potentially include those instructions)
-2. A Pachyderm cluster - You can deploy a cluster on [PacHub](hub.pachyderm.com) or deploy locally as described [here](https://docs.pachyderm.com/latest/getting_started/).
+2. A Pachyderm cluster - You can deploy a cluster on [Pachyderm Hub](hub.pachyderm.com) or deploy locally as described [here](https://docs.pachyderm.com/latest/getting_started/).
 
 Verify that your environment is accessible by running `pachctl version` which will show both the `pachctl` and `pachd` versions.
 ```bash
@@ -79,7 +79,7 @@ The data analysis pipeline creates a pair plot and a correlation matrix showing 
 ### Split Pipeline
 Split the input `csv` files into train and test sets. As we new data is added, we will always have access to previous versions of the splits to reproduce experiments and test results. 
 
-Both the `split` pipeline and the `data_analysis` pipeline take the `csv_data` as input but have no dependencies on each other. Pachyderm is able to recognize this and can run each pipeline simultaneously, scaling them horizontally. 
+Both the `split` pipeline and the `data_analysis` pipeline take the `csv_data` as input but have no dependencies on each other. Pachyderm is able to recognize this. It can run each pipeline simultaneously, scaling each horizontally.
 
 ### Regression Pipeline
 To train the regression model using scikit-learn. In our case, we will train a Random Forest Regressor ensemble. After splitting the data into features and targets (`X` and `y`), we can fit the model to our parameters. Once the model is trained, we will compute our score (r^2) on the test set. 
