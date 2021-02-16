@@ -61,6 +61,7 @@ def train_model(features, targets):
     reg = ensemble.RandomForestRegressor(random_state=1)
     scores = cross_val_score(reg, features, targets, cv=10)
     print("Score: {:2f} (+/- {:2f})".format(scores.mean(), scores.std() * 2))
+    reg.fit(features,targets)
     return reg
 
 def create_learning_curve(estimator, features, targets):

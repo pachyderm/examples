@@ -16,6 +16,10 @@ By separating inference into multiple tasks, each task pipeline can be updated i
 
 The underlying code and pre-trained breast cancer detection model comes from [this repo](https://github.com/nyukat/breast_cancer_classifier), developed by the Center of Data Science and Department of Radiology at NYU. Their original paper can be found [here](https://ieeexplore.ieee.org/document/8861376).
 
+For a video version of this example, see the link below: 
+
+[![Watch the video](https://img.youtube.com/vi/etR3HKc50EM/hqdefault.jpg)](https://youtu.be/etR3HKc50EM)
+
 ## Implementing a Pipeline in Pachyderm
 A Pachyderm Pipeline can be defined in three steps:
 
