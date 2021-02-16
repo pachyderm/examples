@@ -47,8 +47,22 @@ housing-prices-2:
 	$(PACHCTL) put file housing_data@master:housing-simplified.csv -f housing-prices/data/housing-simplified-2.csv --overwrite
 
 housing-prices-delete:
-		$(PACHCTL) delete pipeline regression
-		$(PACHCTL) delete repo housing_data 
+	$(PACHCTL) delete pipeline regression
+	$(PACHCTL) delete repo housing_data 
+
+
+housing-prices-intermediate-base: 
+	$(PACHCTL) create repo csv_data
+	$(PACHCTL) create pipeline -f housing-prices-intermediate/data_analysis.json
+	$(PACHCTL) create pipeline -f housing-prices-intermediate/split.json
+	$(PACHCTL) create pipeline -f housing-prices-intermediate/regression.json
+	$(PACHCTL) put file csv_data@master:housing-simplified.csv -f housing-prices/data/housing-simplified-1.csv
+
+housing-prices-intermediate-delete:
+	$(PACHCTL) delete pipeline regression
+	$(PACHCTL) delete pipeline split
+	$(PACHCTL) delete pipeline data_analysis
+	$(PACHCTL) delete repo csv_data 
 
 delete:
 	yes | $(PACHCTL) delete all

@@ -1,0 +1,21 @@
+{
+    "pipeline": {
+        "name": "split"
+    },
+    "description": "A pipeline that splits tabular data into training and testing sets.",
+    "input": {
+        "pfs": {
+            "glob": "/*",
+            "repo": "csv_data"
+        }
+    },
+    "transform": {
+        "cmd": [
+            "python", "split.py",
+            "--input", "/pfs/csv_data/",
+            "--test-size", "0.1",
+            "--output", "/pfs/out/"
+        ],
+        "image": "jimmywhitaker/housing-prices-int:dev0.2"
+    }
+}

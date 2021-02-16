@@ -1,0 +1,21 @@
+{
+    "pipeline": {
+        "name": "regression"
+    },
+    "description": "A pipeline that trains and tests a regression model for tabular.",
+    "input": {
+        "pfs": {
+            "glob": "/*/",
+            "repo": "split"
+        }
+    },
+    "transform": {
+        "cmd": [
+            "python", "regression.py",
+            "--input", "/pfs/split/",
+            "--target-col", "MEDV",
+            "--output", "/pfs/out/"
+        ],
+        "image": "jimmywhitaker/housing-prices-int:dev0.2"
+    }
+}
