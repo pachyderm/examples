@@ -48,6 +48,15 @@ Just change the protocol to `http` and port to `30600`. This will now point at t
 
 `https://hub-xx-xxxYYxxYY.clusters.pachyderm.io:30600`
 
+The `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` in your `.env` file should be set to your Pachyderm `session_token` located in your Pachyderm config (typically in `~/.pachyderm/config.json`). More info on Pachyderm's [S3 gateway](https://docs.pachyderm.com/latest/deploy-manage/manage/s3gateway/configure-s3client/). 
+
+If you get the following error, 
+
+```
+botocore.exceptions.ClientError: An error occurred (403) when calling the HeadBucket operation: Forbidden
+```
+
+this is typically due to an expired session token. Reconnect to the cluster and update your `.env` with the new token. 
 
 #### Minikube configuration
 If you are running Pachyderm locally on minikube, you can get the `ENDPOINT_URL` for the Pachyderm S3 gateway by running the command:
@@ -56,6 +65,8 @@ If you are running Pachyderm locally on minikube, you can get the `ENDPOINT_URL`
 $ minikube ip
 192.168.64.8
 ```
+
+If you are running Pachyderm with authentication, then you can follow the same steps as the Hub setup to set the `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`. If not running with authentication, you can pass any non-empty string to `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` in your `.env` file.
 
 <!-- ## Creating a new project
 A new project requires creating a new configuration (see some of the [examples](examples/)). Creating a new project with Label Studio can be done by from the command line. We'll use the Docker image that we created to do this, adding the `--init` flag which will create the project. 
