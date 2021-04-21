@@ -97,7 +97,7 @@ pachctl create branch labeled_data@master
 pachctl create branch raw_data@master
 
 # Start a local instance of Label Studio (needs the .env for the Pach S3 gateway)
-docker run -it -p 8080:8080 -v `pwd`/mydata:/label-io/data heartexlabs/label-studio:latest
+docker run -it -p 8080:8080 -v `pwd`/mydata:/label-studio/data jimmywhitaker/labelstudio:v1.0.1
 
 # Navigate to http://localhost:8080/
 
