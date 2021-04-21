@@ -11,12 +11,10 @@ label-studio-setup:
 put-text-examples1:
 	$(PACHCTL) put file raw_data@master:/test-example.json -f raw_data/test-example.json --split json --target-file-datums 1
 
-put-text-examples2:
-	$(PACHCTL) put file raw_data@master:/test-example.json -f raw_data/test-example2.json --split json --target-file-datums 1 --overwrite
-
 clean-project: delete label-studio-setup
 
 delete:
-	yes | $(PACHCTL) delete all
+	$(PACHCTL) delete repo labeled_data
+	$(PACHCTL) delete repo raw_data
 
 clean: delete
