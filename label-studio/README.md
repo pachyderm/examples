@@ -30,7 +30,7 @@ Once the Pachyderm cluster is up, we can check the setup by running:
 In this example, we will run label studio locally, using Docker. 
 
 ```bash
-docker run -it -p 8080:8080 -v `pwd`/mydata:/label-studio/data jimmywhitaker/labelstudio:v1.0.1 label-studio
+docker run -it -p 8080:8080 -v `pwd`/mydata:/label-studio/data jimmywhitaker/labelstudio:v1.0.1
 ```
 
 Once running, we can access label studio by visiting: [http://localhost:8080/](http://localhost:8080/).
