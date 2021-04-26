@@ -1,0 +1,31 @@
+{
+  "pipeline": {
+    "name": "dataset"
+  },
+  "description": "Create an FPB formatted dataset for labeled text data.",
+  "input": {
+    "union": [
+      {
+          "pfs": {
+              "glob": "/",
+              "repo": "labeled_data"
+          }
+      },
+      {
+          "pfs": {
+              "glob": "/",
+              "repo": "financial_phrase_bank"
+          }
+      }
+  ]
+  },
+  "transform": {
+    "cmd": [
+      "python", "completions-dataset.py",
+      "--completions-dir", "/pfs/labeled_data/",
+      "--base-dataset", "/pfs/financial_phrase_bank/",
+      "--output-dir", "/pfs/out/"
+    ],
+    "image": "jimmywhitaker/market_sentiment:dev0.15"
+  }
+}

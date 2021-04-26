@@ -1,0 +1,28 @@
+{
+  "pipeline": {
+    "name": "train_model"
+  },
+  "description": "Train a logistic regression model for sentiment analysis.",
+  "input": {
+    "cross": [
+      {
+        "pfs": {
+          "repo": "dataset",
+          "glob": "/"
+        }
+      },
+      {
+        "pfs": {
+          "repo": "language_model",
+          "glob": "/"
+        }
+      }
+    ]
+  },
+  "transform": {
+    "cmd": [
+      "python", "finbert_training.py", "--lm_path", "/pfs/language_model/", "--cl_path", "/pfs/out", "--cl_data_path", "/pfs/dataset/"
+    ],
+    "image": "jimmywhitaker/market_sentiment:dev0.15"
+  }
+}

@@ -52,3 +52,9 @@ CVS
 .env
 .aws/config
 .ipynb_checkpoints
+
+# Project Specific #
+####################
+market-sentiment/models/
+market-sentiment/data/
+
