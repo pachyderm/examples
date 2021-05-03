@@ -36,6 +36,10 @@ parser.add_argument("--cl_data_path",
                     metavar="DIR",
                     default="/pfs/",
                     help="the path of the directory that contains the data files of train.csv, validation.csv, test.csv.")
+parser.add_argument('--clear_cl_model_path', 
+                    action='store_true', 
+                    help="clean the classification model directory")
+
 
 def clean_model_path(cl_path):
     # Clean the cl_path
@@ -97,16 +101,18 @@ def test(finbert, trained_model):
     '''
     test_data = finbert.get_data('test')
     results = finbert.evaluate(examples=test_data, model=trained_model)
+    results['prediction'] = results.predictions.apply(lambda x: np.argmax(x,axis=0))
+
     def report(df, cols=['label','prediction','logits']):
         #print('Validation loss:{0:.2f}'.format(metrics['best_validation_loss']))
         cs = CrossEntropyLoss(weight=finbert.class_weights)
         loss = cs(torch.tensor(list(df[cols[2]])),torch.tensor(list(df[cols[0]])))
-        print("Loss:{0:.2f}".format(loss))
-        print("Accuracy:{0:.2f}".format((df[cols[0]] == df[cols[1]]).sum() / df.shape[0]) )
-        print("\nClassification Report:")
-        print(classification_report(df[cols[0]], df[cols[1]]))
+        metrics_str = "Loss:{0:.2f}".format(loss)
+        metrics_str += "\nAccuracy:{0:.2f}".format((df[cols[0]] == df[cols[1]]).sum() / df.shape[0]) 
+        metrics_str += "\nClassification Report:"
+        metrics_str += "\n" + str(classification_report(df[cols[0]], df[cols[1]]))
+        return metrics_str
     
-    results['prediction'] = results.predictions.apply(lambda x: np.argmax(x,axis=0))
     return report(results,cols=['labels','prediction','predictions'])
 
 def main():
@@ -115,13 +121,14 @@ def main():
     lm_path = Path(args.lm_path)
     cl_path = Path(args.cl_path)
     cl_data_path = Path(args.cl_data_path)
+    clear_cl_model_path = args.clear_cl_model_path
     
-    clean_model_path(cl_path)
+    if clear_cl_model_path: 
+        clean_model_path(cl_path)
     finbert, trained_model = train(lm_path, cl_data_path, cl_path)
-    report = test(finbert, trained_model)
+    test_report = test(finbert, trained_model)
     with open(os.path.join(args.cl_path, 'test_report.txt'), 'wb') as f:
-        f.write(report)
-    
+        f.write(test_report.encode())
 
 if __name__ == "__main__":
     main()

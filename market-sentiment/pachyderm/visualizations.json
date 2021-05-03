@@ -27,17 +27,6 @@
       "--output-dir", "/pfs/out",
       "-v"
     ],
-    "image": "jimmywhitaker/market_sentiment:dev0.15"
-  },
-  "standby": true,
-  "resource_limits": {
-    "gpu": {
-      "type": "nvidia.com/gpu",
-      "number": 1
-    }
-  },
-  "resource_requests": {
-    "memory": "4G",
-    "cpu": 1
+    "image": "jimmywhitaker/market_sentiment:dev0.17"
   }
 }

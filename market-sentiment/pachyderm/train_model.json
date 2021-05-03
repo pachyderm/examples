@@ -2,7 +2,7 @@
   "pipeline": {
     "name": "train_model"
   },
-  "description": "Train a logistic regression model for sentiment analysis.",
+  "description": "Fine tune a BERT model for sentiment analysis on financial data.",
   "input": {
     "cross": [
       {
@@ -23,6 +23,17 @@
     "cmd": [
       "python", "finbert_training.py", "--lm_path", "/pfs/language_model/", "--cl_path", "/pfs/out", "--cl_data_path", "/pfs/dataset/"
     ],
-    "image": "jimmywhitaker/market_sentiment:dev0.15"
+    "image": "jimmywhitaker/market_sentiment:dev0.18"
+  },
+  "standby": true,
+  "resource_limits": {
+    "gpu": {
+      "type": "nvidia.com/gpu",
+      "number": 1
+    }
+  },
+  "resource_requests": {
+    "memory": "4G",
+    "cpu": 1
   }
 }

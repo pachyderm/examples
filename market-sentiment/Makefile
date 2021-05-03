@@ -25,6 +25,8 @@ delete:
 	$(PACHCTL) delete pipeline visualizations
 	$(PACHCTL) delete pipeline dataset
 	$(PACHCTL) delete repo sentiment_words
+	$(PACHCTL) delete repo language_model
+	$(PACHCTL) delete repo financial_phrase_bank
 	$(PACHCTL) delete repo raw_data
 	$(PACHCTL) delete repo labeled_data
 

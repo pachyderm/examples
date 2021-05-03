@@ -26,6 +26,6 @@
       "--base-dataset", "/pfs/financial_phrase_bank/",
       "--output-dir", "/pfs/out/"
     ],
-    "image": "jimmywhitaker/market_sentiment:dev0.15"
+    "image": "jimmywhitaker/market_sentiment:dev0.17"
   }
 }
