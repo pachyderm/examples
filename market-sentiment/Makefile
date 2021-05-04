@@ -11,6 +11,8 @@ setup:
 
 	$(PACHCTL) create repo labeled_data
 	$(PACHCTL) create repo raw_data
+	$(PACHCTL) create branch labeled_data@master
+	$(PACHCTL) create branch raw_data@master
 
 	$(PACHCTL) create pipeline -f pachyderm/dataset.json
 
