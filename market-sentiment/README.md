@@ -24,6 +24,8 @@ cd models/finbertTRC2/; pachctl put file -r language_model@master -f ./
 # Set up Label Studio for production data
 pachctl create repo labeled_data
 pachctl create repo raw_data
+pachctl create branch labeled_data@master
+pachctl create branch raw_data@master
 docker run -it -p 8080:8080 -v `pwd`/mydata:/label-studio/data jimmywhitaker/labelstudio:v1.0.1
 
 # Deploy the dataset creation pipeline
