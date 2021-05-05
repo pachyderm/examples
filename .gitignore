@@ -56,5 +56,5 @@ CVS
 # Project Specific #
 ####################
 market-sentiment/models/
-market-sentiment/data/
-
+market-sentiment/data/FinancialPhraseBank
+market-sentiment/data/sentiment_data

@@ -27,6 +27,6 @@
       "--output-dir", "/pfs/out",
       "-v"
     ],
-    "image": "jimmywhitaker/market_sentiment:dev0.17"
+    "image": "jimmywhitaker/market_sentiment:dev0.25"
   }
 }

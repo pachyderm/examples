@@ -1,0 +1,23 @@
+{
+    "data": {
+        "text": "The tax gap accumulating between 2020 and 2029 is estimated to be $7.5 trillion, a shocking and distressing amount."
+    },
+    "predictions": [
+        {
+            "result": [
+                {
+                    "value": {
+                        "choices": [
+                            "Negative"
+                        ]
+                    },
+                    "from_name": "sentiment",
+                    "to_name": "text",
+                    "type": "choices"
+                }
+            ],
+            "score": 0.95,
+            "model_version": "dataset"
+        }
+    ]
+}

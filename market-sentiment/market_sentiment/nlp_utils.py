@@ -47,6 +47,7 @@ def get_frequent_nonstop_words(corpus, top_n=10):
 
     return zip(*top)
 
+
 # Consider Negation
 negate = [
     "aint",
