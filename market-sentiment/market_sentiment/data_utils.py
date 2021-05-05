@@ -12,11 +12,11 @@ def load_finphrase(filename):
     df = pd.read_csv(
         filename,
         engine="python",
-        sep='\t', 
-        index_col=0, 
-        header=0, 
-        names=["index","sentence", "label"]
-        )
+        sep="\t",
+        index_col=0,
+        header=0,
+        names=["index", "sentence", "label"],
+    )
     print("Total number of record in the file: ", df.shape[0])
     df.drop_duplicates(inplace=True)
     print("Total number of record after dropping duplicates: ", df.shape[0])
@@ -35,27 +35,24 @@ def df_to_ls(df):
     """
     ls_dataset = []
     for i, row in df.iterrows():
-        ls_dataset.append({
-            "data": {
-                "text": row["sentence"]
-            },
-            "predictions": [
-                {
-                    "result": [
-                        {
-                            "value": {
-                                "choices": [
-                                    row["label"].capitalize()
-                                ]
-                            },
-                            "from_name": "sentiment",
-                            "to_name": "text",
-                            "type": "choices"
-                        }],
-                    "score": 1.0
-                }
-            ]
-        })
+        ls_dataset.append(
+            {
+                "data": {"text": row["sentence"]},
+                "predictions": [
+                    {
+                        "result": [
+                            {
+                                "value": {"choices": [row["label"].capitalize()]},
+                                "from_name": "sentiment",
+                                "to_name": "text",
+                                "type": "choices",
+                            }
+                        ],
+                        "score": 1.0,
+                    }
+                ],
+            }
+        )
 
-    print('\n'.join(map(json.dumps, ls_dataset)))
-    return '\n'.join(map(json.dumps, ls_dataset))
+    print("\n".join(map(json.dumps, ls_dataset)))
+    return "\n".join(map(json.dumps, ls_dataset))

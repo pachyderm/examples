@@ -13,6 +13,8 @@ setup:
 	$(PACHCTL) create repo raw_data
 	$(PACHCTL) create branch labeled_data@master
 	$(PACHCTL) create branch raw_data@master
+	$(PACHCTL) start commit labeled_data@master; $(PACHCTL) finish commit labeled_data@master
+
 
 	$(PACHCTL) create pipeline -f pachyderm/dataset.json
 

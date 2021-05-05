@@ -4,7 +4,7 @@
   },
   "description": "Create an FPB formatted dataset for labeled text data.",
   "input": {
-    "union": [
+    "cross": [
       {
           "pfs": {
               "glob": "/",
@@ -23,9 +23,9 @@
     "cmd": [
       "python", "completions-dataset.py",
       "--completions-dir", "/pfs/labeled_data/",
-      "--base-dataset", "/pfs/financial_phrase_bank/",
+      "--fpb-dataset", "/pfs/financial_phrase_bank/",
       "--output-dir", "/pfs/out/"
     ],
-    "image": "jimmywhitaker/market_sentiment:dev0.17"
+    "image": "jimmywhitaker/market_sentiment:dev0.25"
   }
 }

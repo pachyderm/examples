@@ -1,0 +1,23 @@
+{
+    "data": {
+        "text": "The CBOE Volatility Index (VIX) is at 19.93. This is a neutral reading and indicates that market risks appear low."
+    },
+    "predictions": [
+        {
+            "result": [
+                {
+                    "value": {
+                        "choices": [
+                            "Neutral"
+                        ]
+                    },
+                    "from_name": "sentiment",
+                    "to_name": "text",
+                    "type": "choices"
+                }
+            ],
+            "score": 0.90,
+            "model_version": "dataset"
+        }
+    ]
+}

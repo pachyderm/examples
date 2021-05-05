@@ -21,11 +21,12 @@ cd data/FinancialPhraseBank/; pachctl put file financial_phrase_bank@master -f S
 pachctl create repo language_model
 cd models/finbertTRC2/; pachctl put file -r language_model@master -f ./
 
-# Set up Label Studio for production data
+# Set up Label Studio for labeling production data later
 pachctl create repo labeled_data
 pachctl create repo raw_data
 pachctl create branch labeled_data@master
 pachctl create branch raw_data@master
+pachctl start commit labeled_data@master; pachctl finish commit labeled_data@master
 docker run -it -p 8080:8080 -v `pwd`/mydata:/label-studio/data jimmywhitaker/labelstudio:v1.0.1
 
 # Deploy the dataset creation pipeline

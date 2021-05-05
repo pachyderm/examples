@@ -5,6 +5,7 @@ import seaborn as sns
 
 from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
 
+
 def visualize_frequent_words(corpus, stop_words):
     # Check most frequent words which are not in stopwords
     counter = Counter(corpus)
