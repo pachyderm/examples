@@ -5,7 +5,7 @@
 </p>
 
 
-In this example, we show a market sentiment NLP implementation in Pachyderm. In it, we use [transfer learning](https://en.wikipedia.org/wiki/Transfer_learning) to fine-tune a BERT language model to classify text for financial sentiment. It shows how to combine inputs from separate sources, incorporates data labeling, model training, and data visualization.
+In this example, we show a market sentiment NLP implementation in Pachyderm, extending the work originally presented [here](https://github.com/ProsusAI/finBERT).  In it, we use [transfer learning](https://en.wikipedia.org/wiki/Transfer_learning) to fine-tune a BERT language model to classify text for financial sentiment. It shows how to combine inputs from separate sources, incorporates data labeling, model training, and data visualization.
 
 
 This example requires general knowledge of Pachyderm, which can be obtained through the Boston Housing Prices examples: [Intro](https://github.com/pachyderm/examples/blob/master/housing-prices) and [Intermediate](https://github.com/pachyderm/examples/blob/master/housing-prices-intermediate). 
