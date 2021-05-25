@@ -4,8 +4,7 @@
 	<img src='images/market_sentiment.png' width='1000' title=''>
 </p>
 
-
-In this example, we show a market sentiment NLP implementation in Pachyderm, extending the work originally presented [here](https://github.com/ProsusAI/finBERT).  In it, we use [transfer learning](https://en.wikipedia.org/wiki/Transfer_learning) to fine-tune a BERT language model to classify text for financial sentiment. It shows how to combine inputs from separate sources, incorporates data labeling, model training, and data visualization.
+In this example, we show a market sentiment NLP implementation in Pachyderm. In it, we use [transfer learning](https://en.wikipedia.org/wiki/Transfer_learning) to fine-tune a BERT language model to classify text for financial sentiment. It shows how to combine inputs from separate sources, incorporates data labeling, model training, and data visualization.
 
 
 This example requires general knowledge of Pachyderm, which can be obtained through the Boston Housing Prices examples: [Intro](https://github.com/pachyderm/examples/blob/master/housing-prices) and [Intermediate](https://github.com/pachyderm/examples/blob/master/housing-prices-intermediate). 
@@ -15,43 +14,60 @@ This example requires general knowledge of Pachyderm, which can be obtained thro
 ```bash
 # Upload the Financial Phrase Bank data
 pachctl create repo financial_phrase_bank
-cd data/FinancialPhraseBank/; pachctl put file financial_phrase_bank@master -f Sentences_AllAgree.txt
+pachctl put file financial_phrase_bank@master:/Sentences_50Agree.txt -f data/FinancialPhraseBank/Sentences_50Agree.txt
 
 # Upload the pre-trained BERT language model
 pachctl create repo language_model
-cd models/finbertTRC2/; pachctl put file -r language_model@master -f ./
+cd models/finbertTRC2/; pachctl put file -r language_model@master -f ./; cd ../../
 
-# Set up Label Studio for labeling production data later
+# Set up labeled_data repo for labeling production data later
 pachctl create repo labeled_data
-pachctl create repo raw_data
-pachctl create branch labeled_data@master
-pachctl create branch raw_data@master
 pachctl start commit labeled_data@master; pachctl finish commit labeled_data@master
-docker run -it -p 8080:8080 -v `pwd`/mydata:/label-studio/data jimmywhitaker/labelstudio:v1.0.1
 
 # Deploy the dataset creation pipeline
 pachctl create pipeline -f pachyderm/dataset.json
 
-# Use a sentiment word list to visualize the current dataset
+# Deploy the training pipeline
+pachctl create pipeline -f pachyderm/train_model.json
+
+# (Optional) Use a sentiment word list to visualize the current dataset
 pachctl create repo sentiment_words
 pachctl put file sentiment_words@master:/LoughranMcDonald_SentimentWordLists_2018.csv -f resources/LoughranMcDonald_SentimentWordLists_2018.csv
 pachctl create pipeline -f pachyderm/visualizations.json
 
-# Deploy the training pipeline
-pachctl create pipeline -f pachyderm/train_model.json
-
-# Version our current dataset
-pachctl create branch dataset@v1 --head master
+# Tag our current dataset as branch v1 (easy to referr to later on)
+pachctl create branch financial_phrase_bank@v1 --head master
 
 # Modify the version of Financial Phrase Bank dataset used
 pachctl start commit financial_phrase_bank@master
-pachctl delete file financial_phrase_bank@master:/Sentences_AllAgree.txt
-pachctl put file financial_phrase_bank@master:/Sentences_50Agree.txt -f data/FinancialPhraseBank/Sentences_50Agree.txt
+pachctl delete file financial_phrase_bank@master:/Sentences_50Agree.txt
+pachctl put file financial_phrase_bank@master:/Sentences_AllAgree.txt -f data/FinancialPhraseBank/Sentences_AllAgree.txt
 pachctl finish commit financial_phrase_bank@master
 
 # Version our new dataset
-pachctl create branch dataset@v2 --head master
+pachctl create branch financial_phrase_bank@v2 --head master
 
+# Show the diff between the datasets
+pachctl diff file financial_phrase_bank@v2 financial_phrase_bank@v1
+
+# Inspect everything impacted by v1 of our dataset
+pachctl flush commit financial_phrase_bank@v1 --raw
+
+# Download the trained model
+pachctl get file -r train_model@master:/ -o trained_model/
+
+# Build Seldon deployment - see SeldonBuildProcess.md
+
+
+# Ingest predictions Seldon Elastic Search (must configure pipeline to point to Seldon cluster)
+pachctl create pipeline -f pachyderm/query_es.json
+
+# Run Label Studio locally to labeling production data
+pachctl create pipeline -f pachyderm/query_es.json
+docker run -it -p 8080:8080 -v `pwd`/mydata:/label-studio/data jimmywhitaker/labelstudio:v1.0.1
+# Note: see the Label Studio integration to learn how to connect with the Pachyderm Cluster
+
+# As data is labeled, our model_train pipeline automatically retrains on the new data
 ```
 
 ## The Data
@@ -60,7 +76,7 @@ We will use the [Financial Phrase Bank Dataset](https://www.researchgate.net/pro
 There are different versions of the Financial Phrase Bank Dataset, according to how many human labelers agreed with one another on the sentiment class of the text statement. For example, the `AllAgree` dataset is when all human labelers were in agreement with the sentiment of the sentence, while `50Agree` represents the dataset where more than 50% were in agreement with each other (more data, but potentially less accurate).
 
 ## The Model
-FinBERT is a pre-trained NLP model that is adapted to analyze the sentiment of financial text. The original BERT-based language model was trained with a large corpus of Reuters and training code used in this example, [FinBERT](https://huggingface.co/ProsusAI/finbert). The base model is built on a large subset of  Reuters TRC2 dataset. We will be tuning this pre-trained language model (transfer learning) for sentiment analysis using the Financial Phrase Bank Dataset.
+FinBERT is a pre-trained NLP model that is adapted to analyze the sentiment of financial text. The original BERT-based language model was trained with a large corpus of Reuters and training code used in this example, [FinBERT](https://huggingface.co/ProsusAI/finbert). The base model is built on a large subset of  Reuters TRC2 dataset. We will be tuning this pre-trained language model (transfer learning) for sentiment analysis using the Financial Phrase Bank Dataset. Download this model into `models/finbertTRC2`.
 
 ## Pre-requisites
 Before you can deploy this example you need to have the following components:
@@ -94,13 +110,22 @@ Our model training pipeline uses the BERT fine-tuning script from [FinBERT](http
 1. The language model - our pre-trained financial language model that will be tuned to our new task. 
 2. The dataset - sentiment analysis data that will be used to train our model.
 
-## Visualization
+The model_train pipeline is GPU enabled, but if you do not have access to a GPU in your cluster, then you can remove the resource requirements in `pachyderm/train_model.json`. It will function, but run much slower. 
+
+## Visualization (Optional)
 The `visualization` pipeline provides exploration and understanding of our dataset and includes the following.  
 1. Correlation matrix showing the relationship between the sentiment words and the assigned label. 
 2. Histogram of frequent words in the training set. 
 3. Word cloud of the training data. 
 
-<!-- ## Deployment
-WIP
+## Seldon Deployment
 
-## Iteration -->
+If you want to run the current built version of this example, you can run the server locally with:
+```
+docker run --name "market-sentiment-classifier" -d --rm -p 9001:9000 jimmywhitaker/market-sentiment-classifier:0.6
+```
+or deploy this image with Seldon. 
+
+If you would like to build the deployment from scratch, follow the instructions presented in [Seldon Build Process](./SeldonBuildProcess.md).
+
+Many of the steps used in the creation of this deployment were found in the [Spacy Example](https://docs.seldon.io/projects/seldon-core/en/latest/examples/sklearn_spacy_text_classifier_example.html). For more information, see the [Seldon Documentation](https://docs.seldon.io).

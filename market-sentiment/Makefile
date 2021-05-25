@@ -10,11 +10,8 @@ setup:
 	cd data/FinancialPhraseBank/; $(PACHCTL) put file financial_phrase_bank@master -f Sentences_AllAgree.txt
 
 	$(PACHCTL) create repo labeled_data
-	$(PACHCTL) create repo raw_data
 	$(PACHCTL) create branch labeled_data@master
-	$(PACHCTL) create branch raw_data@master
 	$(PACHCTL) start commit labeled_data@master; $(PACHCTL) finish commit labeled_data@master
-
 
 	$(PACHCTL) create pipeline -f pachyderm/dataset.json
 
@@ -23,15 +20,16 @@ setup:
 	$(PACHCTL) create pipeline -f pachyderm/visualizations.json
 
 	$(PACHCTL) create pipeline -f pachyderm/train_model.json
+	$(PACHCTL) create pipeline -f pachyderm/query_es.json
 
 delete:
 	$(PACHCTL) delete pipeline train_model
 	$(PACHCTL) delete pipeline visualizations
 	$(PACHCTL) delete pipeline dataset
+	$(PACHCTL) delete pipeline raw_data
 	$(PACHCTL) delete repo sentiment_words
 	$(PACHCTL) delete repo language_model
 	$(PACHCTL) delete repo financial_phrase_bank
-	$(PACHCTL) delete repo raw_data
 	$(PACHCTL) delete repo labeled_data
 
 clean: delete
