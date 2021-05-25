@@ -20,7 +20,7 @@ We'll create a text labeling example by:
 6. Data is automatically versioned in Pachyderm
 
 ## Getting Started
-This example uses a Pachyderm deployment for scaling and management. We can deploy a cluster on [Pacyderm Hub](hub.pachyderm.com) for free or deploy locally as described here: [Pachyderm Getting Started](https://docs.pachyderm.com/latest/getting_started/)
+This example uses a Pachyderm deployment for scaling and management. We can deploy a cluster on [Pachyderm Hub](https://hub.pachyderm.com) for free or deploy locally as described here: [Pachyderm Getting Started](https://docs.pachyderm.com/latest/getting_started/)
 
 Once the Pachyderm cluster is up, we can check the setup by running: 
 1. `kubectl get all` to ensure all the pods are up and ready. 
