@@ -12,27 +12,35 @@ https://drive.google.com/file/d/1q7A-XePDn8S9iCuYrEGFMoNwQ-S9ln4H/view?usp=shari
 2. Build Docker container 
 
 ```bash
-docker build . -f Dockerfile.seldon -t jimmywhitaker/seldon-core-hugging-face-base:0.4
+docker build . -f Dockerfile.seldon -t jimmywhitaker/seldon-core-hugging-face-base:0.6
 ```
 
 3. Create and package entrypoint inside Docker image with S2I config
 
 ```bash
-s2i build . jimmywhitaker/seldon-core-hugging-face-base:0.4 jimmywhitaker/market-sentiment-classifier:0.4
+s2i build . jimmywhitaker/seldon-core-hugging-face-base:0.4 jimmywhitaker/market-sentiment-classifier:0.6
 ```
 
 3. Test the model (running as root)
 
 Run the server:
 ```
-docker run --name "market-sentiment-classifier" -d --rm -p 9001:9000 jimmywhitaker/market-sentiment-classifier:0.4
+docker run --name "market-sentiment-classifier" -d --rm -p 9001:9000 jimmywhitaker/market-sentiment-classifier:0.6
 ```
 
 Send sentiment analysis request:  
 ```
-curl -v -X POST -H 'Content-Type: application/json'    -d '{"data": { "ndarray": "The CBOE Volatility Index (VIX) is at 19.93. This is a negative reading and indicates that market risks appear low.", "names":["text"] } }' http://localhost:9001/api/v1.0/predictions
+curl -v -X POST -H 'Content-Type: application/json'    -d '{"data": { "ndarray": "The CBOE Volatility Index (VIX) is at 19.93. This is a positive reading and indicates that market risks appear low.", "names": ["text"] } }' http://localhost:9001/api/v1.0/predictions
 ```
 
+4. Push the docker image to your registry. 
+
+```
+docker push jimmywhitaker/market-sentiment-classifier:0.6
+```
+
+5. Use the Seldon UI to deploy the model. 
+<!-- 
 4. [Error] Running the server not as root
 
 Run the server:
@@ -117,4 +125,4 @@ OSError: Can't load config for 'bert-base-uncased'. Make sure that:
 - 'bert-base-uncased' is a correct model identifier listed on 'https://huggingface.co/models'
 
 - or 'bert-base-uncased' is the correct path to a directory containing a config.json file
-```
+``` -->

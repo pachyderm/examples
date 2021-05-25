@@ -25,7 +25,7 @@
     ],
     "image": "jimmywhitaker/market_sentiment:dev0.25"
   },
-  "standby": true,
+  "standby": false,
   "resource_limits": {
     "gpu": {
       "type": "nvidia.com/gpu",

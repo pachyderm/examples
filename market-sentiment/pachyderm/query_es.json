@@ -1,0 +1,19 @@
+{
+    "pipeline": {
+      "name": "raw_data"
+    },
+    "transform": {
+      "image": "jimmywhitaker/market_sentiment:dev0.26",
+      "cmd": [ "/bin/bash" ],
+      "stdin": [
+        "python elastic_ingest.py --host <Seldon_HOST_IP> --index inference-log-seldon-dev-market-sentiment --output /pfs/out"
+      ]
+    },
+    "input": {
+      "cron": {
+        "name": "tick",
+        "spec": "@every 30s",
+        "overwrite": true
+      }  
+    }
+  }
