@@ -9,6 +9,30 @@ In this example, we show a market sentiment NLP implementation in Pachyderm. In 
 
 This example requires general knowledge of Pachyderm, which can be obtained through the Boston Housing Prices examples: [Intro](https://github.com/pachyderm/examples/blob/master/housing-prices) and [Intermediate](https://github.com/pachyderm/examples/blob/master/housing-prices-intermediate). 
 
+## The Data
+We will use the [Financial Phrase Bank Dataset](https://www.researchgate.net/profile/Pekka_Malo/publication/251231364_FinancialPhraseBank-v10) as a starting point for our model. This data will be combined with new, human labeled data from our production environment.  In this example, dataset for simplicity and transparency to show the interactions more than the techniques themselves.
+
+There are different versions of the Financial Phrase Bank Dataset, according to how many human labelers agreed with one another on the sentiment class of the text statement. For example, the `AllAgree` dataset is when all human labelers were in agreement with the sentiment of the sentence, while `50Agree` represents the dataset where more than 50% were in agreement with each other (more data, but potentially less accurate).
+
+## The Model
+FinBERT is a pre-trained NLP model that is adapted to analyze the sentiment of financial text. The original BERT-based language model was trained with a large corpus of Reuters and training code used in this example, [FinBERT](https://huggingface.co/ProsusAI/finbert). The base model is built on a large subset of  Reuters TRC2 dataset. We will be tuning this pre-trained language model (transfer learning) for sentiment analysis using the Financial Phrase Bank Dataset. Download this model into `models/finbertTRC2`.
+
+## Pre-requisites
+Before you can deploy this example you need to have the following components:
+
+1. A clone of this repository on your local computer. 
+2. The Financial Phrase Bank Dataset should be downloaded and placed in `data/FinancialPhraseBank/`. 
+3. A Pachyderm cluster - You can deploy a cluster on [Pachyderm Hub](https://hub.pachyderm.com/) or deploy locally as described [here](https://docs.pachyderm.com/latest/getting_started/).
+4. [Docker](https://docs.docker.com/get-docker/) installed (for Label Studio integration)
+
+Verify that your environment is accessible by running `pachctl version` which will show both the `pachctl` and `pachd` versions.
+```bash
+$ pachctl version
+COMPONENT           VERSION
+pachctl             1.13.0
+pachd               1.13.0
+```
+
 
 ## TLDR;
 ```bash
@@ -68,30 +92,6 @@ docker run -it -p 8080:8080 -v `pwd`/mydata:/label-studio/data jimmywhitaker/lab
 # Note: see the Label Studio integration to learn how to connect with the Pachyderm Cluster
 
 # As data is labeled, our model_train pipeline automatically retrains on the new data
-```
-
-## The Data
-We will use the [Financial Phrase Bank Dataset](https://www.researchgate.net/profile/Pekka_Malo/publication/251231364_FinancialPhraseBank-v10) as a starting point for our model. This data will be combined with new, human labeled data from our production environment.  In this example, dataset for simplicity and transparency to show the interactions more than the techniques themselves.
-
-There are different versions of the Financial Phrase Bank Dataset, according to how many human labelers agreed with one another on the sentiment class of the text statement. For example, the `AllAgree` dataset is when all human labelers were in agreement with the sentiment of the sentence, while `50Agree` represents the dataset where more than 50% were in agreement with each other (more data, but potentially less accurate).
-
-## The Model
-FinBERT is a pre-trained NLP model that is adapted to analyze the sentiment of financial text. The original BERT-based language model was trained with a large corpus of Reuters and training code used in this example, [FinBERT](https://huggingface.co/ProsusAI/finbert). The base model is built on a large subset of  Reuters TRC2 dataset. We will be tuning this pre-trained language model (transfer learning) for sentiment analysis using the Financial Phrase Bank Dataset. Download this model into `models/finbertTRC2`.
-
-## Pre-requisites
-Before you can deploy this example you need to have the following components:
-
-1. A clone of this repository on your local computer. 
-2. The Financial Phrase Bank Dataset should be downloaded and placed in `data/FinancialPhraseBank/`. 
-3. A Pachyderm cluster - You can deploy a cluster on [Pachyderm Hub](https://hub.pachyderm.com/) or deploy locally as described [here](https://docs.pachyderm.com/latest/getting_started/).
-4. [Docker](https://docs.docker.com/get-docker/) installed (for Label Studio integration)
-
-Verify that your environment is accessible by running `pachctl version` which will show both the `pachctl` and `pachd` versions.
-```bash
-$ pachctl version
-COMPONENT           VERSION
-pachctl             1.13.0
-pachd               1.13.0
 ```
 
 ## Labeling
