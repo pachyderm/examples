@@ -78,7 +78,7 @@ pachctl create branch financial_phrase_bank@v2 --head master
 pachctl diff file financial_phrase_bank@v2 financial_phrase_bank@v1
 
 # Inspect everything impacted by v1 of our dataset
-pachctl flush commit financial_phrase_bank@v1 --raw
+pachctl wait commit financial_phrase_bank@v1 --raw
 
 # Download the trained model
 pachctl get file -r train_model@master:/ -o trained_model/
