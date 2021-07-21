@@ -83,11 +83,7 @@ pachctl wait commit financial_phrase_bank@v1 --raw
 # Download the trained model
 pachctl get file -r train_model@master:/ -o trained_model/
 
-# Build Seldon deployment - see SeldonBuildProcess.md
-
-
-# Ingest predictions Seldon Elastic Search (must configure pipeline to point to Seldon cluster)
-pachctl create pipeline -f pachyderm/query_es.json
+# Deploy the model (See Seldon or Algorithmia examples)
 
 # Run Label Studio locally to labeling production data
 pachctl create pipeline -f pachyderm/query_es.json
@@ -121,14 +117,8 @@ The `visualization` pipeline provides exploration and understanding of our datas
 2. Histogram of frequent words in the training set. 
 3. Word cloud of the training data. 
 
-## Seldon Deployment
+## Deploy Model
+Once we have a tuned model trained, we can deploy it as a REST endpoint for inference. We currently support the following integrations to deploy this model: 
 
-If you want to run the current built version of this example, you can run the server locally with:
-```
-docker run --name "market-sentiment-classifier" -d --rm -p 9001:9000 jimmywhitaker/market-sentiment-classifier:0.6
-```
-or deploy this image with Seldon. 
-
-If you would like to build the deployment from scratch, follow the instructions presented in [Seldon Build Process](./SeldonBuildProcess.md).
-
-Many of the steps used in the creation of this deployment were found in the [Spacy Example](https://docs.seldon.io/projects/seldon-core/en/latest/examples/sklearn_spacy_text_classifier_example.html). For more information, see the [Seldon Documentation](https://docs.seldon.io).
+- [Seldon Deploy Integration](../seldon/)
+- [Algorithmia Integration](../algorithmia/)
