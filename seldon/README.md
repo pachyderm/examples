@@ -1,7 +1,7 @@
 # Seldon Deployment - Market Sentiment
 
 <p align="center">
-	<img src='images/seldon_integration.png' width='1000' title=''>
+	<img src='images/seldon_integration.png' width='600' title=''>
 </p>
 
 In this example, we show you how to deploy the model created in the [Market Sentiment Example](../market-sentiment) in Seldon Deploy.
