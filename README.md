@@ -12,6 +12,11 @@
 
 - [Label Studio Integration](./label-studio) - Incorporate data versioning into any labeling project with Label Studio and the Pachyderm S3 Gateway. 
 
+## Model Deployment
+
+- [Seldon Deploy Integration](./seldon) - Deploy the model created in the [Market Sentiment](./market-sentiment) example with [Seldon Deploy](https://www.seldon.io/tech/products/deploy/).
+- [Algorithmia Integration](./algorithmia) - Deploy the model created in the [Market Sentiment](./market-sentiment) example with [Algorithmia](https://algorithmia.com/).
+
 
 ## Other Integrations
 
