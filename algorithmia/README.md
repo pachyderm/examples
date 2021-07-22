@@ -26,7 +26,9 @@ In Pachyderm 1.x, you can use the token that is in your config file (`~/.pachyde
 The format for each of these should be:
 
 `PACH_HOST = hub-x0-xyz.clusters.pachyderm.io`
+
 `PACH_AUTH = <Pachyderm Authentication Token>`
+
 `PORT = 31400`
 
 <p align="center">
