@@ -20,7 +20,6 @@ setup:
 	$(PACHCTL) create pipeline -f pachyderm/visualizations.json
 
 	$(PACHCTL) create pipeline -f pachyderm/train_model.json
-	$(PACHCTL) create pipeline -f pachyderm/query_es.json
 
 delete:
 	$(PACHCTL) delete pipeline train_model

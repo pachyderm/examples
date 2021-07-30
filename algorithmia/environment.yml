@@ -1,0 +1,28 @@
+name: algorithmia
+channels:
+  - conda-forge
+  # Additional channels where packages can come from
+  # - pytorch
+dependencies:
+  - python=3.7.6
+  - pip
+  # Your conda dependencies
+  # - numpy>=1.16.0,<2.0
+  # - pytorch>=1.7.0,<1.8.0
+  - pip:
+    # Your pip dependencies
+    - algorithmia>=1.0.0,<2.0
+    - six>=1.12.0
+    - torch>=1.1.0 # you can use a different pytorch version, however please bear in mind that it may take longer to compile and load.
+    - python-pachyderm==6.2.0
+    - nltk==3.6.2
+    - scikit-plot==0.3.7
+    - seaborn==0.11.1
+    - wordcloud==1.8.0
+    - pytest==5.4.3
+    - transformers>=4.1.1
+    - pandas>=0.23.4
+    - tqdm==4.60.0
+    - joblib>=0.13.2
+    - scikit-learn>=0.21.2
+    - textblob==0.15.3
