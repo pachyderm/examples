@@ -108,7 +108,7 @@ pachctl put file csv_data@master:housing-simplified.csv -f data/housing-simplifi
 pachctl get file regression@master:/ --recursive --output .
 
 # Step 5: Update dataset with more data (this one has errors in it)
-pachctl put file csv_data@master:housing-simplified.csv -f data/housing-simplified-error.csv --overwrite
+pachctl put file csv_data@master:housing-simplified.csv -f data/housing-simplified-error.csv
 
 # Step 6: Inspect the data
 pachctl diff file csv_data@master csv_data@master^
@@ -117,7 +117,7 @@ pachctl diff file csv_data@master csv_data@master^
 pachctl create branch csv_data@master --head master^
 
 # Step 8: Add a new csv file (without the error)
-pachctl put file csv_data@master:housing-simplified.csv -f data/housing-simplified-2.csv --overwrite
+pachctl put file csv_data@master:housing-simplified.csv -f data/housing-simplified-2.csv
 
 ```
 ## Detailed Walkthrough
@@ -223,7 +223,7 @@ Now let's update our dataset with additional examples.
 Similar to the original housing prices example, we'll now add some new data. 
 
 ```bash
-$ pachctl put file csv_data@master:housing-simplified.csv -f data/housing-simplified-error.csv --overwrite
+$ pachctl put file csv_data@master:housing-simplified.csv -f data/housing-simplified-error.csv
 ```
 
 The new commit of data to the `csv_data` repository automatically kicks off a jobs on the downstream pipelines. 
@@ -269,5 +269,5 @@ If we inspect the data_analysis output now, we can see that we're using the prev
 Now we can update our dataset with additional data not containing the error, and our pipelines will automatically update again.
 
 ```bash
-pachctl put file csv_data@master:housing-simplified.csv -f data/housing-simplified-2.csv --overwrite
+pachctl put file csv_data@master:housing-simplified.csv -f data/housing-simplified-2.csv
 ```

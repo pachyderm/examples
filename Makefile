@@ -44,7 +44,7 @@ housing-prices-1:
 	$(PACHCTL) put file housing_data@master:housing-simplified.csv -f housing-prices/data/housing-simplified-1.csv
 
 housing-prices-2:
-	$(PACHCTL) put file housing_data@master:housing-simplified.csv -f housing-prices/data/housing-simplified-2.csv --overwrite
+	$(PACHCTL) put file housing_data@master:housing-simplified.csv -f housing-prices/data/housing-simplified-2.csv
 
 housing-prices-delete:
 	$(PACHCTL) delete pipeline regression
