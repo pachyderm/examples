@@ -1,6 +1,9 @@
 # Pachyderm Examples
 **Pachyderm Examples** is a curated list of examples that use Pachyderm to accomplish various tasks. 
 
+## Notebooks
+- [Intro to Pachyderm Tutorial](./Intro%20to%20Pachyderm%20Tutorial.ipynb) - A notebook introduction to Pachyderm, using the `pachctl` command line utility to illustrate the basics of Pachyderm data repositories and pipelines
+
 ## Machine Learning
 
 - [Breast Cancer Detection](./breast-cancer-detection) - A breast cancer detection system based on radiology scans scaled and visualized using Pachyderm.
