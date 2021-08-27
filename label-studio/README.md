@@ -74,8 +74,15 @@ Just change the protocol to `https` and port to `30600`. This will now point at 
 
 `https://hub-xx-xxxYYxxYY.clusters.pachyderm.io:30600`
 
-### Session Token
-The `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` in your configuration should **both** be set to your Pachyderm `session_token` located in your Pachyderm config (typically in `~/.pachyderm/config.json`). More info on Pachyderm's [S3 gateway](https://docs.pachyderm.com/latest/deploy-manage/manage/s3gateway/configure-s3client/). 
+### Authentication Token
+You can generate an authentication token by running the following command.
+
+```bash
+pachctl auth get-robot-token label-studio
+```
+
+
+The `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` in your configuration should **both** be set to the Pachyderm `auth_token` from the command above. More info on Pachyderm's [S3 gateway](https://docs.pachyderm.com/latest/deploy-manage/manage/s3gateway/configure-s3client/).
 
 #### Minikube configuration
 If you are running Pachyderm locally on minikube, you can get the `ENDPOINT_URL` for the Pachyderm S3 gateway by running the command:
@@ -102,7 +109,7 @@ docker run -it -p 8080:8080 -v `pwd`/mydata:/label-studio/data jimmywhitaker/lab
 # Navigate to http://localhost:8080/
 
 # Upload data
-pachctl put file raw_data@master:/test-example.json -f raw_data/test-example.json --split json --target-file-datums 1
+cd raw_data/; pachctl put file -r raw_data@master -f ./; cd ../
 
 # Sync the Source Cloud Storage to import the examples
 

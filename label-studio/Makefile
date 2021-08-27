@@ -9,7 +9,7 @@ label-studio-setup:
 	$(PACHCTL) create branch raw_data@master
 
 put-text-examples1:
-	$(PACHCTL) put file raw_data@master:/test-example.json -f raw_data/test-example.json --split json --target-file-datums 1
+	cd raw_data/; $(PACHCTL) put file -r raw_data@master -f ./; cd ../
 
 clean-project: delete label-studio-setup
 

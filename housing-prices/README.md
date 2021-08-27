@@ -132,7 +132,7 @@ pachctl put file housing_data@master:housing-simplified.csv -f data/housing-simp
 pachctl get file regression@master:/ --recursive --output .
 
 # Step 5: Update dataset with more data
-pachctl put file housing_data@master:housing-simplified.csv -f data/housing-simplified-2.csv --overwrite
+pachctl put file housing_data@master:housing-simplified.csv -f data/housing-simplified-2.csv
 
 # Step 6: Inspect the lineage of the pipeline
 pachctl list commit regression@master
@@ -239,7 +239,7 @@ Now let's update our dataset with additional examples.
 Here's where Pachyderm truly starts to shine. To update our dataset we can run the following command (note that we could also append new examples to the existing file, but in this example we're simply overwriting our previous file to one with more data):
 
 ```bash
-$ pachctl put file housing_data@master:housing-simplified.csv -f data/housing-simplified-2.csv --overwrite
+$ pachctl put file housing_data@master:housing-simplified.csv -f data/housing-simplified-2.csv
 ```
 
 The new commit of data to the `housing_data` repository automatically kicks off a job on the `regression` pipeline without us having to do anything. 
