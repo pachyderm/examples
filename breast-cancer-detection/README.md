@@ -126,8 +126,6 @@ We can specify the needed resources in our configuration with the following:
  }
 ```
 
-Note: The `standby` feature in the pipeline spec allows the nodes to be de-allocated whenever there is no job to be run, which can be useful if a cluster has limited GPU resources.
-
 The entire DAG can be created with the following commands:
 
 ```bash
