@@ -3,7 +3,7 @@
 This example creates a simple machine learning pipeline in Pachyderm to train a regression model on the Boston Housing Dataset to predict the value of homes in Boston. The pipeline itself is written in Python, though a Pachyderm pipeline could be written in any language.
 
 <p align="center">
-  <img width="200" height="300" src="images/regression_pipeline.png">
+  <img width="700" src="images/regression_pipeline.png">
 </p>
 
 The Pachyderm pipeline performs the following actions:

@@ -23,7 +23,6 @@
       }
     ]
   },
-  "standby": true,
   "transform": {
     "cmd": [
       "/bin/bash",

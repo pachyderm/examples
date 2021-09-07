@@ -3,7 +3,7 @@
 This example creates extends the original [Boston Housing Prices Example](../housing-prices/) to show a multi-pipeline DAG. Each pipeline executes a Python script,  versions the artifacts (datasets, models, etc.), and gives you a full lineage of the model. Once it is set up, you can change, add, or remove data and Pachyderm will automatically keep everything up to date, creating data splits, computing data analysis metrics, and training the model. 
 
 <p align="center">
-  <img width="250" src="images/pipeline.png">
+  <img width="600" src="images/pipeline.png">
 </p>
 
 The Pachyderm pipelines performs the following actions:
