@@ -5,9 +5,9 @@ KUBECTL := kubectl
 setup: 
 	$(PACHCTL) create repo language_model
 	$(PACHCTL) create repo financial_phrase_bank
-	cd models/finbertTRC2/; $(PACHCTL) put file -r language_model@master -f ./
+	cd models/finbertTCR2/; $(PACHCTL) put file -r language_model@master -f ./
 
-	cd data/FinancialPhraseBank/; $(PACHCTL) put file financial_phrase_bank@master -f Sentences_AllAgree.txt
+	cd data/FinancialPhraseBank-v1.0/; $(PACHCTL) put file financial_phrase_bank@master -f Sentences_50Agree.txt
 
 	$(PACHCTL) create repo labeled_data
 	$(PACHCTL) create branch labeled_data@master
