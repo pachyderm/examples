@@ -4,17 +4,19 @@
   },
   "description": "Create an FPB formatted dataset for labeled text data.",
   "input": {
-    "cross": [
+    "join": [
       {
           "pfs": {
               "glob": "/",
-              "repo": "labeled_data"
+              "repo": "labeled_data",
+              "outer_join": true
           }
       },
       {
           "pfs": {
               "glob": "/",
-              "repo": "financial_phrase_bank"
+              "repo": "financial_phrase_bank",
+              "outer_join": true
           }
       }
   ]

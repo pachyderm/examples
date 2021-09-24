@@ -15,13 +15,13 @@ We will use the [Financial Phrase Bank Dataset](https://www.researchgate.net/pro
 There are different versions of the Financial Phrase Bank Dataset, according to how many human labelers agreed with one another on the sentiment class of the text statement. For example, the `AllAgree` dataset is when all human labelers were in agreement with the sentiment of the sentence, while `50Agree` represents the dataset where more than 50% were in agreement with each other (more data, but potentially less accurate).
 
 ## The Model
-FinBERT is a pre-trained NLP model that is adapted to analyze the sentiment of financial text. The original BERT-based language model was trained with a large corpus of Reuters and training code used in this example, [FinBERT](https://huggingface.co/ProsusAI/finbert). The base model is built on a large subset of  Reuters TRC2 dataset. We will be tuning this pre-trained language model (transfer learning) for sentiment analysis using the Financial Phrase Bank Dataset. Download this model into `models/finbertTRC2`.
+FinBERT is a pre-trained NLP model that is adapted to analyze the sentiment of financial text. The original BERT-based language model was trained with a large corpus of Reuters and training code used in this example, [FinBERT](https://huggingface.co/ProsusAI/finbert). The base model is built on a large subset of  Reuters TRC2 dataset. We will be tuning this pre-trained language model (transfer learning) for sentiment analysis using the Financial Phrase Bank Dataset. Download this model into `models/finbertTCR2`.
 
 ## Pre-requisites
 Before you can deploy this example you need to have the following components:
 
 1. A clone of this repository on your local computer. 
-2. The Financial Phrase Bank Dataset should be [downloaded](https://www.researchgate.net/publication/251231364_FinancialPhraseBank-v10) and placed in `data/FinancialPhraseBank/`. 
+2. The Financial Phrase Bank Dataset should be [downloaded](https://www.researchgate.net/publication/251231364_FinancialPhraseBank-v10) and placed in `data/FinancialPhraseBank-v1.0/`. 
 3. A Pachyderm cluster - You can deploy a cluster on [Pachyderm Hub](https://hub.pachyderm.com/) or deploy locally as described [here](https://docs.pachyderm.com/latest/getting_started/).
 4. [Docker](https://docs.docker.com/get-docker/) installed (for Label Studio integration)
 
@@ -38,14 +38,14 @@ pachd               1.13.0
 ```bash
 # Upload the Financial Phrase Bank data
 pachctl create repo financial_phrase_bank
-pachctl put file financial_phrase_bank@master:/Sentences_50Agree.txt -f data/FinancialPhraseBank/Sentences_50Agree.txt
+pachctl put file financial_phrase_bank@master:/Sentences_50Agree.txt -f data/FinancialPhraseBank-v1.0/Sentences_50Agree.txt
 
 # Download the pre-trained BERT language model
 ./download_model.sh
 
 # Upload the language model to Pachyderm
 pachctl create repo language_model
-cd models/finbertTRC2/; pachctl put file -r language_model@master -f ./; cd ../../
+cd models/finbertTCR2/; pachctl put file -r language_model@master -f ./; cd ../../
 
 # Set up labeled_data repo for labeling production data later
 pachctl create repo labeled_data
@@ -68,7 +68,7 @@ pachctl create branch financial_phrase_bank@v1 --head master
 # Modify the version of Financial Phrase Bank dataset used
 pachctl start commit financial_phrase_bank@master
 pachctl delete file financial_phrase_bank@master:/Sentences_50Agree.txt
-pachctl put file financial_phrase_bank@master:/Sentences_AllAgree.txt -f data/FinancialPhraseBank/Sentences_AllAgree.txt
+pachctl put file financial_phrase_bank@master:/Sentences_AllAgree.txt -f data/FinancialPhraseBank-v1.0/Sentences_AllAgree.txt
 pachctl finish commit financial_phrase_bank@master
 
 # Version our new dataset
