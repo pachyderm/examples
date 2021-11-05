@@ -3,6 +3,7 @@
 
 ## Notebooks
 - [Intro to Pachyderm Tutorial](./Intro%20to%20Pachyderm%20Tutorial.ipynb) - A notebook introduction to Pachyderm, using the `pachctl` command line utility to illustrate the basics of Pachyderm data repositories and pipelines
+- [Mounting Data Repos in Notebooks](./Mounting%20Data%20Repos%20in%20Notebooks.ipynb) - A notebook showing how to mount Pachyderm data repositories into your Notebook environment. 
 
 ## Machine Learning
 
