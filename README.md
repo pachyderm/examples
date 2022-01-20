@@ -16,6 +16,7 @@
 
 - [Label Studio Integration](./label-studio) - Incorporate data versioning into any labeling project with Label Studio and the Pachyderm S3 Gateway. 
 - [Superb AI Integration](./superb-ai) - Version labeled image datasets created in Superb AI Suite using a cron pipeline.
+- [Toloka Integration](https://github.com/Toloka/toloka-pachyderm) - Uses Pachyderm to create crowdsourced annotation jobs for news headlines in Toloka, aggregate the labeled data, and train a model.
 
 ## Model Deployment
 
