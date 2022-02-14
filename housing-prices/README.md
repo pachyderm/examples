@@ -60,8 +60,8 @@ Verify that your environment is accessible by running `pachctl version` which wi
 ```bash
 $ pachctl version
 COMPONENT           VERSION
-pachctl             1.11.0
-pachd               1.11.0
+pachctl             2.1.0
+pachd               2.1.0
 ```
 
 ## Python Code
@@ -145,8 +145,8 @@ Once the Pachyderm cluster is running, create a data repository called `housing_
 ```bash
 $ pachctl create repo housing_data
 $ pachctl list repo
-NAME                CREATED             SIZE
-housing_data        3 seconds ago       0 B
+NAME         CREATED       SIZE (MASTER) DESCRIPTION 
+housing_data 2 seconds ago ≤ 0B                      
 ```
 
 ### Step 2: Create the regression pipeline
@@ -201,16 +201,17 @@ We can inspect that the data is in the repository by looking at the files in the
 
 ```bash
 $ pachctl list file housing_data@master
-NAME                    TYPE SIZE
-/housing-simplified.csv file 12.14KiB
+NAME                    TYPE SIZE     
+/housing-simplified.csv file 2.482KiB
 ```
 
 We can see that the pipeline is running by looking at the status of the job(s). 
 
 ```bash
 $ pachctl list job
-ID                               PIPELINE   STARTED        DURATION   RESTART PROGRESS  DL       UL      STATE
-299b4f36535e47e399e7df7fc6ee2f7f regression 23 seconds ago 18 seconds 0       1 + 0 / 1 2.482KiB 1002KiB success
+ID                               SUBJOBS PROGRESS CREATED            MODIFIED
+e7dd14d201a64edc8bf61beed6085ae0 1       ▇▇▇▇▇▇▇▇ 48 seconds ago     48 seconds ago     
+df117068124643299d46530859851a4b 1       ▇▇▇▇▇▇▇▇ About a minute ago About a minute ago 
 ```
 
 ### Step 4: Download files once the pipeline has finished
@@ -218,11 +219,11 @@ Once the pipeline is completed, we can download the files that were created.
 
 ```bash
 $ pachctl list file regression@master
-NAME               TYPE SIZE
-/housing-simplified_corr_matrix.png   file 18.66KiB
-/housing-simplified_cv_reg_output.png file 62.19KiB
-/housing-simplified_final_model.sav   file 1.007KiB
-/housing-simplified_pairplot.png      file 207.5KiB
+NAME                                  TYPE SIZE     
+/housing-simplified_corr_matrix.png   file 18.66KiB 
+/housing-simplified_cv_reg_output.png file 86.07KiB 
+/housing-simplified_model.sav         file 798.5KiB 
+/housing-simplified_pairplot.png      file 100.8KiB 
 
 $ pachctl get file regression@master:/ --recursive --output .
 ```
@@ -256,34 +257,25 @@ Note that because versions all of our input and output data automatically, we ca
 We can list out the commits to any repository by using the `list commit` command.
 
 ```bash
-$ pachctl list commit housing_data@master
-REPO         BRANCH COMMIT                           FINISHED       SIZE     PROGRESS DESCRIPTION
-housing_data master a186886de0bf430ebf6fce4d538d4db7 3 minutes ago  12.14KiB ▇▇▇▇▇▇▇▇
-housing_data master bbe5ce248aa44522a012f1967295ccdd 23 minutes ago 2.482KiB ▇▇▇▇▇▇▇▇
-
-$ pachctl list commit regression@master
-REPO       BRANCH COMMIT                           FINISHED       SIZE     PROGRESS DESCRIPTION
-regression master f59a6663073b4e81a2d2ab3b4b7c68fc 2 minutes ago  4.028MiB -
-regression master bc0ecea5a2cd43349a9db3e89933fb42 22 minutes ago 1001KiB  -
+$ pachctl list commit
+ID                               SUBCOMMITS PROGRESS CREATED            MODIFIED
+3037785cc56c4387bbb897f1887b4a68 4          ▇▇▇▇▇▇▇▇ 11 seconds ago     11 seconds ago     
+e7dd14d201a64edc8bf61beed6085ae0 4          ▇▇▇▇▇▇▇▇ About a minute ago About a minute ago 
+df117068124643299d46530859851a4b 4          ▇▇▇▇▇▇▇▇ 2 minutes ago      2 minutes ago      
 ```
 
-We can show exactly what version of the dataset and pipeline created the model by selecting the commmit ID and using the `inspect` command.
+We can show exactly what version of the dataset and pipeline created the model by selecting the commmit ID and using the `list` and `inspect` commands (as of Pachyderm 2.0, the version IDs above are shared across repos, in this example by the `housing_data` input repo and the `regression` output repo). For example:
 
 ```bash
-$ pachctl inspect commit regression@f59a6663073b4e81a2d2ab3b4b7c68fc
-Commit: regression@f59a6663073b4e81a2d2ab3b4b7c68fc
+$ pachctl list file housing_data@3037785cc56c4387bbb897f1887b4a68
+NAME                    TYPE SIZE     
+/housing-simplified.csv file 12.14KiB 
+
+$ pachctl inspect commit housing_data@3037785cc56c4387bbb897f1887b4a68
+Commit: housing_data@3037785cc56c4387bbb897f1887b4a68
 Original Branch: master
-Parent: bc0ecea5a2cd43349a9db3e89933fb42
-Started: 7 minutes ago
-Finished: 7 minutes ago
-Size: 4.028MiB
-Provenance:  __spec__@5b17c425a8d54026a6daaeaf8721707a (regression)  housing_data@a186886de0bf430ebf6fce4d538d4db7 (master)
-```
-
-Additionally, can also show the downstream provenance of a commit by using the `flush` command, showing us everything that was run and produced from a commit.
-
-```bash
-$ pachctl flush commit housing_data@bbe5ce248aa44522a012f1967295ccdd
-REPO       BRANCH COMMIT                           FINISHED       SIZE    PROGRESS DESCRIPTION
-regression master bc0ecea5a2cd43349a9db3e89933fb42 31 minutes ago 1001KiB -
+Parent: e7dd14d201a64edc8bf61beed6085ae0
+Started: 2 minutes ago
+Finished: 2 minutes ago
+Size: 12.14KiB
 ```
