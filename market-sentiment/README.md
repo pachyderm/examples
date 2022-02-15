@@ -29,8 +29,8 @@ Verify that your environment is accessible by running `pachctl version` which wi
 ```bash
 $ pachctl version
 COMPONENT           VERSION
-pachctl             1.13.0
-pachd               1.13.0
+pachctl             2.1.0
+pachd               2.1.0
 ```
 
 
