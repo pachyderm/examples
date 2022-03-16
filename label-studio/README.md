@@ -1,26 +1,22 @@
 # Label Studio with Pachyderm
 
-<p align="center">
-	<img src='images/ls_p_integration.png' width='800' title='Pachyderm'>
-</p>
-
 [Label Studio](https://labelstud.io/) supports many different types of data labeling tasks, while [Pachyderm](https://www.pachyderm.com/) allows you to incorporate data versioning and data-driven pipelines, enabling the management of the [data loop](https://jimmymwhitaker.medium.com/completing-the-machine-learning-loop-e03c784eaab4). This integration connects a Pachyderm versioned data backend with Label Studio to support versioning datasets and tracking the data lineage of pipelines built off the versioned datasets.
 
-## How it works
+<p align="center">
+	<img src='images/ls_source.png' width='600' title='Pachyderm'>
+</p>
 
-Label Studio can utilize an S3 backend, reading data from an S3 bucket and writing labels to an output S3 location. Pachyderm has an S3 compliant gateway that allows reading data from its file system and writing data to its filesystem (organizing it with commits that can start pipelines).
 
-We'll create a text labeling example by:
+This version of the Label Studio integration moves us one step closer to having an integrated versioning experience in a labeling environment. 
 
-1. Start a Label Studio instance 
-2. Configure Pachyderm as Label Studio's S3 data backend
-3. Push data to Pachyderm 
-4. Import the data in Label Studio
-5. Label our data in Label Studio
-6. Data is automatically versioned in Pachyderm
+We’ve added our own "Cloud Storage Backend" to a [forked version of Label Studio](https://github.com/pachyderm/label-studio/tree/pachyderm). Under the hood, it is using `pachctl mount` to mount the source and target storage. Note: There can be some quirks to this, so our approach is considered very developmental in its current state. 
+
+If you are looking for the previous version of this extension using the S3 gateway, see [the version released here](https://github.com/pachyderm/examples/tree/v2.0/label-studio).
+
+Once Label Studio is up and running, do the following to perform a basic example:
 
 ## Getting Started
-This example uses a Pachyderm deployment for scaling and management. We can deploy a cluster on [Pachyderm Hub](https://hub.pachyderm.com) for free or deploy locally as described here: [Pachyderm Getting Started](https://docs.pachyderm.com/latest/getting_started/)
+This example uses a Pachyderm deployment for scaling and management. We can deploy a cluster as described here: [Pachyderm Getting Started](https://docs.pachyderm.com/latest/getting_started/)
 
 Once the Pachyderm cluster is up, we can check the setup by running: 
 1. `kubectl get all` to ensure all the pods are up and ready. 
@@ -29,125 +25,92 @@ Once the Pachyderm cluster is up, we can check the setup by running:
 ## Running Label Studio
 In this example, we will run label studio locally, using Docker. 
 
+This one-liner will map your local configuration into the container to connect to Pachyderm. If you are performing another form of authentication, then you may need to use the entrypoint `/bin/bash` to configure the container before running `/usr/local/bin/label-studio`.
+
 ```bash
-docker run -it -p 8080:8080 -v `pwd`/mydata:/label-studio/data jimmywhitaker/labelstudio:v1.0.1
+$ docker run -it --rm -p8080:8080 -v ~/.pachyderm/config.json:/root/.pachyderm/config.json --device=/dev/fuse --cap-add SYS_ADMIN --name label-studio --entrypoint=/usr/local/bin/label-studio jimmywhitaker/label-studio:pach2.1-ls1.4
 ```
 
 Once running, we can access label studio by visiting: [http://localhost:8080/](http://localhost:8080/).
 
-Once we create a user, new project, and select our labeling task, we can configure the Cloud Storage settings to point to Pachyderm, using the AWS S3 Storage Type.
+Once we create a user, new project , and select our labeling task (in our case we'll use the "Object Detection with Bounding Boxes" template), we can configure the Cloud Storage settings to point to Pachyderm, using the Pachyderm Storage Type.
 
-### Configuring Source and Target Storage
+## Configuring Source and Target Storage
 Selecting Cloud Storage from the Label Studio settings will allow us to add Source and Target Storage sync our data with. 
 
-You will need to configure two parameters in order to pull data from Pachyderm into the Label Studio environment. 
-
-First, pachyderm data repositories for source and target storage should be created. We can do that by running: 
+First, let's create two data repositories in Pachyderm for source and target storage. The source will be where we pull our unlabeled data from, and our target storage is where we'll write our labels.
 
 ```bash
-pachctl create repo raw_data
-pachctl create repo labeled_data
-pachctl create branch labeled_data@master
-pachctl create branch raw_data@master
+pachctl create repo images
+pachctl put file images@master:liberty.png -f http://imgur.com/46Q8nDz.png
+pachctl pachctl create repo labels
 ```
 
 Next, we can add Pachyderm as our source and target storages by configuring them in the Label Studio Settings as shown below: 
 
+### Source Storage
+
 <p align="center">
-	<img src='images/storage_config.png' width='800' title='Pachyderm'>
+	<img src='images/ls_source.png' width='600' title='Pachyderm'>
 </p>
 
-The bucket name is determined by the data repository and branch we are referencing. Here, for example, `raw_data@master` can be referenced with the S3 Gateway as the bucket `master.raw_data`. 
+First, we will select Pachyderm as our storage type. The "Storage Title" will be the mounted directory name in the Label Studio container. In general, you shouldn't have to worry about this very much, it's mainly used as a way to keep track of things, should you have many source repos. The Repository Name will be the name and branch of our repo where we should pull our data from. Here, for example, `images@master`. 
 
-We will not use pre-signed URLs for Pachyderm storage. For the NLP example, we will also unselect `treat every bucket as a source file` (image tasks should enable this feature).
-
-We can check the connection to make sure it is correct by pressing the "Check Connection" button and then once it is saved, we can sync our data from the source storage.
+We can check the connection to make sure it is correct by pressing the "Check Connection" button and then once it is saved, we can sync our data from the source storage. When sync all of the data from that branch of the repo is downloaded into the Label Studio container. 
 
 Note: This is a one time operation, so we must press this button whenever we want to sync new examples. 
 
-### Endpoint URL
-If you are running your cluster on Pachyderm Hub, you can find out your `ENDPOINT_URL` by clicking the `Connect` button. You should see an address that looks something like: 
+## Target Storage
+Configuring our target storage is roughly the same as our source storage. We configure the title and repo name.
 
-`grpcs://hub-xx-xxxYYxxYY.clusters.pachyderm.io:31400`
+<p align="center">
+	<img src='images/ls_target.png' width='600' title='Pachyderm'>
+</p>
 
-Just change the protocol to `https` and port to `30600`. This will now point at the S3 gateway. 
+However, with Target Storage, the "sync storage" button has two roles:
 
-`https://hub-xx-xxxYYxxYY.clusters.pachyderm.io:30600`
+1. When it is pressed the first time, the repository is mounted, but no data is transferred. This is necessary to have a place to accumulate our annotations. (Think of it as a staging area for an upcoming commit.)
+2. The second time it is pressed, it commits all files that have been labeled to the Pachyderm repository (in our case `labels@master`).
 
-### Authentication Token
-You can generate an authentication token by running the following command.
+Note: In the image we only show `labels` but under the hood the code defaults to `master` if no other branch if provided. This is also the case with Source Storage. 
+
+This functionality is very beneficial because it means that we can have a single commit that contains all of our annotations instead of a commit per annotation, improving the speed of our data labeling. 
+
+Once configured, our storage should look like this:
+
+<p align="center">
+	<img src='images/ls_both.png' width='600' title='Pachyderm'>
+</p>
+
+And when we move to our labeling environment, we see our example image present.
+
+<p align="center">
+	<img src='images/ls_annotation.png' width='600' title='Pachyderm'>
+</p>
+
+## Commit our Annotations to Pachyderm
+After we have annotated our image data, we can commit all of our annotations to Pachyderm. 
+
+To do this we navigate back to Cloud Storage in our settings, and press the Sync Storage button on our Target Storage (`labels@master`). Under the hood, this will unmount the repo (committing the data) and then remount it again with the newest version of the branch. After the data is committed, it should look like the following:
+
+<p align="center">
+	<img src='images/ls_synced.png' width='600' title='Pachyderm'>
+</p>
+
+In Pachyderm, we can verify that our data was committed by running: 
+```bash
+$ pachctl list file labels@master
+NAME    TYPE SIZE
+/1.json file 1.228KiB
+```
+
+
+## Building the LS Docker image from scratch
+If you want to build the Label Studio docker image from scratch with the Pachyderm cloud storage backend, you can run the following: 
 
 ```bash
-pachctl auth get-robot-token label-studio
+$ git clone https://github.com/pachyderm/label-studio.git
+$ cd label-studio
+$ git checkout -b pachyderm
+$ docker build -t jimmywhitaker/label-studio:pach2.1-ls1.4 .
 ```
-
-
-The `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` in your configuration should **both** be set to the Pachyderm `auth_token` from the command above. More info on Pachyderm's [S3 gateway](https://docs.pachyderm.com/latest/deploy-manage/manage/s3gateway/configure-s3client/).
-
-#### Minikube configuration
-If you are running Pachyderm locally on minikube, you can get the `ENDPOINT_URL` for the Pachyderm S3 gateway by running the command:
-
-```
-$ minikube ip
-192.168.64.8
-```
-
-If you are running Pachyderm with authentication, then you can follow the same steps as the Hub setup to set the `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`. If not running with authentication, you can pass any non-empty string to `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` in your S3 Source/Target Configuration.
-
-## Running the Text Labeling Example
-
-``` bash
-# Pachyderm Setup
-pachctl create repo raw_data
-pachctl create repo labeled_data
-pachctl create branch labeled_data@master
-pachctl create branch raw_data@master
-
-# Start a local instance of Label Studio (needs the .env for the Pach S3 gateway)
-docker run -it -p 8080:8080 -v `pwd`/mydata:/label-studio/data jimmywhitaker/labelstudio:v1.0.1
-
-# Navigate to http://localhost:8080/
-
-# Upload data
-cd raw_data/; pachctl put file -r raw_data@master -f ./; cd ../
-
-# Sync the Source Cloud Storage to import the examples
-
-# Label data (2 examples) in the UI
-
-# Version your dataset (v1)
-pachctl list branch labeled_data
-pachctl create branch labeled_data@v1 --head master
-pachctl list branch labeled_data
-
-# Label more data in the UI
-
-# Version your dataset (v2)
-pachctl list branch labeled_data
-pachctl create branch labeled_data@v2 --head master
-
-# Download dataset for v1 locally
-pachctl get file -r labeled_data@v1:/ -o labeled_data/
-
-```
-
-### Additional Notes 
-___
-This project was originally [here](https://github.com/JimmyWhitaker/label-studio-pach/) before being migrated. 
-____
-
-If you get the following error, 
-
-```
-botocore.exceptions.ClientError: An error occurred (403) when calling the HeadBucket operation: Forbidden
-```
-
-this is typically due to an expired session token. Reconnect to the cluster and update your source/target configuration with the new token. 
-
-___
-
-When a source file is updated after labeled, it is not re-loaded.
-
-* When raw data is changed after it is imported, the task doesn't update.
-
-* Open question on desirable behavior: If a raw file is removed or changed, then labels associated with that file should be removed. Since it's a single file per example, a changed file should be the deleting of one and addition of another.
