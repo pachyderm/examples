@@ -3,7 +3,7 @@
 
 ## Notebooks
 - [Intro to Pachyderm Tutorial](./Intro%20to%20Pachyderm%20Tutorial.ipynb) - A notebook introduction to Pachyderm, using the `pachctl` command line utility to illustrate the basics of Pachyderm data repositories and pipelines
-- [Mounting Data Repos in Notebooks](./Mounting%20Data%20Repos%20in%20Notebooks.ipynb) - A notebook showing how to mount Pachyderm data repositories into your Notebook environment. 
+- [JupyterLab Pachyderm Mount Extension](./Mount%20Extension%20Demo.ipynb) - A notebook showing how to use the [JupyterLab Pachyderm Mount Extension](https://docs.pachyderm.com/latest/how-tos/jupyterlab-extension/) to mount data repositories into your Notebook environment. 
 - [Jsonnet Pipeline Specs](./jsonnet/Jsonnet%20Pipeline%20Specs.ipynb) - A notebook introducing and showing how use [Jsonnet Pipeline Specs](https://docs.pachyderm.com/latest/how-tos/pipeline-operations/jsonnet-pipeline-specs/) to templatize common pipelines. 
 
 ## Machine Learning
