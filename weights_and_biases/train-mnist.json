@@ -1,0 +1,29 @@
+{
+  "pipeline": {
+    "name": "train-mnist"
+  },
+  "description": "Train MNIST example logging to W&B.",
+  "input": {
+    "pfs": {
+      "repo": "mnist",
+      "branch": "master",
+      "glob": "/"
+    }
+  },
+  "transform": {
+    "cmd": [
+      "/bin/sh"
+    ],
+    "stdin": [
+      "python mnist.py --data-location /pfs/mnist/ --wandb-project example-mnist-wandb"
+    ],
+    "image": "jimmywhitaker/wandb_mnist:0.1",
+    "secrets": [
+      {
+        "name": "wandb",
+        "env_var": "WANDB_API_KEY",
+        "key": "key"
+      }
+    ]
+  }
+}
