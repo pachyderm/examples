@@ -1,16 +1,17 @@
 # Pachyderm Examples
 **Pachyderm Examples** is a curated list of examples that use Pachyderm to accomplish various tasks. 
 
-## Notebooks
+## Getting Started
 - [Intro to Pachyderm Tutorial](./Intro%20to%20Pachyderm%20Tutorial.ipynb) - A notebook introduction to Pachyderm, using the `pachctl` command line utility to illustrate the basics of Pachyderm data repositories and pipelines
-- [Mounting Data Repos in Notebooks](./Mounting%20Data%20Repos%20in%20Notebooks.ipynb) - A notebook showing how to mount Pachyderm data repositories into your Notebook environment. 
+- [Boston Housing Prices](./housing-prices) - A machine learning pipeline to train a regression model on the Boston Housing Dataset to predict the value of homes.
+
+## Notebooks
+- [JupyterLab Pachyderm Mount Extension](./Mount%20Extension%20Demo.ipynb) - A notebook showing how to use the [JupyterLab Pachyderm Mount Extension](https://docs.pachyderm.com/latest/how-tos/jupyterlab-extension/) to mount Pachyderm data repositories into your Notebook environment. 
 - [Jsonnet Pipeline Specs](./jsonnet/Jsonnet%20Pipeline%20Specs.ipynb) - A notebook introducing and showing how use [Jsonnet Pipeline Specs](https://docs.pachyderm.com/latest/how-tos/pipeline-operations/jsonnet-pipeline-specs/) to templatize common pipelines. 
 
 ## Machine Learning
-
-- [Breast Cancer Detection](./breast-cancer-detection) - A breast cancer detection system based on radiology scans scaled and visualized using Pachyderm.
-- [Boston Housing Prices](./housing-prices) - A machine learning pipeline to train a regression model on the Boston Housing Dataset to predict the value of homes.
 - [Boston Housing Prices (Intermediate)](./housing-prices-intermediate) - Extends the original Boston Housing Prices example to show a multi-pipeline DAG and data rollbacks. 
+- [Breast Cancer Detection](./breast-cancer-detection) - A breast cancer detection system based on radiology scans scaled and visualized using Pachyderm.
 - [Market Sentiment](./market-sentiment) - Train and deploy a fully automated financial market sentiment BERT model. As data is manually labeled, the model will automatically retrain and deploy. 
 - [Apache Spark - MLflow Integration](https://github.com/winderai/pachyderm-mlflow-spark) - End-to-end example demostrating the full ML training process of a fraud detection model with Spark, MLlib, MLflow, and Pachyderm.
 
