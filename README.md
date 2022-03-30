@@ -12,6 +12,7 @@
 - [Boston Housing Prices](./housing-prices) - A machine learning pipeline to train a regression model on the Boston Housing Dataset to predict the value of homes.
 - [Boston Housing Prices (Intermediate)](./housing-prices-intermediate) - Extends the original Boston Housing Prices example to show a multi-pipeline DAG and data rollbacks. 
 - [Market Sentiment](./market-sentiment) - Train and deploy a fully automated financial market sentiment BERT model. As data is manually labeled, the model will automatically retrain and deploy. 
+- [Apache Spark - MLflow Integration](https://github.com/winderai/pachyderm-mlflow-spark) - End-to-end example demostrating the full ML training process of a fraud detection model with Spark, MLlib, MLflow, and Pachyderm.
 
 ## Data Labeling
 
@@ -20,11 +21,11 @@
 - [Toloka Integration](https://github.com/Toloka/toloka-pachyderm) - Uses Pachyderm to create crowdsourced annotation jobs for news headlines in Toloka, aggregate the labeled data, and train a model.
 
 ## Model Deployment
-
-- [Seldon Deploy Integration](./seldon) - Deploy the model created in the [Market Sentiment](./market-sentiment) example with [Seldon Deploy](https://www.seldon.io/tech/products/deploy/).
+- [Pachyderm - Seldon](https://github.com/winderai/pachyderm-seldon) - Community example showing monitoring and provenance for machine learning models with Pachyderm and Seldon.
+- [Seldon (Market Sentiment)](./seldon) - Deploy the model created in the [Market Sentiment](./market-sentiment) example with [Seldon Deploy](https://www.seldon.io/tech/products/deploy/).
 - [Algorithmia Integration](./algorithmia) - Deploy the model created in the [Market Sentiment](./market-sentiment) example with [Algorithmia](https://algorithmia.com/).
 
 
-## Other Integrations
-
+## Model Training Monitoring
+- [Weights and Biases](./weights_and_biases) - Log pipelines running in Pachyderm to Weights and Biases.
 - [ClearML Integration](https://github.com/JimmyWhitaker/pach_clearml) - Log Pachyderm experiments to ClearML's experiment montioring platform, using Pachyderm Secrets. 
