@@ -22,7 +22,7 @@ Before you can deploy this example you need to have the following components:
 
 1. A clone of this repository on your local computer. 
 2. The Financial Phrase Bank Dataset should be [downloaded](https://www.researchgate.net/publication/251231364_FinancialPhraseBank-v10) and placed in `data/FinancialPhraseBank-v1.0/`. 
-3. A Pachyderm cluster - You can deploy a cluster on [Pachyderm Hub](https://hub.pachyderm.com/) or deploy locally as described [here](https://docs.pachyderm.com/latest/getting_started/).
+3. A Pachyderm cluster - You can deploy a cluster as described [here](https://docs.pachyderm.com/latest/getting_started/).
 4. [Docker](https://docs.docker.com/get-docker/) installed (for Label Studio integration)
 
 Verify that your environment is accessible by running `pachctl version` which will show both the `pachctl` and `pachd` versions.
