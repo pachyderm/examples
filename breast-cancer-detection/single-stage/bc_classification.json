@@ -23,7 +23,7 @@
     "cmd": [
       "/bin/bash", "run.sh", "gpu"
     ],
-    "image": "pachyderm/breast_cancer_classifier:1.11.4"
+    "image": "pachyderm/breast_cancer_classifier:1.11.6"
   },
   "resource_limits": {
     "gpu": {
