@@ -17,6 +17,7 @@ from torchvision.datasets import MNIST
 import pytorch_lightning as pl
 from pytorch_lightning.loggers import WandbLogger
 
+
 class MNISTModel(pl.LightningModule):
     def __init__(self, data_location):
         super().__init__()
@@ -26,8 +27,18 @@ class MNISTModel(pl.LightningModule):
 
     def prepare_data(self):
         # download MNIST data only once
-        MNIST(root=self.data_location, train=True, download=True, transform=transforms.ToTensor())
-        MNIST(root=self.data_location, train=False, download=True, transform=transforms.ToTensor())
+        MNIST(
+            root=self.data_location,
+            train=True,
+            download=True,
+            transform=transforms.ToTensor(),
+        )
+        MNIST(
+            root=self.data_location,
+            train=False,
+            download=True,
+            transform=transforms.ToTensor(),
+        )
 
     def forward(self, x):
         # called with self(x)
@@ -68,11 +79,14 @@ class MNISTModel(pl.LightningModule):
                 root=self.data_location,
                 train=True,
                 transform=transforms.Compose(
-                        [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]
+                    [
+                        transforms.ToTensor(),
+                        transforms.Normalize((0.1307,), (0.3081,)),
+                    ]
                 ),
-            ), 
+            ),
             shuffle=True,
-            batch_size=32
+            batch_size=32,
         )
 
     def val_dataloader(self):
@@ -82,11 +96,14 @@ class MNISTModel(pl.LightningModule):
                 root=self.data_location,
                 train=True,
                 transform=transforms.Compose(
-                        [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]
+                    [
+                        transforms.ToTensor(),
+                        transforms.Normalize((0.1307,), (0.3081,)),
+                    ]
                 ),
-            ), 
+            ),
             shuffle=True,
-            batch_size=32
+            batch_size=32,
         )
 
     def test_dataloader(self):
@@ -96,32 +113,45 @@ class MNISTModel(pl.LightningModule):
                 root=self.data_location,
                 train=False,
                 transform=transforms.Compose(
-                    [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]
+                    [
+                        transforms.ToTensor(),
+                        transforms.Normalize((0.1307,), (0.3081,)),
+                    ]
                 ),
-            ), 
+            ),
             shuffle=True,
-            batch_size=32
+            batch_size=32,
         )
-    
+
 
 def main():
-    pipeline_name = str(os.getenv('PPS_PIPELINE_NAME', 'None'))
+    pipeline_name = str(os.getenv("PPS_PIPELINE_NAME", "None"))
     print("Pachyderm pipeline: ", pipeline_name)
 
     # Training settings
-    parser = argparse.ArgumentParser(description='PyTorch Lightning MNIST Example')
-    parser.add_argument('--data-location', type=str, 
-                        default='/pfs/mnist/',
-                        help='For loading the dataset')
-    parser.add_argument('--wandb-project', type=str, 
-                        default='example-mnist-wandb',
-                        help='For loading the dataset')
+    parser = argparse.ArgumentParser(
+        description="PyTorch Lightning MNIST Example"
+    )
+    parser.add_argument(
+        "--data-location",
+        type=str,
+        default="/pfs/mnist/",
+        help="For loading the dataset",
+    )
+    parser.add_argument(
+        "--wandb-project",
+        type=str,
+        default="example-mnist-wandb",
+        help="For loading the dataset",
+    )
 
     args = parser.parse_args()
-    
+
     # Connecting W&B with the current process,
     # From here on everything is logged automatically
-    wandb_logger = WandbLogger(project=args.wandb_project)
+    wandb_logger = WandbLogger(
+        project=args.wandb_project, name=str(os.getenv("PACH_JOB_ID", "None"))
+    )
     mnist_model = MNISTModel(args.data_location)
     trainer = pl.Trainer(gpus=0, max_epochs=5, logger=wandb_logger)
     trainer.fit(mnist_model)
