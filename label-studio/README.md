@@ -28,7 +28,7 @@ In this example, we will run label studio locally, using Docker.
 This one-liner will map your local configuration into the container to connect to Pachyderm. If you are performing another form of authentication, then you may need to use the entrypoint `/bin/bash` to configure the container before running `/usr/local/bin/label-studio`.
 
 ```bash
-$ docker run -it --rm -p8080:8080 -v ~/.pachyderm/config.json:/root/.pachyderm/config.json --device=/dev/fuse --cap-add SYS_ADMIN --name label-studio --entrypoint=/usr/local/bin/label-studio jimmywhitaker/label-studio:pach2.1-ls1.4
+$ docker run -it --rm -p8080:8080 -v ~/.pachyderm/config.json:/root/.pachyderm/config.json --device=/dev/fuse --cap-add SYS_ADMIN --name label-studio --entrypoint=/usr/local/bin/label-studio jimmywhitaker/label-studio:pach2.2-ls1.4
 ```
 
 Once running, we can access label studio by visiting: [http://localhost:8080/](http://localhost:8080/).
@@ -43,7 +43,7 @@ First, let's create two data repositories in Pachyderm for source and target sto
 ```bash
 pachctl create repo images
 pachctl put file images@master:liberty.png -f http://imgur.com/46Q8nDz.png
-pachctl pachctl create repo labels
+pachctl create repo labels
 ```
 
 Next, we can add Pachyderm as our source and target storages by configuring them in the Label Studio Settings as shown below: 
@@ -112,5 +112,5 @@ If you want to build the Label Studio docker image from scratch with the Pachyde
 $ git clone https://github.com/pachyderm/label-studio.git
 $ cd label-studio
 $ git checkout -b pachyderm
-$ docker build -t jimmywhitaker/label-studio:pach2.1-ls1.4 .
+$ docker build -t jimmywhitaker/label-studio:pach2.2-ls1.4 .
 ```
