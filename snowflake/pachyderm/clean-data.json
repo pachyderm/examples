@@ -1,0 +1,40 @@
+{
+    "pipeline": {
+      "name": "clean-data"
+    },
+    "description": "Clean and curate dataset.",
+    "input": {
+      "cross": [
+        {
+          "pfs": {
+            "repo": "MEMBERSHIPS",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "TRANSACTIONS",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "USER_LOGS",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "TRAIN",
+            "glob": "/"
+          }
+        }
+      ]
+    },
+    "transform": {
+        "cmd": [
+          "python","/workdir/data-cleaning.py","--train","/pfs/TRAIN/0000","--memberships","/pfs/MEMBERSHIPS/0000","--transactions","/pfs/TRANSACTIONS/0000","--user_logs","/pfs/USER_LOGS/0000","--output","/pfs/out/"
+        ],
+      "image": "jimmywhitaker/py_wsdm:dev0.04"
+    }
+  }
