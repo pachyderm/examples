@@ -1,17 +1,17 @@
 {
     "pipeline": {
-      "name": "clean-data"
+      "name": "clean-data-pred"
     },
     "description": "Clean and curate dataset.",
     "input": {
       "pfs": {
-        "repo": "TRAIN_DATA",
+        "repo": "PRED_DATA",
         "glob": "/"
       }
     },
     "transform": {
         "cmd": [
-          "python","/workdir/data-cleaning.py","--data","/pfs/TRAIN_DATA/0000","--output","/pfs/out/"
+          "python","/workdir/data-cleaning.py","--data","/pfs/PRED_DATA/0000","--inference","--output","/pfs/out/"
         ],
       "image": "jimmywhitaker/py_wsdm:dev0.12"
     }

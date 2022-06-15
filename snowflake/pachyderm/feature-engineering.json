@@ -11,8 +11,8 @@
         },
     "transform": {
         "cmd": [
-          "python","/workdir/feature-engineering.py","--train","/pfs/clean-data/training_data_model.csv", "--output","/pfs/out/"
+          "python","/workdir/feature-engineering.py","--data","/pfs/clean-data/training_data_model.csv", "--output","/pfs/out/"
         ],
-      "image": "jimmywhitaker/py_wsdm:dev0.07"
+      "image": "jimmywhitaker/py_wsdm:dev0.12"
     }
   }

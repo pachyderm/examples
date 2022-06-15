@@ -1,0 +1,18 @@
+{
+    "pipeline": {
+      "name": "feature-engineering-pred"
+    },
+    "description": "Generate features for cleaned data.",
+    "input": {
+          "pfs": {
+            "repo": "clean-data-pred",
+            "glob": "/"
+          }
+        },
+    "transform": {
+        "cmd": [
+          "python","/workdir/feature-engineering.py","--data","/pfs/clean-data/training_data_model.csv", "--inference", "--output","/pfs/out/"
+        ],
+      "image": "jimmywhitaker/py_wsdm:dev0.12"
+    }
+  }

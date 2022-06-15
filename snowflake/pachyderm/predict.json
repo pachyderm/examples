@@ -1,0 +1,41 @@
+{
+    "pipeline": {
+      "name": "predict"
+    },
+    "description": "Predict churn probability for KKBox customers.",
+    "input": {
+      "cross": [
+        {
+          "pfs": {
+            "repo": "feature-engineering-pred",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "model",
+            "glob": "/"
+          }
+        }
+      ]
+    },
+    "transform": {
+      "cmd": [
+        "python", "predict.py", "--model", "/pfs/model/logistic_regression.sav", "--features", "/pfs/feature-engineering-pred/inference_features.csv", "--output", "/pfs/out/predictions/"
+      ],
+      "image": "jimmywhitaker/py_wsdm:dev0.12"
+    },
+    "egress": {
+        "sql_database": {
+            "url": "snowflake://jimmy@of28881.us-central1.gcp/CHURN_EXAMPLE/PUBLIC?warehouse=COMPUTE_WH",
+            "file_format": {
+                "type": "CSV"
+            },
+            "columns": ["msno", "churn_prediction"],
+            "secret": {
+                "name": "snowflakesecret",
+                "key": "PACHYDERM_SQL_PASSWORD"
+            }
+        }
+    }
+  }
