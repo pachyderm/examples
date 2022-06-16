@@ -30,12 +30,13 @@ def discount_checker(df: pd.DataFrame, newCol: str, checkCol: str):
     df[newCol] = df[checkCol].apply(lambda x: 1 if x > 0 else 0)
 
 
-def divide_col_values(df: pd.DataFrame, newCol: str, col1: str, col2: str):
+def divide_col_values(df:pd.DataFrame, newCol:str, col1:str, col2:str):
     """
     Creates a new col which is the quotient of a divident(col1)
     and a divisor(col2)
     """
     df[newCol] = df[col1] / df[col2]
+    df[newCol] = df[newCol].replace([-np.inf, np.inf, np.nan], 0)
 
 
 def int_to_date_conversion(df: pd.DataFrame, cols: list):
@@ -109,7 +110,10 @@ def main():
     args = parser.parse_args()
     
     if args.inference: 
-        aggregrations.remove("is_churn")
+        try: 
+            del aggregrations["is_churn"]
+        except: 
+            pass
     
     # reading data csv
     data_features = pd.read_csv(args.data)
@@ -173,9 +177,9 @@ def main():
     grouped_features = aggregator(data_features, "msno", aggregrations)
     
     if args.inference: 
-        grouped_features.to_csv(path.join(args.output, "inference_features.csv"))
+        grouped_features.to_csv(path.join(args.output, "inference_features.csv"), index=False)
     else:
-        grouped_features.to_csv(path.join(args.output, "training_data_features.csv"))
+        grouped_features.to_csv(path.join(args.output, "training_data_features.csv"), index=False)
 
 
 if __name__ == "__main__":

@@ -14,11 +14,11 @@ parser.add_argument(
 
 
 def load_model(filename:str):
-    model = pickle.load(open(filename), 'rb')
+    model = pickle.load(open(filename, 'rb'))
     return model
 
 def make_predictions(model, data:pd.DataFrame, predCol:str):
-    data[predCol] = model.predict(data)
+    data[predCol] = model.predict(data.drop(columns='msno'))
     return data
 
 
@@ -32,14 +32,14 @@ def main():
     # load features csv
     feats = pd.read_csv(args.features)
     
-    predictions = make_predictions(logistic_regression, feats.drop(columns='msno'), 'churn_prediction')
+    predictions = make_predictions(logistic_regression, feats, 'churn_prediction')
     
     
     predictions = predictions[['msno', 'churn_prediction']]
     
-    os.mkdirs(args.output, exists_ok=True)
+    os.makedirs(args.output, exist_ok=True)
     
-    predictions.to_csv(path.join(args.output, "predictions.csv"))
+    predictions.to_csv(path.join(args.output, "predictions.csv"), index=False)
 
 
 if __name__ == "__main__":

@@ -112,9 +112,9 @@ def main():
     replace_value_in_col(data, "gender", "female", 2)
 
     if args.inference:
-         data.to_csv(path.join(args.output, "prediction_data.csv"))
+         data.to_csv(path.join(args.output, "prediction_data.csv"), index=False)
     else:
-        data.to_csv(path.join(args.output, "training_data_model.csv"))
+        data.to_csv(path.join(args.output, "training_data_model.csv"), index=False)
 
 
 if __name__ == "__main__":

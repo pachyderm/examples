@@ -11,8 +11,15 @@
         },
     "transform": {
         "cmd": [
-          "python","/workdir/feature-engineering.py","--data","/pfs/clean-data/training_data_model.csv", "--inference", "--output","/pfs/out/"
+          "python","/workdir/feature-engineering.py","--data","/pfs/clean-data-pred/prediction_data.csv", "--inference", "--output","/pfs/out/"
         ],
-      "image": "jimmywhitaker/py_wsdm:dev0.12"
+      "image": "jimmywhitaker/py_wsdm:dev0.17"
+    },
+    "scheduling_spec": {
+      "node_selector": {"adhoc-loadtesting": "enabled"}
+    },
+    "resource_requests": {
+      "memory": "32G",
+      "cpu": 8
     }
   }

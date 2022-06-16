@@ -13,6 +13,6 @@
         "cmd": [
           "python","/workdir/data-cleaning.py","--data","/pfs/TRAIN_DATA/0000","--output","/pfs/out/"
         ],
-      "image": "jimmywhitaker/py_wsdm:dev0.12"
+      "image": "jimmywhitaker/py_wsdm:dev0.18"
     }
   }

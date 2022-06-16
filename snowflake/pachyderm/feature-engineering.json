@@ -13,6 +13,6 @@
         "cmd": [
           "python","/workdir/feature-engineering.py","--data","/pfs/clean-data/training_data_model.csv", "--output","/pfs/out/"
         ],
-      "image": "jimmywhitaker/py_wsdm:dev0.12"
+      "image": "jimmywhitaker/py_wsdm:dev0.18"
     }
   }
