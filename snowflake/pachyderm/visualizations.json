@@ -1,0 +1,34 @@
+{
+    "pipeline": {
+      "name": "visualizations"
+    },
+    "description": "Visualize user data.",
+    "input": {
+      "cross": [
+        {
+          "pfs": {
+            "repo": "MEMBERSHIPS",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "PAYMENTS",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "USER_LOGS",
+            "glob": "/"
+          }
+        }
+      ]
+    },
+    "transform": {
+      "cmd": [
+        "/usr/local/bin/Rscript", "/workdir/WSDM_songs.R"
+      ],
+      "image": "jimmywhitaker/r_wsdm:dev0.04"
+    }
+  }

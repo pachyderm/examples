@@ -14,6 +14,9 @@
 - [Superb AI Integration](./superb-ai) - Version labeled image datasets created in Superb AI Suite using a cron pipeline.
 - [Toloka Integration](https://github.com/Toloka/toloka-pachyderm) - Uses Pachyderm to create crowdsourced annotation jobs for news headlines in Toloka, aggregate the labeled data, and train a model.
 
+## Data Warehouse
+- [Churn Prediction with Snowflake](./snowflake) - Create a churn analysis model for a music streaming service with Pachyderm and Snowflake using the Data Warehouse integration. 
+
 ## Machine Learning
 - [Boston Housing Prices (Intermediate)](./housing-prices-intermediate) - Extends the original Boston Housing Prices example to show a multi-pipeline DAG and data rollbacks. 
 - [Breast Cancer Detection](./breast-cancer-detection) - A breast cancer detection system based on radiology scans scaled and visualized using Pachyderm.

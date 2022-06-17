@@ -1,0 +1,18 @@
+{
+    "pipeline": {
+      "name": "model"
+    },
+    "description": "Train a churn model.",
+    "input": {
+          "pfs": {
+            "repo": "feature-engineering",
+            "glob": "/"
+          }
+        },
+    "transform": {
+        "cmd": [
+          "python","/workdir/model.py","--dataset","/pfs/feature-engineering/training_data_features.csv", "--output","/pfs/out/"
+        ],
+      "image": "jimmywhitaker/py_wsdm:dev0.18"
+    }
+  }
