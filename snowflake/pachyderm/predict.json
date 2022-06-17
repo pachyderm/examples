@@ -27,7 +27,7 @@
     },
     "egress": {
         "sql_database": {
-            "url": "snowflake://jimmy@of28881.us-central1.gcp/CHURN_EXAMPLE/PUBLIC?warehouse=COMPUTE_WH",
+            "url": "snowflake://jimmy@of28881.us-central1.gcp/KK_BOX_CHURN_EXAMPLE/PUBLIC?warehouse=COMPUTE_WH",
             "file_format": {
                 "type": "CSV",
                 "columns": ["msno", "churn_prediction"]
