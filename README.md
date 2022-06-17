@@ -13,6 +13,9 @@
 - [Boston Housing Prices (Intermediate)](./housing-prices-intermediate) - Extends the original Boston Housing Prices example to show a multi-pipeline DAG and data rollbacks. 
 - [Market Sentiment](./market-sentiment) - Train and deploy a fully automated financial market sentiment BERT model. As data is manually labeled, the model will automatically retrain and deploy. 
 
+## Data Warehouse
+- [Churn Prediction with Snowflake](./snowflake) - Create a churn analysis model for a music streaming service with Pachyderm and Snowflake using the Data Warehouse integration. 
+
 ## Data Labeling
 
 - [Label Studio Integration](./label-studio) - Incorporate data versioning into any labeling project with Label Studio and Pachyderm. 
