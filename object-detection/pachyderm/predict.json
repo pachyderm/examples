@@ -1,0 +1,28 @@
+{
+    "pipeline": {
+      "name": "predict"
+    },
+    "description": "Predict bounding boxes on images.",
+    "input": {
+      "cross": [
+        {
+          "pfs": {
+            "repo": "prod_data",
+            "glob": "/"
+          }
+        },
+        {
+          "pfs": {
+            "repo": "train",
+            "glob": "/"
+          }
+        }
+      ]
+    },
+    "transform": {
+      "cmd": [
+        "python", "predict.py", "--model", "/pfs/train/object_detection_model.pt", "--data-dir", "/pfs/prod_data/", "--output-dir", "/pfs/out/"
+      ],
+      "image": "jimmywhitaker/obj-det:dev0.04"
+    }
+  }
