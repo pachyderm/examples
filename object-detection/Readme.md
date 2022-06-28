@@ -3,7 +3,7 @@
 This example illustrates a common Object Detection use case using [Pachyderm](https://www.pachyderm.com/), [Lightning Flash](https://lightning-flash.readthedocs.io/en/latest/), and [Label Studio](https://labelstud.io/). 
 
 <p align="center">
-	<img src='images/diagram.png' width='600' title='Pachyderm'>
+	<img src='images/diagram.png' width='800' title='Pachyderm'>
 </p>
 
 This demo mimics the object detection [example from Lightning Flash](https://lightning-flash.readthedocs.io/en/stable/reference/object_detection.html#example). We extend the example to predict on new data that can be used to produce predictions for the [Pachyderm Label Studio integration](https://github.com/pachyderm/label-studio) to refine and improve your training data.
