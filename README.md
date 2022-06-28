@@ -12,6 +12,7 @@
 - [Boston Housing Prices](./housing-prices) - A machine learning pipeline to train a regression model on the Boston Housing Dataset to predict the value of homes.
 - [Boston Housing Prices (Intermediate)](./housing-prices-intermediate) - Extends the original Boston Housing Prices example to show a multi-pipeline DAG and data rollbacks. 
 - [Market Sentiment](./market-sentiment) - Train and deploy a fully automated financial market sentiment BERT model. As data is manually labeled, the model will automatically retrain and deploy. 
+- [Object Detection](./object-detection) - Train an object detector on the COCO128 dataset with Lightning Flash, modify predictions with Label Studio, and version everything in Pachyderm. 
 
 ## Data Labeling
 
