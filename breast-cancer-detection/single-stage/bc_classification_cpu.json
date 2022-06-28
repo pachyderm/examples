@@ -24,7 +24,7 @@
             "/bin/bash",
             "run.sh", "cpu"
         ],
-        "image": "pachyderm/breast_cancer_classifier:1.11.4"
+        "image": "pachyderm/breast_cancer_classifier:1.11.6"
     },
     "parallelism_spec": {
       "constant": 4
