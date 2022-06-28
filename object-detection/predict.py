@@ -87,7 +87,7 @@ def main():
     # 1. Load data
     datamodule = load_data(args.data_dir)
     
-    # 2. Train model
+    # 2. Load model
     model = load_model(args.model_path)
     
     # 3. Predict objects with model
