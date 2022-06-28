@@ -11,6 +11,9 @@ This demo mimics the object detection [example from Lightning Flash](https://lig
 ## Dataset
 The dataset used for this example is the COCO 128 dataset, which is a subset of [COCOtrain2017](https://cocodataset.org/), containing 80 object classes. 
 
+## Notebook
+For the detailed walkthrough, view our [notebook version of this example](Object%20Detection%20Example.ipynb). 
+
 ## TLDR; 
 Just give me the code!
 
@@ -20,24 +23,27 @@ unzip coco128.zip
 
 # Push training dataset to Pachyderm
 pachctl create repo coco128
-pachctl put file -r coco128@master -f coco128
+pachctl put file -r coco128@master:/ -f coco128
 
 # Deploy model training pipeline
-pachctl create pipeline -f pachyderm/train.json
+pachctl create pipeline -f pachyderm/model.json
 
 # Create repo to hold production data
-pachctl create repo prod_data
-pachctl put file -r prod_data@master:/dog1.jpeg -f images/dog1.jpeg
+pachctl create repo inference_images
+pachctl put file -r inference_images@master:/dog1.jpeg -f images/dog1.jpeg
 
 # Deploy prediction pipeline
-pachctl create pipeline -f pachyderm/predict.json
+pachctl create pipeline -f pachyderm/predictions.json
+
+# Create labels repo for modified annotations
+pachctl create repo labels
 
 # Start and configure Label Studio
 docker run -it --rm -p8080:8080 -v ~/.pachyderm/config.json:/root/.pachyderm/config.json --device=/dev/fuse --cap-add SYS_ADMIN --name label-studio --entrypoint=/usr/local/bin/label-studio jimmywhitaker/label-studio:pach2.2-ls1.4v3
 
-# Source repos: prod_data, predict
+# Source repos: inference_images, predictions
 # Target repo: labels
 
 # Add more data (automatically runs pipelines)
-pachctl put file -r prod_data@master:/car6.jpeg -f images/car6.jpeg
+pachctl put file -r inference_images@master:/car6.jpeg -f images/car6.jpeg
 ```
