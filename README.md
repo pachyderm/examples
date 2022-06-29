@@ -30,4 +30,3 @@
 ## Model Deployment
 - [Pachyderm - Seldon](https://github.com/winderai/pachyderm-seldon) - Community example showing monitoring and provenance for machine learning models with Pachyderm and Seldon.
 - [Seldon (Market Sentiment)](./seldon) - Deploy the model created in the [Market Sentiment](./market-sentiment) example with [Seldon Deploy](https://www.seldon.io/tech/products/deploy/).
-- [Algorithmia Integration](./algorithmia) - Deploy the model created in the [Market Sentiment](./market-sentiment) example with [Algorithmia](https://algorithmia.com/).
