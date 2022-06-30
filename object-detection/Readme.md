@@ -35,6 +35,9 @@ pachctl put file -r inference_images@master:/dog1.jpeg -f images/dog1.jpeg
 # Deploy prediction pipeline
 pachctl create pipeline -f pachyderm/predictions.json
 
+# Deploy bounding box visualization pipeline 
+pachctl create pipeline -f pachyderm/bboxes.json
+
 # Create labels repo for modified annotations
 pachctl create repo labels
 

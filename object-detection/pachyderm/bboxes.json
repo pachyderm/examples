@@ -1,0 +1,28 @@
+{
+    "pipeline": {
+        "name": "bboxes"
+    },
+    "description": "Visualize bounding boxes on images.",
+    "input": {
+        "cross": [
+            {
+                "pfs": {
+                    "repo": "inference_images",
+                    "glob": "/"
+                }
+            },
+            {
+                "pfs": {
+                    "repo": "predictions",
+                    "glob": "/*"
+                }
+            }
+        ]
+    },
+    "transform": {
+        "cmd": [
+            "python", "draw_bboxes.py", "--predictions", "/pfs/predictions/", "--images", "/pfs/inference_images/", "--output", "/pfs/out/"
+        ],
+        "image": "jimmywhitaker/obj-det:dev0.06"
+    }
+}
