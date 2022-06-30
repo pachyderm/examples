@@ -23,7 +23,7 @@
     "cmd": [
       "python", "finbert_training.py", "--lm_path", "/pfs/language_model/", "--cl_path", "/pfs/out", "--cl_data_path", "/pfs/dataset/"
     ],
-    "image": "jimmywhitaker/market_sentiment:dev0.25"
+    "image": "pachyderm/market_sentiment:dev0.25"
   },
   "resource_limits": {
     "gpu": {
