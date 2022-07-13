@@ -204,3 +204,25 @@ resource "null_resource" "kubectl" {
     command = "aws eks --region ${var.region} update-kubeconfig --name ${aws_eks_cluster.pachaform-cluster.name}"
   }
 }
+
+resource "null_resource" "nginx_ingress" {
+  depends_on = [
+    aws_eks_cluster.pachaform-cluster,
+  ]
+  provisioner "local-exec" {
+    command = "kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.3.0/deploy/static/provider/aws/deploy.yaml"
+  }
+}
+
+data "kubernetes_service" "ingress" {
+  metadata {
+    name = "ingress-nginx-controller"
+    namespace = "ingress-nginx"
+  }
+}
+data "kubernetes_service" "pachd_lb" {
+  metadata {
+    name = "pachd-lb"
+    namespace = var.namespace
+  }
+}

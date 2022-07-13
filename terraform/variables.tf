@@ -167,6 +167,10 @@ variable "public_destination_cidr_block" {
 ###############################################################################
 # HELM VARIABLES
 ###############################################################################
+variable "namespace" {
+  type    = string
+  default = "default"
+}
 
 variable "pach_version" {
   type    = string
