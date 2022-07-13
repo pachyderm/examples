@@ -223,6 +223,6 @@ data "kubernetes_service" "ingress" {
 data "kubernetes_service" "pachd_lb" {
   metadata {
     name = "pachd-lb"
-    namespace = "default"
+    namespace = var.namespace
   }
 }
