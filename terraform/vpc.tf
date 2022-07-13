@@ -95,7 +95,11 @@ resource "aws_internet_gateway" "pachaform_internet_gateway" {
     Name = "${var.project_name}-internet-gateway"
   }
   depends_on = [
-    aws_vpc.pachaform_vpc
+    aws_vpc.pachaform_vpc,
+    aws_subnet.pachaform_public_subnet_1,
+    aws_subnet.pachaform_public_subnet_2,
+    aws_subnet.pachaform_private_subnet_1,
+    aws_subnet.pachaform_private_subnet_2,
   ]
 }
 
