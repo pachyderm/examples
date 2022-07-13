@@ -1,8 +1,9 @@
 resource "helm_release" "pachaform" {
-  name            = "pachaform"
+  name            = var.project_name
   repository      = "https://helm.pachyderm.com"
   chart           = "pachyderm"
   version         = var.pach_version
+  namespace = var.namespace
   cleanup_on_fail = true
   atomic          = true
   values = [
