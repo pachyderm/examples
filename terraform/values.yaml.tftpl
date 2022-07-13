@@ -1,0 +1,61 @@
+deployTarget: AMAZON
+
+global:
+  postgresql:
+    postgresqlUsername: ${POSTGRESQL_USERNAME}
+    postgresqlPassword: ${POSTGRESQL_PASSWORD}
+    postgresqlDatabase: ${POSTGRESQL_DATABASE}
+    postgresqlHost: ${POSTGRESQL_HOST}
+
+loki-stack:
+  loki:
+    persistence:
+      enabled: true
+      size: ${LOKI_STORAGE_SIZE}
+      storageClassName: ${LOKI_STORAGE_CLASS}
+
+console:
+  config:
+    oauthClientSecret: ${CONSOLE_OAUTH_CLIENT_SECRET}
+
+pachd:
+  logLevel: ${LOG_LEVEL}
+  lokiDeploy: ${LOKI_DEPLOY}
+  lokiLogging: ${LOKI_LOGGING}
+  enterpriseLicenseKey: ${ENTERPRISE_LICENSE_KEY}
+  rootToken: ${ROOT_TOKEN}
+  clusterDeploymentID: ${CLUSTER_DEPLOYMENT_ID}
+  enterpriseSecret: ${ENTERPRISE_SECRET}
+  oauthClientSecret: ${OAUTH_CLIENT_SECRET}
+  serviceAccount:
+    additionalAnnotations:
+      eks.amazonaws.com/role-arn: ${BUCKET_ROLE_ARN}
+  worker:
+    serviceAccount:
+      additionalAnnotations:
+        eks.amazonaws.com/role-arn: ${BUCKET_ROLE_ARN}
+  storage:
+    amazon:
+      bucket: ${BUCKET_NAME}
+      region: ${AWS_REGION}
+  externalService:
+    enabled: true
+  resources:
+    requests:
+      cpu: ${PACHD_CPU_REQUEST}
+      memory: ${PACHD_MEMORY_REQUEST}
+
+etcd:
+  storageClass: ${ETCD_STORAGE_CLASS}
+  storageSize: ${ETCD_STORAGE_SIZE}
+  resources:
+    requests:
+      cpu: ${ETCD_CPU_REQUEST}
+      memory: ${ETCD_MEMORY_REQUEST}
+
+pgbouncer:
+  maxConnections: ${PGBOUNCER_MAX_CONNECTIONS}
+  defaultPoolSize: ${PGBOUNCER_DEFAULT_POOL_SIZE}
+
+postgresql:
+  enabled: false
