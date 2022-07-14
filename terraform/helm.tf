@@ -3,11 +3,12 @@ resource "helm_release" "pachaform" {
   repository      = "https://helm.pachyderm.com"
   chart           = "pachyderm"
   version         = var.pach_version
-  namespace = var.namespace
+  namespace       = var.namespace
   cleanup_on_fail = true
   atomic          = true
   values = [
     templatefile("${path.module}/values.yaml.tftpl", {
+      PROJECT_SECRETS             = kubernetes_secret_v1.pachaform-secrets.metadata[0].name
       POSTGRESQL_USERNAME         = var.db_username,
       POSTGRESQL_PASSWORD         = var.db_password,
       POSTGRESQL_DATABASE         = "pachyderm",
@@ -34,7 +35,7 @@ resource "helm_release" "pachaform" {
       ETCD_MEMORY_REQUEST         = var.etcd_memory_request,
       PGBOUNCER_MAX_CONNECTIONS   = var.pgbouncer_max_connections,
       PGBOUNCER_DEFAULT_POOL_SIZE = var.pgbouncer_default_pool_size,
-      INGRESS_HOSTNAME            = data.kubernetes_service.ingress.status[0].load_balancer[0].ingress[0].hostname
+      INGRESS_HOSTNAME            = data.kubernetes_service.ingress.status.0.load_balancer.0.ingress.0.hostname
     })
   ]
   depends_on = [
@@ -44,7 +45,8 @@ resource "helm_release" "pachaform" {
     postgresql_database.dex,
     postgresql_grant.full-crud-pachyderm,
     postgresql_grant.full-crud-dex,
-    null_resource.nginx_ingress
+    null_resource.nginx_ingress,
+    data.kubernetes_service.ingress,
   ]
 }
 
@@ -59,8 +61,8 @@ resource "null_resource" "pachctl-context" {
     pachctl config set active-context $NAME
     EOT
     environment = {
-      NAME = var.project_name
-      PACHD = data.kubernetes_service.pachd_lb.status[0].load_balancer[0].ingress[0].hostname
+      NAME  = var.project_name
+      PACHD = data.kubernetes_service.pachd_lb.status.0.load_balancer.0.ingress.0.hostname
     }
   }
 

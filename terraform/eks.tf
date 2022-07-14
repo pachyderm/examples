@@ -1,5 +1,5 @@
 resource "aws_iam_role" "pachaform-cluster" {
-  name        = "${var.project_name}-cluster"
+  name               = "${var.project_name}-cluster"
   assume_role_policy = <<POLICY
 {
     "Version": "2012-10-17",
@@ -36,6 +36,12 @@ resource "aws_eks_cluster" "pachaform-cluster" {
     aws_iam_role_policy_attachment.pachaform-AmazonEKSClusterPolicy,
     aws_internet_gateway.pachaform_internet_gateway,
     aws_nat_gateway.pachaform_nat_gateway,
+    aws_security_group.pachaform_sg,
+    aws_route.pachaform_private_route,
+    aws_route.pachaform_public_route,
+    aws_route_table_association.pachaform_private_rta_1,
+    aws_route_table_association.pachaform_private_rta_2,
+    aws_db_instance.pachaform-postgres,
   ]
 }
 
@@ -52,7 +58,7 @@ data "aws_iam_policy_document" "pachaform-nodes-assume-role-policy" {
 
 resource "aws_iam_role" "pachaform-nodes" {
   assume_role_policy = data.aws_iam_policy_document.pachaform-nodes-assume-role-policy.json
-  name        = "${var.project_name}-nodes"
+  name               = "${var.project_name}-nodes"
 }
 
 resource "aws_iam_role_policy_attachment" "pachaform-nodes-AmazonEKSWorkerNodePolicy" {
@@ -77,7 +83,7 @@ resource "aws_iam_role_policy_attachment" "pachaform-nodes-AmazonEC2ContainerReg
 
 resource "aws_launch_template" "pachaform-nodes-launch-template" {
   ebs_optimized = var.lt_ebs_optimized
-  name   = "${var.project_name}-nodes-launch-template"
+  name          = "${var.project_name}-nodes-launch-template"
   block_device_mappings {
     device_name = "/dev/xvda"
     ebs {
@@ -91,10 +97,10 @@ resource "aws_launch_template" "pachaform-nodes-launch-template" {
 }
 
 resource "aws_eks_node_group" "pachaform-nodes" {
-  cluster_name           = aws_eks_cluster.pachaform-cluster.name
+  cluster_name    = aws_eks_cluster.pachaform-cluster.name
   node_group_name = "${var.project_name}-nodes"
-  node_role_arn          = aws_iam_role.pachaform-nodes.arn
-  ami_type               = "AL2_x86_64"
+  node_role_arn   = aws_iam_role.pachaform-nodes.arn
+  ami_type        = "AL2_x86_64"
 
   subnet_ids = [
     aws_subnet.pachaform_private_subnet_1.id,
@@ -180,49 +186,4 @@ resource "aws_eks_addon" "pachaform-coredns" {
   ]
 }
 
-resource "kubernetes_storage_class" "gp3" {
-  metadata {
-    name = "gp3"
-  }
-  storage_provisioner = "ebs.csi.aws.com"
-  parameters = {
-    type   = "gp3"
-    fsType = "ext4"
-  }
-  volume_binding_mode = "Immediate"
 
-  depends_on = [
-    aws_eks_cluster.pachaform-cluster
-  ]
-}
-
-resource "null_resource" "kubectl" {
-  depends_on = [
-    aws_eks_cluster.pachaform-cluster,
-  ]
-  provisioner "local-exec" {
-    command = "aws eks --region ${var.region} update-kubeconfig --name ${aws_eks_cluster.pachaform-cluster.name}"
-  }
-}
-
-resource "null_resource" "nginx_ingress" {
-  depends_on = [
-    aws_eks_cluster.pachaform-cluster,
-  ]
-  provisioner "local-exec" {
-    command = "kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.3.0/deploy/static/provider/aws/deploy.yaml"
-  }
-}
-
-data "kubernetes_service" "ingress" {
-  metadata {
-    name = "ingress-nginx-controller"
-    namespace = "ingress-nginx"
-  }
-}
-data "kubernetes_service" "pachd_lb" {
-  metadata {
-    name = "pachd-lb"
-    namespace = var.namespace
-  }
-}

@@ -11,6 +11,6 @@ output "cluster_name" {
 output "pach_helm_values" {
   value = helm_release.pachaform.metadata[*].values
 }
-output "console_web_endpoint"{
-  value = data.kubernetes_service.ingress.status[0].load_balancer[0].ingress[0].hostname
+output "console_web_endpoint" {
+  value = data.kubernetes_service.ingress.status.0.load_balancer.0.ingress.0.hostname
 }
