@@ -42,7 +42,7 @@ resource "aws_iam_policy" "bucket-policy" {
 }
 
 resource "aws_iam_role" "pachaform-s3-role" {
-  name        = "${var.project_name}-s3-role"
+  name               = "${var.project_name}-s3-role"
   assume_role_policy = data.aws_iam_policy_document.s3-assume-role-policy.json
 }
 
@@ -57,7 +57,7 @@ resource "aws_iam_role_policy_attachment" "pachaform-s3-bucket-policy_attachment
 }
 
 resource "aws_s3_bucket" "pachaform-s3-bucket" {
-  bucket = "${var.project_name}-bucket"
+  bucket        = "${var.project_name}-bucket"
   force_destroy = true
   depends_on = [
     aws_iam_role.pachaform-s3-role,

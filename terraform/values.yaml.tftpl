@@ -3,7 +3,8 @@ deployTarget: AMAZON
 global:
   postgresql:
     postgresqlUsername: ${POSTGRESQL_USERNAME}
-    postgresqlPassword: ${POSTGRESQL_PASSWORD}
+    postgresqlExistingSecretName: ${PROJECT_SECRETS}
+    postgresqlExistingSecretKey: postgresql_password
     postgresqlDatabase: ${POSTGRESQL_DATABASE}
     postgresqlHost: ${POSTGRESQL_HOST}
 
@@ -16,17 +17,17 @@ loki-stack:
 
 console:
   config:
-    oauthClientSecret: ${CONSOLE_OAUTH_CLIENT_SECRET}
+    oauthClientSecretSecretName: ${PROJECT_SECRETS}
 
 pachd:
   logLevel: ${LOG_LEVEL}
   lokiDeploy: ${LOKI_DEPLOY}
   lokiLogging: ${LOKI_LOGGING}
-  enterpriseLicenseKey: ${ENTERPRISE_LICENSE_KEY}
-  rootToken: ${ROOT_TOKEN}
+  enterpriseLicenseKeySecretName: ${PROJECT_SECRETS}
+  rootTokenSecretName: ${PROJECT_SECRETS}
   clusterDeploymentID: ${CLUSTER_DEPLOYMENT_ID}
-  enterpriseSecret: ${ENTERPRISE_SECRET}
-  oauthClientSecret: ${OAUTH_CLIENT_SECRET}
+  enterpriseSecretSecretName: ${PROJECT_SECRETS}
+  oauthClientSecretSecretName: ${PROJECT_SECRETS}
   serviceAccount:
     additionalAnnotations:
       eks.amazonaws.com/role-arn: ${BUCKET_ROLE_ARN}
