@@ -1,0 +1,27 @@
+# Default values for aimstack_pach.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  repository: vmtyler/aim
+  tag: "1.0"
+
+storage:
+  size: 10Gi
+  storageClass: ""
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  className: "ninx"
+  annotations: {}
+  host: ""
+  tls: 
+    #- secretName: ssl-tls
+    #  hosts:
+    #    - hostname.local
+
+

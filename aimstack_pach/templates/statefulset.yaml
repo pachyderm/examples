@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: aim-pach
+  name: aim-pach
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: aim-pach
+  serviceName: aim-pach
+  template:
+    metadata:
+      labels:
+        app: aim-pach
+      name: etcd
+    spec:
+      containers:
+      - image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        resources:
+          limits:
+            cpu: "1"
+            memory: 2Gi
+          requests:
+            cpu: 100m
+            memory: 1Gi
+        command: ["/bin/sh"]
+        args: ["-c","aim server --repo /aim"]
+        imagePullPolicy: IfNotPresent
+        name: aim-server
+        ports:
+        - containerPort: 53800
+          name: aim-server
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /aim
+          name: aim-runs
+      - image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        resources:
+          limits:
+            cpu: "1"
+            memory: 2Gi
+          requests:
+            cpu: 100m
+            memory: 1Gi
+        command: ["/bin/sh"]
+        args: ["-c","echo \"N\" | aim init --repo /aim && aim up --host 0.0.0.0 --port 43800 --workers 2 --repo /aim"]
+        imagePullPolicy: IfNotPresent
+        name: aim-gui
+        ports:
+        - containerPort: 43800
+          name: server-port
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /aim
+          name: aim-runs
+  volumeClaimTemplates:
+  - metadata:
+      labels:
+        app: aim-pach
+      name: aim-runs
+    spec:
+      {{with .Values.storage.className }}
+      storageClassName: {{ .Values.storage.className }}
+      {{- end}}
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: {{ .Values.storage.size }}
