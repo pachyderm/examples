@@ -28,6 +28,7 @@ pachd:
   clusterDeploymentID: ${CLUSTER_DEPLOYMENT_ID}
   enterpriseSecretSecretName: ${PROJECT_SECRETS}
   oauthClientSecretSecretName: ${PROJECT_SECRETS}
+  localhostIssuer: "true"
   serviceAccount:
     additionalAnnotations:
       eks.amazonaws.com/role-arn: ${BUCKET_ROLE_ARN}
@@ -65,4 +66,8 @@ ingress:
   enabled: true
   annotations:
     kubernetes.io/ingress.class: nginx
-  host: ${INGRESS_HOSTNAME}
+  host: ${DNS_NAME}
+
+oidc:
+  upstreamIDPsSecretName: ${PROJECT_SECRETS}
+  userAccessibleOauthIssuerHost: ${DNS_NAME}

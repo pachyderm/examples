@@ -260,7 +260,7 @@ variable "etcd_storage_class" {
 
 variable "etcd_storage_size" {
   type    = string
-  default = "1Gi"
+  default = "10Gi"
 }
 
 variable "pgbouncer_max_connections" {
@@ -271,4 +271,24 @@ variable "pgbouncer_max_connections" {
 variable "pgbouncer_default_pool_size" {
   type    = number
   default = 100
+}
+
+variable "dns_name" {
+  type    = string
+  description = "value of the dns name for the pachyderm cluster ex. test.pachaform.com"
+}
+
+variable "oidc_issuer" {
+  type = string
+  description = "enter oidc issuer url ex. https://pachaform.okta.com/oauth2/default"
+}
+
+variable "oidc_clientID" {
+  type        = string
+  description = "enter oidc_clientID"
+}
+
+variable "oidc_clientSecret" {
+  type        = string
+  description = "enter oidc_clientSecret"
 }
