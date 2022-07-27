@@ -15,15 +15,10 @@ resource "helm_release" "pachaform" {
       POSTGRESQL_HOST             = aws_db_instance.pachaform-postgres.address,
       LOKI_STORAGE_SIZE           = var.loki_storage_size,
       LOKI_STORAGE_CLASS          = var.loki_storage_class,
-      CONSOLE_OAUTH_CLIENT_SECRET = var.console_oauth_client_secret,
       LOG_LEVEL                   = var.log_level,
       LOKI_DEPLOY                 = var.loki_deploy,
       LOKI_LOGGING                = var.loki_logging,
-      ENTERPRISE_LICENSE_KEY      = var.enterprise_license_key,
-      ROOT_TOKEN                  = var.root_token,
       CLUSTER_DEPLOYMENT_ID       = var.cluster_deployment_id,
-      ENTERPRISE_SECRET           = var.enterprise_secret
-      OAUTH_CLIENT_SECRET         = var.oauth_client_secret,
       BUCKET_ROLE_ARN             = aws_iam_role.pachaform-s3-role.arn,
       BUCKET_NAME                 = aws_s3_bucket.pachaform-s3-bucket.id,
       AWS_REGION                  = var.region,
@@ -35,7 +30,7 @@ resource "helm_release" "pachaform" {
       ETCD_MEMORY_REQUEST         = var.etcd_memory_request,
       PGBOUNCER_MAX_CONNECTIONS   = var.pgbouncer_max_connections,
       PGBOUNCER_DEFAULT_POOL_SIZE = var.pgbouncer_default_pool_size,
-      INGRESS_HOSTNAME            = data.kubernetes_service.ingress.status.0.load_balancer.0.ingress.0.hostname
+      DNS_NAME                    = var.dns_name,
     })
   ]
   depends_on = [
@@ -57,12 +52,10 @@ resource "null_resource" "pachctl-context" {
   ]
   provisioner "local-exec" {
     command = <<EOT
-    echo '{"pachd_address": "grpc://'$PACHD':30650", "source": 2}' | pachctl config set context $NAME --overwrite
-    pachctl config set active-context $NAME
+    pachctl config import-kube $NAME --overwrite
     EOT
     environment = {
       NAME  = var.project_name
-      PACHD = data.kubernetes_service.pachd_lb.status.0.load_balancer.0.ingress.0.hostname
     }
   }
 
