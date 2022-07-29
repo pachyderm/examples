@@ -7,10 +7,11 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/* \
 
 USER pipeline
-RUN pip install opencv-python==4.5.5.64 matplotlib==3.5.1 'lightning-flash[image]' 'icevision' 
-
-RUN pip install script_to_pipeline==0.2.0a0
-
 WORKDIR /workdir/
+
+COPY requirements.txt /workdir/
+RUN pip install -r requirements.txt
+
+# RUN pip install script_to_pipeline==0.2.0a0
 
 COPY *.py /workdir/
