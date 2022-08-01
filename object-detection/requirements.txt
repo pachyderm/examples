@@ -1,6 +1,8 @@
 opencv-python==4.5.5.64 
 matplotlib==3.3.4
 lightning-flash[image] 
-icevision
-pyodi
-loguru
+icevision==0.11.0
+loguru==0.5.3
+wandb==0.12.21
+effdet==0.2.1
+pyodi==0.0.7

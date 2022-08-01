@@ -1,0 +1,18 @@
+{
+  "pipeline": {
+    "name": "ls_to_coco"
+  },
+  "description": "Convert Label Studio Predictions to Coco Dataset.",
+  "input": {
+        "pfs": {
+          "repo": "labels",
+          "glob": "/"
+        }
+      },
+  "transform": {
+      "cmd": [
+        "python","/workdir/join.py","--input","/pfs/labels/", "--output","coco128@master:/inference_images/"
+      ],
+    "image": "jimmywhitaker/obj-det:dev0.10"
+  }
+}
