@@ -1,4 +1,4 @@
-FROM python:3.9
+FROM jimmywhitaker/obj-det:dev0.07
 
 USER root
 RUN apt-get update \
@@ -12,6 +12,5 @@ WORKDIR /workdir/
 COPY requirements.txt /workdir/
 RUN pip install -r requirements.txt
 
-# RUN pip install script_to_pipeline==0.2.0a0
 
 COPY *.py /workdir/

@@ -1,0 +1,25 @@
+{
+  "pipeline": {
+    "name": "model"
+  },
+  "description": "Train an object detection model.",
+  "input": {
+        "pfs": {
+          "repo": "coco128",
+          "glob": "/"
+        }
+      },
+  "transform": {
+      "cmd": [
+        "python","/workdir/train.py","--train-dir","/pfs/coco128/", "--output-dir","/pfs/out/"
+      ],
+    "image": "jimmywhitaker/obj-det:dev0.08",
+    "secrets": [
+      {
+        "name": "wandb",
+        "env_var": "WANDB_API_KEY",
+        "key": "key"
+      }
+    ]
+  }
+}
