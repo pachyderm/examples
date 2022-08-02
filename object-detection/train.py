@@ -43,7 +43,6 @@ def merge_datasets(train_dir):
     
 
 def create_datamodule(train_dir):
-    
     ann_file = merge_datasets(train_dir)
     
     datamodule = ObjectDetectionData.from_coco(

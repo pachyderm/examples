@@ -23,6 +23,6 @@
         "cmd": [
             "python", "predict.py", "--model", "/pfs/model/object_detection_model.pt", "--data-dir", "/pfs/inference_images/", "--output-dir", "/pfs/out/"
         ],
-        "image": "jimmywhitaker/obj-det:dev0.04"
+        "image": "jimmywhitaker/obj-det:dev0.15"
     }
 }

@@ -105,7 +105,7 @@ def write_to_pachyderm(dataset, output_path):
     except IndexError:  # if no directory specificed ('repo@branch')
         pass
     
-    client = python_pachyderm.Client.new_in_cluster()
+    client = python_pachyderm.Client.new_in_cluster(auth_token=os.getenv("PACHYDERM_TOKEN",None))
     with client.commit(dest_repo, dest_branch) as dest_commit:
         
         # Copy image files to destination

@@ -13,6 +13,6 @@
       "cmd": [
         "python","/workdir/train.py","--train-dir","/pfs/coco128/", "--output-dir","/pfs/out/"
       ],
-    "image": "jimmywhitaker/obj-det:dev0.04"
+    "image": "jimmywhitaker/obj-det:dev0.15"
   }
 }
