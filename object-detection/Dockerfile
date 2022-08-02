@@ -1,4 +1,4 @@
-FROM jimmywhitaker/obj-det:dev0.07
+FROM jupyter/datascience-notebook:lab-3.3.3
 
 USER root
 RUN apt-get update \
@@ -6,10 +6,10 @@ RUN apt-get update \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/* \
 
-USER pipeline
 WORKDIR /workdir/
 
 COPY requirements.txt /workdir/
+RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 
