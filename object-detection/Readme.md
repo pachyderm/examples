@@ -47,6 +47,16 @@ docker run -it --rm -p8080:8080 -v ~/.pachyderm/config.json:/root/.pachyderm/con
 # Source repos: inference_images, predictions
 # Target repo: labels
 
+# Create auth token for updating pipeline
+pachctl auth get-robot-token ls_to_cococ
+
+# Copy token into pachyderm_secret.json
+# Create Pachyderm secret
+pachctl create secret -f pachyderm_secret.json
+
+# Create Label Studio annotation to Coco dataset pipeline
+pachctl create pipeline -f /pachyderm/ls_to_coco.json
+
 # Add more data (automatically runs pipelines)
 pachctl put file -r inference_images@master:/car6.jpeg -f images/car6.jpeg
 ```
