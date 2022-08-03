@@ -13,7 +13,7 @@
       "cmd": [
         "python","/workdir/join.py","--input","/pfs/labels/", "--output","coco128@master:/inference_images/"
       ],
-    "image": "jimmywhitaker/obj-det:dev0.15",
+    "image": "jimmywhitaker/obj-det:dev0.16",
     "secrets": [
       {
         "name": "pachyderm",

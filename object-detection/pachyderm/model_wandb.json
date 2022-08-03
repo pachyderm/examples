@@ -14,7 +14,7 @@
         "python","/workdir/train.py","--train-dir","/pfs/coco128/", "--output-dir","/pfs/out/", 
         "--wandb-project", "obj_det"
       ],
-    "image": "jimmywhitaker/obj-det:dev0.15",
+    "image": "jimmywhitaker/obj-det:dev0.16",
     "secrets": [
       {
         "name": "wandb",
