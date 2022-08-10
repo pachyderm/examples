@@ -1,0 +1,22 @@
+{
+    "pipeline": {
+      "name": "streamlit"
+    },
+    "description": "Streamlit to display an image.",
+    "input": {
+          "pfs": {
+            "repo": "images",
+            "glob": "/"
+          }
+        },
+    "service": {
+        "external_port": 30888,
+        "internal_port": 8501
+    },
+    "transform": {
+        "cmd": [
+          "streamlit","run","/app/app.py","--", "--image-path","/pfs/images/liberty.png"
+        ],
+      "image": "jimmywhitaker/simple-streamlit:dev0.1"
+    }
+  }
