@@ -6,7 +6,8 @@
     "input": {
           "pfs": {
             "repo": "images",
-            "glob": "/"
+            "glob": "/",
+            "branch": "master"
           }
         },
     "service": {
@@ -15,7 +16,7 @@
     },
     "transform": {
         "cmd": [
-          "streamlit","run","/app/app.py","--", "--image-path","/pfs/images/liberty.png"
+          "streamlit","run","https://gist.githubusercontent.com/JimmyWhitaker/8fa48e46c0c8c598d5eb5810bb65da18/raw/2a18d553b98ceba44de631a4508950ad7bce72b5/image_gallary.py","--", "--image-path","/pfs/images/"
         ],
       "image": "jimmywhitaker/simple-streamlit:dev0.1"
     }
