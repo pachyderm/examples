@@ -174,7 +174,12 @@ variable "namespace" {
 
 variable "pach_version" {
   type    = string
-  default = "2.2.5"
+  default = "2.3.0-rc.2"
+}
+
+variable "pachd_image_tag" {
+  type    = string
+  default = "2.3.0-rc.2"
 }
 
 variable "loki_storage_size" {
@@ -283,12 +288,41 @@ variable "oidc_issuer" {
   description = "enter oidc issuer url ex. https://pachaform.okta.com/oauth2/default"
 }
 
-variable "oidc_clientID" {
+variable "oidc_client_id" {
   type        = string
   description = "enter oidc_clientID"
 }
 
-variable "oidc_clientSecret" {
+variable "oidc_client_secret" {
   type        = string
   description = "enter oidc_clientSecret"
+}
+
+###############################################################################
+# NOTEBOOK VARIABLES
+###############################################################################
+
+variable "notebook_dns_name" {
+  type    = string
+  description = "value of the dns name for the pachyderm notebook ex. notebook.pachaform.com"
+}
+
+variable "jupyter_version" {
+  type = string
+  default = "1.2.0"
+}
+
+variable "notebooks_user_version" {
+  type = string
+  default = "v0.6.0"
+}
+
+variable "mount_server_image" {
+  type = string
+  default = "pachyderm/mount-server:2.3.0-994b6f6553ff265ca128c8fb4fec825be87a972a"
+}
+
+variable "hub_admin_user" {
+  type = string
+  description = "username of the hub admin user"
 }

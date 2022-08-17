@@ -1,4 +1,4 @@
-resource "kubernetes_secret_v1" "pachaform-secrets" {
+resource "kubernetes_secret_v1" "pachaform_secrets" {
   metadata {
     name      = "${var.project_name}-secrets"
     namespace = var.namespace
@@ -14,25 +14,25 @@ resource "kubernetes_secret_v1" "pachaform-secrets" {
 
     enterprise-license-key : var.enterprise_license_key,
     postgresql_password : var.db_password,
-    upstream-idps = yamlencode([
+        upstream-idps = yamlencode([
       {
         id : "okta",
         name : "okta",
         type : "oidc",
-        config : {
+        jsonConfig : jsonencode({
           "issuer" : var.oidc_issuer,
-          "clientID" : var.oidc_clientID,
-          "clientSecret" : var.oidc_clientSecret,
+          "clientID" : var.oidc_client_id,
+          "clientSecret" : var.oidc_client_secret,
           "redirectURI" : "http://${var.dns_name}/dex/callback",
-          "insecureEnableGroups": true,
-          "insecureSkipEmailVerified": true,
-          "insecureSkipIssuerCallbackDomainCheck": true,
-          "forwardedLoginParams": ["login_hint"],
-          "scopes": ["groups", "email", "profile"],
-          "claimMapping":{
-            "groups": "groups"
+          "insecureEnableGroups" : true,
+          "insecureSkipEmailVerified" : true,
+          "insecureSkipIssuerCallbackDomainCheck" : true,
+          "forwardedLoginParams" : ["login_hint"],
+          "scopes" : ["groups", "email", "profile"],
+          "claimMapping" : {
+          "groups" : "groups"
           }
-        }
+        })
     }])
   }
 }
@@ -50,47 +50,27 @@ resource "kubernetes_storage_class" "gp3" {
   volume_binding_mode = "Immediate"
 
   depends_on = [
-    aws_eks_cluster.pachaform-cluster
+    aws_eks_cluster.pachaform_cluster
   ]
 }
 
 
 resource "null_resource" "kubectl" {
   depends_on = [
-    aws_eks_cluster.pachaform-cluster,
+    aws_eks_cluster.pachaform_cluster,
   ]
   provisioner "local-exec" {
-    command = "aws eks --region ${var.region} update-kubeconfig --name ${aws_eks_cluster.pachaform-cluster.name}"
+    command = "aws eks --region ${var.region} update-kubeconfig --name ${aws_eks_cluster.pachaform_cluster.name}"
   }
 }
 
-resource "null_resource" "nginx_ingress" {
-  depends_on = [
-    aws_eks_node_group.pachaform-nodes,
-  ]
-  provisioner "local-exec" {
-    command = "kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.3.0/deploy/static/provider/aws/deploy.yaml"
-  }
-}
-
-data "kubernetes_service" "ingress" {
+data "kubernetes_service" "pachd_proxy" {
   metadata {
-    name      = "ingress-nginx-controller"
-    namespace = "ingress-nginx"
-  }
-  depends_on = [
-    aws_eks_node_group.pachaform-nodes,
-    null_resource.nginx_ingress,
-  ]
-}
-data "kubernetes_service" "pachd_lb" {
-  metadata {
-    name      = "pachd-lb"
+    name      = "pachd-proxy"
     namespace = var.namespace
   }
   depends_on = [
-    aws_eks_node_group.pachaform-nodes,
-    null_resource.nginx_ingress,
+    aws_eks_node_group.pachaform_nodes,
     helm_release.pachaform,
   ]
 }

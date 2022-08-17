@@ -46,7 +46,7 @@ resource "aws_subnet" "pachaform_private_subnet_1" {
   tags = {
     Name                                                        = "${var.project_name}-private-subnet-a"
     "kubernetes.io/role/internal-elb"                           = "1"
-    "kubernetes.io/role/${aws_iam_role.pachaform-cluster.name}" = "owned"
+    "kubernetes.io/role/${aws_iam_role.pachaform_cluster.name}" = "owned"
     "kubernetes.io/cluster/${var.project_name}-cluster"         = "shared"
   }
 }
@@ -59,7 +59,7 @@ resource "aws_subnet" "pachaform_public_subnet_2" {
   tags = {
     Name                                                        = "${var.project_name}-public-subnet-b"
     "kubernetes.io/role/elb"                                    = "1"
-    "kubernetes.io/role/${aws_iam_role.pachaform-cluster.name}" = "owned"
+    "kubernetes.io/role/${aws_iam_role.pachaform_cluster.name}" = "owned"
     "kubernetes.io/cluster/${var.project_name}-cluster"         = "shared"
   }
 }
@@ -71,7 +71,7 @@ resource "aws_subnet" "pachaform_private_subnet_2" {
   tags = {
     Name                                                        = "${var.project_name}-private-subnet-b"
     "kubernetes.io/role/internal-elb"                           = "1"
-    "kubernetes.io/role/${aws_iam_role.pachaform-cluster.name}" = "owned"
+    "kubernetes.io/role/${aws_iam_role.pachaform_cluster.name}" = "owned"
     "kubernetes.io/cluster/${var.project_name}-cluster"         = "shared"
   }
 }
@@ -84,7 +84,7 @@ resource "aws_subnet" "pachaform_public_subnet_1" {
   tags = {
     Name                                                        = "${var.project_name}-public-subnet-a"
     "kubernetes.io/role/elb"                                    = "1"
-    "kubernetes.io/role/${aws_iam_role.pachaform-cluster.name}" = "owned"
+    "kubernetes.io/role/${aws_iam_role.pachaform_cluster.name}" = "owned"
     "kubernetes.io/cluster/${var.project_name}-cluster"         = "shared"
   }
 }

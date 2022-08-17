@@ -21,11 +21,11 @@ terraform {
   }
 }
 provider "kubernetes" {
-  host                   = aws_eks_cluster.pachaform-cluster.endpoint
-  cluster_ca_certificate = base64decode(aws_eks_cluster.pachaform-cluster.certificate_authority[0].data)
+  host                   = aws_eks_cluster.pachaform_cluster.endpoint
+  cluster_ca_certificate = base64decode(aws_eks_cluster.pachaform_cluster.certificate_authority[0].data)
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"
-    args        = ["eks", "get-token", "--cluster-name", aws_eks_cluster.pachaform-cluster.name]
+    args        = ["eks", "get-token", "--cluster-name", aws_eks_cluster.pachaform_cluster.name]
     command     = "aws"
   }
 }
@@ -38,11 +38,11 @@ provider "aws" {
 
 provider "helm" {
   kubernetes {
-    host                   = aws_eks_cluster.pachaform-cluster.endpoint
-    cluster_ca_certificate = base64decode(aws_eks_cluster.pachaform-cluster.certificate_authority[0].data)
+    host                   = aws_eks_cluster.pachaform_cluster.endpoint
+    cluster_ca_certificate = base64decode(aws_eks_cluster.pachaform_cluster.certificate_authority[0].data)
     exec {
       api_version = "client.authentication.k8s.io/v1beta1"
-      args        = ["eks", "get-token", "--cluster-name", aws_eks_cluster.pachaform-cluster.name]
+      args        = ["eks", "get-token", "--cluster-name", aws_eks_cluster.pachaform_cluster.name]
       command     = "aws"
     }
   }
@@ -50,11 +50,11 @@ provider "helm" {
 
 provider "postgresql" {
   scheme    = "awspostgres"
-  host      = aws_db_instance.pachaform-postgres.address
-  username  = aws_db_instance.pachaform-postgres.username
-  port      = aws_db_instance.pachaform-postgres.port
-  password  = aws_db_instance.pachaform-postgres.password
+  host      = aws_db_instance.pachaform_postgres.address
+  username  = aws_db_instance.pachaform_postgres.username
+  port      = aws_db_instance.pachaform_postgres.port
+  password  = aws_db_instance.pachaform_postgres.password
   superuser = false
 
-  expected_version = aws_db_instance.pachaform-postgres.engine_version
+  expected_version = aws_db_instance.pachaform_postgres.engine_version
 }

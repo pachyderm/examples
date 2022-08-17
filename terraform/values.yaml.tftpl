@@ -20,6 +20,8 @@ console:
     oauthClientSecretSecretName: ${PROJECT_SECRETS}
 
 pachd:
+  image:
+    tag: ${PACHD_IMAGE_TAG}
   logLevel: ${LOG_LEVEL}
   lokiDeploy: ${LOKI_DEPLOY}
   lokiLogging: ${LOKI_LOGGING}
@@ -40,8 +42,6 @@ pachd:
     amazon:
       bucket: ${BUCKET_NAME}
       region: ${AWS_REGION}
-  externalService:
-    enabled: true
   resources:
     requests:
       cpu: ${PACHD_CPU_REQUEST}
@@ -63,10 +63,12 @@ postgresql:
   enabled: false
 
 ingress:
-  enabled: true
-  annotations:
-    kubernetes.io/ingress.class: nginx
   host: ${DNS_NAME}
+
+proxy:
+  enabled: true
+  service:
+    type: LoadBalancer
 
 oidc:
   upstreamIDPsSecretName: ${PROJECT_SECRETS}

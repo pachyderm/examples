@@ -1,4 +1,4 @@
-data "aws_iam_policy_document" "s3-assume-role-policy" {
+data "aws_iam_policy_document" "s3_assume_role_policy" {
   statement {
     actions = ["sts:AssumeRoleWithWebIdentity"]
     effect  = "Allow"
@@ -16,7 +16,7 @@ data "aws_iam_policy_document" "s3-assume-role-policy" {
   }
 }
 
-resource "aws_iam_policy" "bucket-policy" {
+resource "aws_iam_policy" "bucket_policy" {
   name = "${var.project_name}-bucket-policy"
   policy = jsonencode(
     {
@@ -30,8 +30,8 @@ resource "aws_iam_policy" "bucket-policy" {
           ]
           Effect = "Allow"
           Resource = [
-            "${aws_s3_bucket.pachaform-s3-bucket.arn}/*",
-            "${aws_s3_bucket.pachaform-s3-bucket.arn}",
+            "${aws_s3_bucket.pachaform_s3_bucket.arn}/*",
+            "${aws_s3_bucket.pachaform_s3_bucket.arn}",
           ]
           Sid = ""
         },
@@ -41,26 +41,26 @@ resource "aws_iam_policy" "bucket-policy" {
   )
 }
 
-resource "aws_iam_role" "pachaform-s3-role" {
+resource "aws_iam_role" "pachaform_s3_role" {
   name               = "${var.project_name}-s3-role"
-  assume_role_policy = data.aws_iam_policy_document.s3-assume-role-policy.json
+  assume_role_policy = data.aws_iam_policy_document.s3_assume_role_policy.json
 }
 
-resource "aws_iam_role_policy_attachment" "pachaform-s3-bucket-policy_attachment" {
-  role       = aws_iam_role.pachaform-s3-role.id
-  policy_arn = aws_iam_policy.bucket-policy.arn
+resource "aws_iam_role_policy_attachment" "pachaform_s3_bucket_policy_attachment" {
+  role       = aws_iam_role.pachaform_s3_role.id
+  policy_arn = aws_iam_policy.bucket_policy.arn
   depends_on = [
-    aws_s3_bucket.pachaform-s3-bucket,
-    aws_iam_role.pachaform-s3-role,
-    aws_iam_policy.bucket-policy,
+    aws_s3_bucket.pachaform_s3_bucket,
+    aws_iam_role.pachaform_s3_role,
+    aws_iam_policy.bucket_policy,
   ]
 }
 
-resource "aws_s3_bucket" "pachaform-s3-bucket" {
+resource "aws_s3_bucket" "pachaform_s3_bucket" {
   bucket        = "${var.project_name}-bucket"
   force_destroy = true
   depends_on = [
-    aws_iam_role.pachaform-s3-role,
+    aws_iam_role.pachaform_s3_role,
     aws_internet_gateway.pachaform_internet_gateway,
     aws_nat_gateway.pachaform_nat_gateway,
   ]

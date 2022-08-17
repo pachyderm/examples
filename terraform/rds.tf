@@ -1,4 +1,4 @@
-resource "aws_db_subnet_group" "pachaform-db-subnet-group" {
+resource "aws_db_subnet_group" "pachaform_db_subnet_group" {
   name        = "${var.project_name}-db-subnet-group"
   description = "Pachyderm DB Subnet Group"
   subnet_ids = [
@@ -11,7 +11,7 @@ resource "aws_db_subnet_group" "pachaform-db-subnet-group" {
   ]
 }
 
-resource "aws_db_instance" "pachaform-postgres" {
+resource "aws_db_instance" "pachaform_postgres" {
   identifier             = "${var.project_name}-postgres"
   allocated_storage      = var.db_storage
   max_allocated_storage  = var.db_max_storage
@@ -22,14 +22,14 @@ resource "aws_db_instance" "pachaform-postgres" {
   password               = var.db_password
   db_name                = "pachyderm"
   iops                   = var.db_iops
-  db_subnet_group_name   = aws_db_subnet_group.pachaform-db-subnet-group.name
+  db_subnet_group_name   = aws_db_subnet_group.pachaform_db_subnet_group.name
   vpc_security_group_ids = [aws_security_group.pachaform_sg.id]
   skip_final_snapshot    = true
   publicly_accessible    = true
   apply_immediately      = true
 
   depends_on = [
-    aws_db_subnet_group.pachaform-db-subnet-group,
+    aws_db_subnet_group.pachaform_db_subnet_group,
     aws_internet_gateway.pachaform_internet_gateway,
     aws_security_group.pachaform_sg,
     aws_nat_gateway.pachaform_nat_gateway,
@@ -42,14 +42,14 @@ resource "postgresql_database" "dex" {
   name = "dex"
 
   depends_on = [
-    aws_db_instance.pachaform-postgres,
+    aws_db_instance.pachaform_postgres,
     aws_nat_gateway.pachaform_nat_gateway,
     aws_security_group.pachaform_sg,
     aws_route.pachaform_public_route,
   ]
 }
 
-resource "postgresql_grant" "full-crud-dex" {
+resource "postgresql_grant" "full_crud_dex" {
   database    = "dex"
   role        = "public"
   object_type = "database"
@@ -65,7 +65,7 @@ resource "postgresql_grant" "full-crud-dex" {
   }
 }
 
-resource "postgresql_grant" "full-crud-pachyderm" {
+resource "postgresql_grant" "full_crud_pachyderm" {
   database    = "pachyderm"
   role        = "public"
   object_type = "database"
@@ -73,7 +73,7 @@ resource "postgresql_grant" "full-crud-pachyderm" {
   privileges  = ["ALL"]
 
   depends_on = [
-    aws_db_instance.pachaform-postgres,
+    aws_db_instance.pachaform_postgres,
     aws_nat_gateway.pachaform_nat_gateway,
     aws_security_group.pachaform_sg,
     aws_route.pachaform_public_route,

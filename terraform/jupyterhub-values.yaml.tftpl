@@ -1,0 +1,128 @@
+ingress:
+  enabled: true
+  hosts:
+    - ${NOTEBOOK_DNS_NAME}
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    external-dns.alpha.kubernetes.io/hostname: ${NOTEBOOK_DNS_NAME}
+singleuser:
+    defaultUrl: "/lab"
+    cmd: "start-singleuser.sh"
+    image:
+        name: pachyderm/notebooks-user
+        tag: ${NOTEBOOKS_USER_VERSION}
+    uid:   0
+    fsGid: 0
+    extraEnv:
+        "JUPYTER_ENABLE_LAB": "yes"
+        "CHOWN_HOME": "yes"
+        "CHOWN_HOME_OPTS": "-R"
+        "SIDECAR_MODE": "True"
+    extraContainers:
+        - name: mount-server-manager
+          image: ${MOUNT_SERVER_IMAGE}
+          command: [ "/bin/bash", "-c", "mount-server" ]
+          volumeMounts:
+              - name: shared-pfs
+                mountPath: /pfs
+                mountPropagation: Bidirectional
+          securityContext:
+              privileged: true
+              runAsUser: 0
+    storage:
+        extraVolumeMounts:
+            - name: shared-pfs
+              mountPath: /pfs
+              mountPropagation: HostToContainer
+        extraVolumes:
+            - name: shared-pfs
+              emptyDir: {}
+hub:
+  config:
+    Authenticator:
+      admin_users:
+      - ${HUB_ADMIN_USER}
+    GenericOAuthenticator:
+      client_id: ${OAUTH_CLIENT_ID}
+      client_secret: ${OAUTH_CLIENT_SECRET}
+      login_service: Okta
+      username_key: preferred_username
+      oauth_callback_url: ${OAUTH_CALLBACK_URL}
+      authorize_url: ${OAUTH2_AUTHORIZE_URL}
+      token_url: ${OAUTH2_TOKEN_URL}
+      userdata_url: ${OAUTH2_USERDATA_URL}
+    JupyterHub:
+      admin_access: true
+      authenticator_class: oauthenticator.generic.GenericOAuthenticator
+    OAuthenticator:
+      scope:
+      - openid
+      - profile
+      - email
+      - offline_access
+    WarningUnrecognizedConfig:
+      extraConfig.volume: |
+        def profile_pvc(spawner):
+          profile = spawner.user_options.get("profile", "")
+          if profile in [
+              "sidecar",
+          ]:
+              spawner.volumes.extend([
+                  {
+                      "name": "shared-pfs",
+                      "emptyDir": {},
+                  }
+              ])
+              spawner.volume_mounts.extend([
+                  {
+                      "name":  "shared-pfs",
+                      "mountPath":        "/pfs",
+                      "mountPropagation": "HostToContainer",
+                  }
+              ])
+        c.KubeSpawner.pre_spawn_hook = profile_pvc
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
