@@ -66,7 +66,7 @@ resource "null_resource" "kubectl" {
 
 data "kubernetes_service" "pachd_proxy" {
   metadata {
-    name      = "pachd-proxy"
+    name      = "pachyderm-proxy"
     namespace = var.namespace
   }
   depends_on = [

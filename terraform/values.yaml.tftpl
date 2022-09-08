@@ -16,6 +16,8 @@ loki-stack:
       storageClassName: ${LOKI_STORAGE_CLASS}
 
 console:
+  image:
+    tag: ${CONSOLE_IMAGE_TAG}
   config:
     oauthClientSecretSecretName: ${PROJECT_SECRETS}
 
@@ -62,11 +64,9 @@ pgbouncer:
 postgresql:
   enabled: false
 
-ingress:
-  host: ${DNS_NAME}
-
 proxy:
   enabled: true
+  host: ${DNS_NAME}
   service:
     type: LoadBalancer
 

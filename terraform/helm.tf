@@ -22,6 +22,7 @@ resource "helm_release" "pachaform" {
       BUCKET_ROLE_ARN             = aws_iam_role.pachaform_s3_role.arn,
       BUCKET_NAME                 = aws_s3_bucket.pachaform_s3_bucket.id,
       AWS_REGION                  = var.region,
+      CONSOLE_IMAGE_TAG           = var.console_image_tag,
       PACHD_IMAGE_TAG             = var.pachd_image_tag,
       PACHD_CPU_REQUEST           = var.pachd_cpu_request,
       PACHD_MEMORY_REQUEST        = var.pachd_memory_request,
