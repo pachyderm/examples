@@ -1,8 +1,11 @@
 deployTarget: AMAZON
 
 global:
+  securityContexts:
+    enabled: false
   postgresql:
     postgresqlUsername: ${POSTGRESQL_USERNAME}
+    postgresqlPassword: ${POSTGRESQL_PASSWORD}
     postgresqlExistingSecretName: ${PROJECT_SECRETS}
     postgresqlExistingSecretKey: postgresql_password
     postgresqlDatabase: ${POSTGRESQL_DATABASE}
@@ -16,6 +19,8 @@ loki-stack:
       storageClassName: ${LOKI_STORAGE_CLASS}
 
 console:
+  nodeSelector:
+    kubernetes.io/arch: "arm64"
   image:
     tag: ${CONSOLE_IMAGE_TAG}
   config:
@@ -33,6 +38,8 @@ pachd:
   enterpriseSecretSecretName: ${PROJECT_SECRETS}
   oauthClientSecretSecretName: ${PROJECT_SECRETS}
   localhostIssuer: "true"
+  nodeSelector:
+    kubernetes.io/arch: "arm64"
   serviceAccount:
     additionalAnnotations:
       eks.amazonaws.com/role-arn: ${BUCKET_ROLE_ARN}
@@ -49,17 +56,30 @@ pachd:
       cpu: ${PACHD_CPU_REQUEST}
       memory: ${PACHD_MEMORY_REQUEST}
 
+kubeEventTail:
+  image:
+    repository: jrockway/kube-event-tail
+    tag: "v0.0.6-multiarchtest"
+
 etcd:
   storageClass: ${ETCD_STORAGE_CLASS}
   storageSize: ${ETCD_STORAGE_SIZE}
+  nodeSelector:
+    kubernetes.io/arch: "arm64"
+  image:
+    repository: "pachyderm/etcd"
+    tag: "v3.5.2"
   resources:
     requests:
       cpu: ${ETCD_CPU_REQUEST}
       memory: ${ETCD_MEMORY_REQUEST}
 
 pgbouncer:
+  nodeSelector:
+    kubernetes.io/arch: "amd64"
   maxConnections: ${PGBOUNCER_MAX_CONNECTIONS}
   defaultPoolSize: ${PGBOUNCER_DEFAULT_POOL_SIZE}
+
 
 postgresql:
   enabled: false

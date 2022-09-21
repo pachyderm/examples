@@ -14,7 +14,7 @@ resource "kubernetes_secret_v1" "pachaform_secrets" {
 
     enterprise-license-key : var.enterprise_license_key,
     postgresql_password : var.db_password,
-        upstream-idps = yamlencode([
+    upstream-idps = yamlencode([
       {
         id : "okta",
         name : "okta",
@@ -30,7 +30,7 @@ resource "kubernetes_secret_v1" "pachaform_secrets" {
           "forwardedLoginParams" : ["login_hint"],
           "scopes" : ["groups", "email", "profile"],
           "claimMapping" : {
-          "groups" : "groups"
+            "groups" : "groups"
           }
         })
     }])
@@ -64,13 +64,3 @@ resource "null_resource" "kubectl" {
   }
 }
 
-data "kubernetes_service" "pachd_proxy" {
-  metadata {
-    name      = "pachyderm-proxy"
-    namespace = var.namespace
-  }
-  depends_on = [
-    aws_eks_node_group.pachaform_nodes,
-    helm_release.pachaform,
-  ]
-}

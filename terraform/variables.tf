@@ -10,7 +10,7 @@ variable "aws_profile" {
 
 variable "cluster_version" {
   type    = string
-  default = "1.22"
+  default = "1.23"
 }
 
 variable "project_name" {
@@ -110,13 +110,13 @@ variable "node_capacity_type" {
 variable "node_instance_types" {
   type        = list(string)
   description = "node pool instance types (e.g. m5.2xlarge)"
-  default     = ["m5.2xlarge"]
+  default     = ["m5.large"]
 }
 
 variable "max_nodes" {
   type        = number
   description = "max nodes"
-  default     = 3
+  default     = 1
 }
 
 variable "min_nodes" {
@@ -174,12 +174,17 @@ variable "namespace" {
 
 variable "pach_version" {
   type    = string
-  default = "2.3.0-rc.2"
+  default = "2.3.3"
 }
 
 variable "pachd_image_tag" {
   type    = string
-  default = "2.3.0-rc.2"
+  default = "2.3.3"
+}
+
+variable "console_image_tag" {
+  type    = string
+  default = "2.3.3-1"
 }
 
 variable "loki_storage_size" {
@@ -279,12 +284,12 @@ variable "pgbouncer_default_pool_size" {
 }
 
 variable "dns_name" {
-  type    = string
-  description = "value of the dns name for the pachyderm cluster ex. test.pachaform.com"
+  type        = string
+  description = "value of the dns name for the pachyderm cluster ex. console.pachaform.com"
 }
 
 variable "oidc_issuer" {
-  type = string
+  type        = string
   description = "enter oidc issuer url ex. https://pachaform.okta.com/oauth2/default"
 }
 
@@ -303,26 +308,41 @@ variable "oidc_client_secret" {
 ###############################################################################
 
 variable "notebook_dns_name" {
-  type    = string
+  type        = string
   description = "value of the dns name for the pachyderm notebook ex. notebook.pachaform.com"
 }
 
 variable "jupyter_version" {
-  type = string
+  type    = string
   default = "1.2.0"
 }
 
 variable "notebooks_user_version" {
-  type = string
+  type    = string
   default = "v0.6.0"
 }
 
 variable "mount_server_image" {
-  type = string
+  type    = string
   default = "pachyderm/mount-server:2.3.0-994b6f6553ff265ca128c8fb4fec825be87a972a"
 }
 
 variable "hub_admin_user" {
-  type = string
+  type        = string
   description = "username of the hub admin user"
+  default     = "brody.osterbuhr@pachyderm.io"
+}
+
+###############################################################################
+# KARPENTER VARIABLES
+###############################################################################
+
+variable "karpenter_service_account_create" {
+  type    = bool
+  default = true
+}
+
+variable "karpenter_service_account_name" {
+  type    = string
+  default = "karpenter"
 }

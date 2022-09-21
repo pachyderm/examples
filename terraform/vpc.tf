@@ -19,10 +19,20 @@ resource "aws_security_group" "pachaform_sg" {
     to_port   = 0
     protocol  = "-1"
     cidr_blocks = [
-      "${data.http.ip.body}/32",
+      "${data.http.ip.response_body}/32",
       aws_vpc.pachaform_vpc.cidr_block,
     ]
   }
+
+  ingress {
+    from_port = 8443
+    to_port   = 8443
+    protocol  = "tcp"
+    cidr_blocks = [
+      aws_vpc.pachaform_vpc.cidr_block
+    ]
+  }
+
   egress {
     from_port = 0
     to_port   = 0
@@ -32,6 +42,10 @@ resource "aws_security_group" "pachaform_sg" {
     ]
   }
   name = var.project_name
+  tags = {
+    Name                                                 = "${var.project_name}-sg"
+    "karpenter.sh/discovery/${var.project_name}-cluster" = "${var.project_name}-cluster"
+  }
   depends_on = [
     aws_vpc.pachaform_vpc,
     aws_route_table.pachaform_public_route_table,
@@ -46,8 +60,9 @@ resource "aws_subnet" "pachaform_private_subnet_1" {
   tags = {
     Name                                                        = "${var.project_name}-private-subnet-a"
     "kubernetes.io/role/internal-elb"                           = "1"
-    "kubernetes.io/role/${aws_iam_role.pachaform_cluster.name}" = "owned"
+    "kubernetes.io/role/${aws_iam_role.pachaform_cluster.name}" = "shared"
     "kubernetes.io/cluster/${var.project_name}-cluster"         = "shared"
+    "karpenter.sh/discovery/${var.project_name}-cluster"        = "${var.project_name}-cluster"
   }
 }
 
@@ -59,8 +74,9 @@ resource "aws_subnet" "pachaform_public_subnet_2" {
   tags = {
     Name                                                        = "${var.project_name}-public-subnet-b"
     "kubernetes.io/role/elb"                                    = "1"
-    "kubernetes.io/role/${aws_iam_role.pachaform_cluster.name}" = "owned"
+    "kubernetes.io/role/${aws_iam_role.pachaform_cluster.name}" = "shared"
     "kubernetes.io/cluster/${var.project_name}-cluster"         = "shared"
+    "karpenter.sh/discovery/${var.project_name}-cluster"        = "${var.project_name}-cluster"
   }
 }
 
@@ -71,8 +87,9 @@ resource "aws_subnet" "pachaform_private_subnet_2" {
   tags = {
     Name                                                        = "${var.project_name}-private-subnet-b"
     "kubernetes.io/role/internal-elb"                           = "1"
-    "kubernetes.io/role/${aws_iam_role.pachaform_cluster.name}" = "owned"
+    "kubernetes.io/role/${aws_iam_role.pachaform_cluster.name}" = "shared"
     "kubernetes.io/cluster/${var.project_name}-cluster"         = "shared"
+    "karpenter.sh/discovery/${var.project_name}-cluster"        = "${var.project_name}-cluster"
   }
 }
 
@@ -84,8 +101,9 @@ resource "aws_subnet" "pachaform_public_subnet_1" {
   tags = {
     Name                                                        = "${var.project_name}-public-subnet-a"
     "kubernetes.io/role/elb"                                    = "1"
-    "kubernetes.io/role/${aws_iam_role.pachaform_cluster.name}" = "owned"
+    "kubernetes.io/role/${aws_iam_role.pachaform_cluster.name}" = "shared"
     "kubernetes.io/cluster/${var.project_name}-cluster"         = "shared"
+    "karpenter.sh/discovery/${var.project_name}-cluster"        = "${var.project_name}-cluster"
   }
 }
 
