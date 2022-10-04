@@ -20,8 +20,7 @@ ingress:
   className: "nginx"
   annotations: {}
   host: ""
-  tls:
-    {}
+  tls: {}
     #- secretName: ssl-tls
     #  hosts:
     #    - hostname.local

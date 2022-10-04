@@ -1,0 +1,20 @@
+{
+    "pipeline": {
+      "name": "aim-mnist"
+    },
+    "description": "A pipeline that runs an mnist pipeline with aimstack",
+    "input": {"cron": {
+      "name": "tick",
+      "spec": "0 0 31 2 *",
+      "overwrite": true
+  }
+    },
+    "transform": {
+      "cmd": ["python3", "/app/mnist.py"],
+      "image": "vmtyler/mnist-aim:0.0.1",
+      "env": {
+        "AIM_ENDPOINT": "aim://aim-pach.pachyderm.svc.cluster.local:53800"
+      }
+    }
+  }
+  
