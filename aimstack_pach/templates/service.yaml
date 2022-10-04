@@ -6,12 +6,12 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - name: gui
-      port: 80
+      port: {{ .Values.service.gui_port }}
       protocol: TCP
       targetPort: 43800
     - name: server
-      port: 53800
+      port: {{ .Values.service.server_port }}
       protocol: TCP
-      targetPort: 53800    
+      targetPort: 53800
   selector:
-      app: aim-pach
+    app: aim-pach

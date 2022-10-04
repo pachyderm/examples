@@ -1,0 +1,18 @@
+Congrats! Aim is installed. 
+When you configure your code in your pachyderm pipelines with the aim integration, just configure the repo with the following endpoint:
+aim://aim-pach.{{.Release.Namespace}}.svc.cluster.local:{{ .Values.service.server_port }}
+
+So for example:
+import aim
+
+run_inst = aim.Run(experiment='my_exp_name', repo='aim://aim-pach.{{.Release.Namespace}}.svc.cluster.local:{{ .Values.service.server_port }}')
+
+# Save inputs, hparams or any other `key: value` pairs
+run_inst['hparams'] = {
+    'learning_rate': 0.01,
+    'batch_size': 32,
+}
+
+# Track metrics
+for i in range(10):
+    run_inst.track(i, name='metric_name')

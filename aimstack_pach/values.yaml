@@ -3,25 +3,25 @@
 # Declare variables to be passed into your templates.
 
 image:
-  repository: vmtyler/aim
-  tag: "1.0"
+  repository: aimstack/aim
+  tag: ""
 
 storage:
   size: 10Gi
-  storageClass: ""
+  storageClass: default
 
 service:
   type: ClusterIP
-  port: 80
+  gui_port: 8080
+  server_port: 53800
 
 ingress:
-  enabled: true
-  className: "ninx"
+  enabled: false
+  className: "nginx"
   annotations: {}
   host: ""
-  tls: 
+  tls:
+    {}
     #- secretName: ssl-tls
     #  hosts:
     #    - hostname.local
-
-
