@@ -43,25 +43,25 @@ variable "db_username" {
 variable "db_password" {
   type        = string
   description = "database password"
-  default     = "supersecretpassword"
+  default     = "insecure-user-password"
 }
 
 variable "db_iops" {
   type        = number
   description = "iops for db"
-  default     = 1001
+  default     = 5000
 }
 
 variable "db_storage" {
   type        = number
   description = "storage for db"
-  default     = 100
+  default     = 500
 }
 
 variable "db_max_storage" {
   type        = number
   description = "max storage for db"
-  default     = 200
+  default     = 2000
 }
 
 ###############################################################################
@@ -110,7 +110,7 @@ variable "node_capacity_type" {
 variable "node_instance_types" {
   type        = list(string)
   description = "node pool instance types (e.g. m5.2xlarge)"
-  default     = ["m5.large"]
+  default     = ["m5.2xlarge"]
 }
 
 variable "max_nodes" {
@@ -135,6 +135,11 @@ variable "node_timeout" {
   type        = string
   description = "node pool creation/deletion/update timeout"
   default     = "15m"
+}
+
+variable "node_tag" {
+  type    = string
+  default = "pach_node"
 }
 
 ###############################################################################
@@ -174,17 +179,32 @@ variable "namespace" {
 
 variable "pach_version" {
   type    = string
-  default = "2.3.3"
+  default = "2.3.6"
+}
+
+variable "pachd_image_repo" {
+  type    = string
+  default = "pachyderm/pachd"
 }
 
 variable "pachd_image_tag" {
   type    = string
-  default = "2.3.3"
+  default = "2.3.6"
+}
+
+variable "worker_image_repo" {
+  type    = string
+  default = "pachyderm/worker"
+}
+
+variable "worker_image_tag" {
+  type    = string
+  default = "2.3.6"
 }
 
 variable "console_image_tag" {
   type    = string
-  default = "2.3.3-1"
+  default = "2.3.6-1"
 }
 
 variable "loki_storage_size" {
@@ -250,12 +270,12 @@ variable "pachd_cpu_request" {
 
 variable "pachd_memory_request" {
   type    = string
-  default = "1Gi"
+  default = "2Gi"
 }
 
 variable "etcd_cpu_request" {
   type    = number
-  default = 1
+  default = 2
 }
 
 variable "etcd_memory_request" {
@@ -275,12 +295,17 @@ variable "etcd_storage_size" {
 
 variable "pgbouncer_max_connections" {
   type    = number
-  default = 1000
+  default = 5000
 }
 
 variable "pgbouncer_default_pool_size" {
   type    = number
-  default = 100
+  default = 500
+}
+
+variable "admin_user" {
+  type        = string
+  description = "username of the admin user"
 }
 
 variable "dns_name" {
@@ -288,17 +313,37 @@ variable "dns_name" {
   description = "value of the dns name for the pachyderm cluster ex. console.pachaform.com"
 }
 
-variable "oidc_issuer" {
+variable "cloudflare_api_token" {
+  type        = string
+  description = "value of the cloudflare api token"
+}
+
+variable "cloudflare_zone_id" {
+  type        = string
+  description = "value of the cloudflare zone id"
+}
+
+variable "okta_oidc_issuer" {
   type        = string
   description = "enter oidc issuer url ex. https://pachaform.okta.com/oauth2/default"
 }
 
-variable "oidc_client_id" {
+variable "okta_oidc_client_id" {
   type        = string
   description = "enter oidc_clientID"
 }
 
-variable "oidc_client_secret" {
+variable "okta_oidc_client_secret" {
+  type        = string
+  description = "enter oidc_clientSecret"
+}
+
+variable "github_oidc_client_id" {
+  type        = string
+  description = "enter oidc_clientID"
+}
+
+variable "github_oidc_client_secret" {
   type        = string
   description = "enter oidc_clientSecret"
 }
@@ -319,18 +364,12 @@ variable "jupyter_version" {
 
 variable "notebooks_user_version" {
   type    = string
-  default = "v0.6.0"
+  default = "?"
 }
 
 variable "mount_server_image" {
   type    = string
-  default = "pachyderm/mount-server:2.3.0-994b6f6553ff265ca128c8fb4fec825be87a972a"
-}
-
-variable "hub_admin_user" {
-  type        = string
-  description = "username of the hub admin user"
-  default     = "brody.osterbuhr@pachyderm.io"
+  default = "?"
 }
 
 ###############################################################################

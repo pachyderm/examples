@@ -16,7 +16,7 @@
 #       OAUTH_CLIENT_ID        = var.oidc_client_id,
 #       OAUTH_CLIENT_SECRET    = var.oidc_client_secret,
 #       NOTEBOOK_DNS_NAME      = var.notebook_dns_name,
-#       HUB_ADMIN_USER         = var.hub_admin_user,
+#       HUB_ADMIN_USER         = var.admin_user,
 #       NOTEBOOKS_USER_VERSION = var.notebooks_user_version,
 #       MOUNT_SERVER_IMAGE     = var.mount_server_image,
 #     })
@@ -26,3 +26,12 @@
 #   ]
 # }
 
+# data "kubernetes_service" "notebooks_proxy" {
+#   metadata {
+#     name      = "proxy-public"
+#     namespace = var.namespace
+#   }
+#   depends_on = [
+#     helm_release.pachyderm_jupyterhub,
+#   ]
+# }

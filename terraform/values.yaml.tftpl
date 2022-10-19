@@ -1,11 +1,8 @@
 deployTarget: AMAZON
 
 global:
-  securityContexts:
-    enabled: false
   postgresql:
     postgresqlUsername: ${POSTGRESQL_USERNAME}
-    postgresqlPassword: ${POSTGRESQL_PASSWORD}
     postgresqlExistingSecretName: ${PROJECT_SECRETS}
     postgresqlExistingSecretKey: postgresql_password
     postgresqlDatabase: ${POSTGRESQL_DATABASE}
@@ -19,16 +16,22 @@ loki-stack:
       storageClassName: ${LOKI_STORAGE_CLASS}
 
 console:
-  nodeSelector:
-    kubernetes.io/arch: "arm64"
   image:
     tag: ${CONSOLE_IMAGE_TAG}
+  priorityClassName: "system-node-critical"
   config:
     oauthClientSecretSecretName: ${PROJECT_SECRETS}
+  nodeSelector:
+    node_tag: "${NODE_TAG}"
 
 pachd:
+  replicas: 1
   image:
+    repository: ${PACHD_IMAGE_REPO}
     tag: ${PACHD_IMAGE_TAG}
+  priorityClassName: "system-node-critical"
+  nodeSelector:
+    node_tag: "${NODE_TAG}"
   logLevel: ${LOG_LEVEL}
   lokiDeploy: ${LOKI_DEPLOY}
   lokiLogging: ${LOKI_LOGGING}
@@ -38,12 +41,16 @@ pachd:
   enterpriseSecretSecretName: ${PROJECT_SECRETS}
   oauthClientSecretSecretName: ${PROJECT_SECRETS}
   localhostIssuer: "true"
-  nodeSelector:
-    kubernetes.io/arch: "arm64"
+  pachAuthClusterRoleBindings:
+    user:${PACH_ADMIN}:
+    - clusterAdmin
   serviceAccount:
     additionalAnnotations:
       eks.amazonaws.com/role-arn: ${BUCKET_ROLE_ARN}
   worker:
+    image:
+      repository: ${WORKER_IMAGE_REPO}
+      tag: ${WORKER_IMAGE_TAG}
     serviceAccount:
       additionalAnnotations:
         eks.amazonaws.com/role-arn: ${BUCKET_ROLE_ARN}
@@ -64,8 +71,7 @@ kubeEventTail:
 etcd:
   storageClass: ${ETCD_STORAGE_CLASS}
   storageSize: ${ETCD_STORAGE_SIZE}
-  nodeSelector:
-    kubernetes.io/arch: "arm64"
+  priorityClassName: "system-node-critical"
   image:
     repository: "pachyderm/etcd"
     tag: "v3.5.2"
@@ -73,18 +79,25 @@ etcd:
     requests:
       cpu: ${ETCD_CPU_REQUEST}
       memory: ${ETCD_MEMORY_REQUEST}
+  nodeSelector:
+    node_tag: "${NODE_TAG}"
+    
 
 pgbouncer:
-  nodeSelector:
-    kubernetes.io/arch: "amd64"
+  priorityClassName: "system-node-critical"
   maxConnections: ${PGBOUNCER_MAX_CONNECTIONS}
   defaultPoolSize: ${PGBOUNCER_DEFAULT_POOL_SIZE}
+  nodeSelector:
+    node_tag: "${NODE_TAG}"
 
 
 postgresql:
   enabled: false
 
 proxy:
+  priorityClassName: "system-node-critical"
+  nodeSelector:
+    node_tag: "${NODE_TAG}"
   enabled: true
   host: ${DNS_NAME}
   service:

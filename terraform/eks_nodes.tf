@@ -40,8 +40,9 @@ resource "aws_iam_role_policy_attachment" "pachaform_nodes_AmazonEC2ContainerReg
 }
 
 resource "aws_launch_template" "pachaform_launch_template" {
-  ebs_optimized = var.lt_ebs_optimized
-  name          = "${var.project_name}-launch-template"
+  ebs_optimized          = var.lt_ebs_optimized
+  name                   = "${var.project_name}-launch-template"
+  vpc_security_group_ids = [aws_security_group.pachaform_sg.id]
   block_device_mappings {
     device_name = "/dev/xvda"
     ebs {
@@ -59,6 +60,9 @@ resource "aws_eks_node_group" "pachaform_nodes" {
   node_group_name = "${var.project_name}-nodes"
   node_role_arn   = aws_iam_role.pachaform_nodes.arn
   ami_type        = "AL2_x86_64"
+  labels = {
+    "node_tag" = var.node_tag
+  }
 
   subnet_ids = [
     aws_subnet.pachaform_private_subnet_1.id,
@@ -92,6 +96,7 @@ resource "aws_eks_node_group" "pachaform_nodes" {
     update = var.node_timeout
   }
   tags = {
-    "karpenter.sh/discovery/${aws_eks_cluster.pachaform_cluster.name}" = "${aws_eks_cluster.pachaform_cluster.name}"
+    "karpenter.sh/discovery/${var.project_name}-cluster" = "${var.project_name}-cluster"
+    "node_tag"                                           = "${var.node_tag}"
   }
 }
