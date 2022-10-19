@@ -34,6 +34,8 @@ resource "aws_eks_cluster" "pachaform_cluster" {
     subnet_ids = [
       aws_subnet.pachaform_private_subnet_1.id,
       aws_subnet.pachaform_private_subnet_2.id,
+      aws_subnet.pachaform_public_subnet_1.id,
+      aws_subnet.pachaform_public_subnet_2.id,
     ]
     security_group_ids = [
       aws_security_group.pachaform_sg.id,

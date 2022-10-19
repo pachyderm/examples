@@ -1,13 +1,3 @@
-data "kubernetes_service" "notebooks_proxy" {
-  metadata {
-    name      = "proxy-public"
-    namespace = var.namespace
-  }
-  depends_on = [
-    helm_release.pachyderm_jupyterhub,
-  ]
-}
-
 resource "kubectl_manifest" "karpenter_provisioner" {
   yaml_body = <<-YAML
     apiVersion: karpenter.sh/v1alpha5
@@ -18,10 +8,9 @@ resource "kubectl_manifest" "karpenter_provisioner" {
       consolidation:
         enabled: true
       requirements:
-        # Include general purpose instance families
         - key: karpenter.k8s.aws/instance-family
-          operator: In
-          values: [c5, m5, r5, m6g]
+          operator: NotIn
+          values: [c5ad, c5d, c6gd, c6id, g4ad, g4dn, m5ad, m5d, m5dn, m6gd, m6id, p3dn, p4d, p4de, r5ad, r5d, r5dn, r6gd, r6id, x2gd, x2idn, x2iedn, z1d]
         # Exclude small instance sizes
         - key: karpenter.k8s.aws/instance-size
           operator: NotIn
@@ -29,14 +18,44 @@ resource "kubectl_manifest" "karpenter_provisioner" {
         - key: kubernetes.io/arch
           operator: In
           values: [amd64, arm64]
-      provider:
-        instanceProfile: KarpenterNodeInstanceProfile-${var.project_name}-cluster
-        launchTemplate: ${aws_launch_template.pachaform_launch_template.name}
-        subnetSelector:
-          karpenter.sh/discovery/${aws_eks_cluster.pachaform_cluster.id}: ${aws_eks_cluster.pachaform_cluster.id}
-        securityGroupSelector:
-          karpenter.sh/discovery/${aws_eks_cluster.pachaform_cluster.id}: ${aws_eks_cluster.pachaform_cluster.id}
-  YAML
+        - key: "karpenter.sh/capacity-type"
+          operator: In
+          values: ["spot", "on-demand"]
+      providerRef:
+        name: default
+  YAML  
+
+  depends_on = [
+    helm_release.karpenter,
+    kubectl_manifest.karpenter_node_template
+  ]
+}
+
+resource "kubectl_manifest" "karpenter_node_template" {
+  yaml_body = <<-YAML
+    apiVersion: karpenter.k8s.aws/v1alpha1
+    kind: AWSNodeTemplate
+    metadata:
+      name: default
+    spec:
+      amiFamily: AL2
+      blockDeviceMappings:
+        - deviceName: /dev/xvda
+          ebs:
+            volumeSize: "${var.lt_block_ebs_size}G"
+            volumeType: ${var.lt_block_ebs_type}
+            iops: ${var.lt_block_ebs_iops}
+            encrypted: true
+            deleteOnTermination: true
+            throughput: ${var.lt_block_ebs_throughput}
+      instanceProfile: KarpenterNodeInstanceProfile-${var.project_name}-cluster
+      subnetSelector:
+        karpenter.sh/discovery/${var.project_name}-cluster: ${var.project_name}-cluster
+      securityGroupSelector:
+        karpenter.sh/discovery/${var.project_name}-cluster: ${var.project_name}-cluster
+      tags:
+        karpenter.sh/discovery/${var.project_name}-cluster: ${var.project_name}-cluster
+  YAML  
 
   depends_on = [
     helm_release.karpenter,
@@ -165,7 +184,7 @@ resource "helm_release" "karpenter" {
   name       = "karpenter"
   repository = "https://charts.karpenter.sh"
   chart      = "karpenter"
-  version    = "v0.16.1"
+  version    = "v0.16.2"
 
   values = [
     templatefile("${path.module}/karpenter-values.yaml.tftpl", {

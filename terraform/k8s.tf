@@ -20,9 +20,9 @@ resource "kubernetes_secret_v1" "pachaform_secrets" {
         name : "okta",
         type : "oidc",
         jsonConfig : jsonencode({
-          "issuer" : var.oidc_issuer,
-          "clientID" : var.oidc_client_id,
-          "clientSecret" : var.oidc_client_secret,
+          "issuer" : var.okta_oidc_issuer,
+          "clientID" : var.okta_oidc_client_id,
+          "clientSecret" : var.okta_oidc_client_secret,
           "redirectURI" : "http://${var.dns_name}/dex/callback",
           "insecureEnableGroups" : true,
           "insecureSkipEmailVerified" : true,
@@ -33,7 +33,18 @@ resource "kubernetes_secret_v1" "pachaform_secrets" {
             "groups" : "groups"
           }
         })
-    }])
+      },
+      {
+        id : "github",
+        name : "GitHub",
+        type : "github",
+        config : {
+          "clientID" : var.github_oidc_client_id,
+          "clientSecret" : var.github_oidc_client_secret,
+          "redirectURI" : "http://${var.dns_name}/dex/callback"
+        }
+      }
+    ])
   }
 }
 
@@ -60,7 +71,7 @@ resource "null_resource" "kubectl" {
     aws_eks_cluster.pachaform_cluster,
   ]
   provisioner "local-exec" {
-    command = "aws eks --region ${var.region} update-kubeconfig --name ${aws_eks_cluster.pachaform_cluster.name}"
+    command = "aws eks --region ${var.region} update-kubeconfig --name ${aws_eks_cluster.pachaform_cluster.name} --alias ${var.project_name}"
   }
 }
 
