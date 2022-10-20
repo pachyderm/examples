@@ -19,13 +19,10 @@ console:
   image:
     tag: ${CONSOLE_IMAGE_TAG}
   priorityClassName: "system-node-critical"
-  config:
-    oauthClientSecretSecretName: ${PROJECT_SECRETS}
   nodeSelector:
     node_tag: "${NODE_TAG}"
 
 pachd:
-  replicas: 1
   image:
     repository: ${PACHD_IMAGE_REPO}
     tag: ${PACHD_IMAGE_TAG}
@@ -36,14 +33,9 @@ pachd:
   lokiDeploy: ${LOKI_DEPLOY}
   lokiLogging: ${LOKI_LOGGING}
   enterpriseLicenseKeySecretName: ${PROJECT_SECRETS}
-  rootTokenSecretName: ${PROJECT_SECRETS}
   clusterDeploymentID: ${CLUSTER_DEPLOYMENT_ID}
   enterpriseSecretSecretName: ${PROJECT_SECRETS}
-  oauthClientSecretSecretName: ${PROJECT_SECRETS}
-  localhostIssuer: "true"
-  pachAuthClusterRoleBindings:
-    user:${PACH_ADMIN}:
-    - clusterAdmin
+
   serviceAccount:
     additionalAnnotations:
       eks.amazonaws.com/role-arn: ${BUCKET_ROLE_ARN}
@@ -72,9 +64,6 @@ etcd:
   storageClass: ${ETCD_STORAGE_CLASS}
   storageSize: ${ETCD_STORAGE_SIZE}
   priorityClassName: "system-node-critical"
-  image:
-    repository: "pachyderm/etcd"
-    tag: "v3.5.2"
   resources:
     requests:
       cpu: ${ETCD_CPU_REQUEST}
@@ -99,10 +88,6 @@ proxy:
   nodeSelector:
     node_tag: "${NODE_TAG}"
   enabled: true
-  host: ${DNS_NAME}
+  host: "${DNS_NAME}"
   service:
     type: LoadBalancer
-
-oidc:
-  upstreamIDPsSecretName: ${PROJECT_SECRETS}
-  userAccessibleOauthIssuerHost: ${DNS_NAME}

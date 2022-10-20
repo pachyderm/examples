@@ -8,6 +8,7 @@ resource "aws_vpc" "pachaform_vpc" {
   }
 }
 
+# Note: This adds the IP of your local setup to the DB SG 
 data "http" "ip" {
   url = "https://ifconfig.me"
 }

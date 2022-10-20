@@ -57,7 +57,7 @@ resource "aws_iam_role_policy_attachment" "pachaform_s3_bucket_policy_attachment
 }
 
 resource "aws_s3_bucket" "pachaform_s3_bucket" {
-  bucket        = "${var.project_name}-bucket"
+  bucket        = "${var.project_name}-bucket1212"
   force_destroy = true
   depends_on = [
     aws_iam_role.pachaform_s3_role,

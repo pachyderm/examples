@@ -23,12 +23,6 @@ terraform {
       source  = "cyrilgdn/postgresql"
       version = "1.16.0"
     }
-
-    cloudflare = {
-      source  = "cloudflare/cloudflare"
-      version = "3.25.0"
-    }
-
   }
 }
 provider "kubernetes" {
@@ -82,8 +76,4 @@ provider "postgresql" {
   superuser = false
 
   expected_version = aws_db_instance.pachaform_postgres.engine_version
-}
-
-provider "cloudflare" {
-  api_token = var.cloudflare_api_token
 }

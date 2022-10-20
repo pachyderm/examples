@@ -25,7 +25,7 @@ variable "project_name" {
 variable "db_version" {
   type        = string
   description = "version of postgresql to use"
-  default     = "14.2"
+  default     = "14.3"
 }
 
 variable "db_instance_class" {
@@ -303,74 +303,11 @@ variable "pgbouncer_default_pool_size" {
   default = 500
 }
 
-variable "admin_user" {
-  type        = string
-  description = "username of the admin user"
-}
-
 variable "dns_name" {
   type        = string
   description = "value of the dns name for the pachyderm cluster ex. console.pachaform.com"
 }
 
-variable "cloudflare_api_token" {
-  type        = string
-  description = "value of the cloudflare api token"
-}
-
-variable "cloudflare_zone_id" {
-  type        = string
-  description = "value of the cloudflare zone id"
-}
-
-variable "okta_oidc_issuer" {
-  type        = string
-  description = "enter oidc issuer url ex. https://pachaform.okta.com/oauth2/default"
-}
-
-variable "okta_oidc_client_id" {
-  type        = string
-  description = "enter oidc_clientID"
-}
-
-variable "okta_oidc_client_secret" {
-  type        = string
-  description = "enter oidc_clientSecret"
-}
-
-variable "github_oidc_client_id" {
-  type        = string
-  description = "enter oidc_clientID"
-}
-
-variable "github_oidc_client_secret" {
-  type        = string
-  description = "enter oidc_clientSecret"
-}
-
-###############################################################################
-# NOTEBOOK VARIABLES
-###############################################################################
-
-variable "notebook_dns_name" {
-  type        = string
-  description = "value of the dns name for the pachyderm notebook ex. notebook.pachaform.com"
-}
-
-variable "jupyter_version" {
-  type    = string
-  default = "1.2.0"
-}
-
-variable "notebooks_user_version" {
-  type    = string
-  default = "?"
-}
-
-variable "mount_server_image" {
-  type    = string
-  default = "?"
-}
 
 ###############################################################################
 # KARPENTER VARIABLES

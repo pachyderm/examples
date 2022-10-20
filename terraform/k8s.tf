@@ -14,37 +14,6 @@ resource "kubernetes_secret_v1" "pachaform_secrets" {
 
     enterprise-license-key : var.enterprise_license_key,
     postgresql_password : var.db_password,
-    upstream-idps = yamlencode([
-      {
-        id : "okta",
-        name : "okta",
-        type : "oidc",
-        jsonConfig : jsonencode({
-          "issuer" : var.okta_oidc_issuer,
-          "clientID" : var.okta_oidc_client_id,
-          "clientSecret" : var.okta_oidc_client_secret,
-          "redirectURI" : "http://${var.dns_name}/dex/callback",
-          "insecureEnableGroups" : true,
-          "insecureSkipEmailVerified" : true,
-          "insecureSkipIssuerCallbackDomainCheck" : true,
-          "forwardedLoginParams" : ["login_hint"],
-          "scopes" : ["groups", "email", "profile"],
-          "claimMapping" : {
-            "groups" : "groups"
-          }
-        })
-      },
-      {
-        id : "github",
-        name : "GitHub",
-        type : "github",
-        config : {
-          "clientID" : var.github_oidc_client_id,
-          "clientSecret" : var.github_oidc_client_secret,
-          "redirectURI" : "http://${var.dns_name}/dex/callback"
-        }
-      }
-    ])
   }
 }
 

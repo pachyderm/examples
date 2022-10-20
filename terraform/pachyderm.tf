@@ -46,7 +46,6 @@ resource "helm_release" "pachaform" {
       PGBOUNCER_MAX_CONNECTIONS   = var.pgbouncer_max_connections
       PGBOUNCER_DEFAULT_POOL_SIZE = var.pgbouncer_default_pool_size
       DNS_NAME                    = var.dns_name
-      PACH_ADMIN                  = var.admin_user
       NODE_TAG                    = var.node_tag
     })
   ]
@@ -58,6 +57,7 @@ resource "helm_release" "pachaform" {
   ]
 }
 
+/*
 resource "null_resource" "pachctl_context" {
   depends_on = [
     helm_release.pachaform,
@@ -74,3 +74,4 @@ resource "null_resource" "pachctl_context" {
   }
 
 }
+*/
