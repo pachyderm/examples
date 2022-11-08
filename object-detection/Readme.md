@@ -8,6 +8,9 @@ This example illustrates a common Object Detection use case using [Pachyderm](ht
 
 This demo mimics the object detection [example from Lightning Flash](https://lightning-flash.readthedocs.io/en/stable/reference/object_detection.html#example). We extend the example to predict on new data that can be used to produce predictions for the [Pachyderm Label Studio integration](https://github.com/pachyderm/label-studio) to refine and improve your training data.
 
+## Prerequisites
+In order to fully complete this example you will need the [Pachyderm Label Studio integration](https://github.com/pachyderm/label-studio) running along with the [Enterprise Server](https://docs.pachyderm.com/2.3.x/enterprise/auth/enterprise-server/setup/). You can complete up to Step 5 with the Community Edition.
+
 ## Dataset
 The dataset used for this example is the COCO 128 dataset, which is a subset of [COCOtrain2017](https://cocodataset.org/), containing 80 object classes. 
 
