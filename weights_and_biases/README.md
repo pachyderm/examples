@@ -11,7 +11,7 @@ Here we'll use Pachyderm to manage our data and train our model.
   <img width="700" src="images/pachyderm_mnist_screenshot.png">
 </p>
 
-For the object detection example using Weights and Biases look at our [Pachyderm with WandB Object Detection notebook](../object-detection/Pachyderm with%20WandB%20Object%20Detection.ipynb). 
+For the object detection example using Weights and Biases look at our [Weights and Biases notebook](../object-detection/Pachyderm%20with%20WandB%20Object%20Detection.ipynb). 
 
 ## Running the Example
 
