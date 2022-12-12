@@ -11,6 +11,7 @@
 ## Notebooks
 - [JupyterLab Pachyderm Mount Extension](./Mount%20Extension%20Demo.ipynb) - A notebook showing how to use the [JupyterLab Pachyderm Mount Extension](https://docs.pachyderm.com/latest/how-tos/jupyterlab-extension/) to mount Pachyderm data repositories into your Notebook environment. 
 - [Jsonnet Pipeline Specs](./jsonnet/Jsonnet%20Pipeline%20Specs.ipynb) - A notebook introducing and showing how use [Jsonnet Pipeline Specs](https://docs.pachyderm.com/latest/how-tos/pipeline-operations/jsonnet-pipeline-specs/) to templatize common pipelines. 
+- [SAME Project](./same/) - A notebook showing how to do Pachyderm pipeline development with the [SAME Project](https://sameproject.ml/).  
 
 ## Data Labeling
 - [Label Studio Integration](./label-studio) - Incorporate data versioning into any labeling project with Label Studio and Pachyderm. 
