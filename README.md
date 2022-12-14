@@ -24,6 +24,7 @@
 ## Machine Learning
 - [Boston Housing Prices (Intermediate)](./housing-prices-intermediate) - Extends the original Boston Housing Prices example to show a multi-pipeline DAG and data rollbacks. 
 - [Breast Cancer Detection](./breast-cancer-detection) - A breast cancer detection system based on radiology scans scaled and visualized using Pachyderm.
+- [AutoML](./autoML) - A Pachyderm pipeline that uses the [mljar-supervised](https://github.com/mljar/mljar-supervised) to train a machine learning model on a CSV file.
 - [Market Sentiment](./market-sentiment) - Train and deploy a fully automated financial market sentiment BERT model. As data is manually labeled, the model will automatically retrain and deploy. 
 - [Apache Spark - MLflow Integration](https://github.com/winderai/pachyderm-mlflow-spark) - End-to-end example demostrating the full ML training process of a fraud detection model with Spark, MLlib, MLflow, and Pachyderm.
 
