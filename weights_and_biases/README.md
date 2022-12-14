@@ -11,11 +11,13 @@ Here we'll use Pachyderm to manage our data and train our model.
   <img width="700" src="images/pachyderm_mnist_screenshot.png">
 </p>
 
+For the object detection example using Weights and Biases look at our [Weights and Biases notebook](../object-detection/Pachyderm%20with%20WandB%20Object%20Detection.ipynb). 
+
 ## Running the Example
 
 1. Create a [Pachyderm cluster](https://docs.pachyderm.com/latest/getting_started/).
 2. Create a [W&B Account](https://wandb.ai/) 
-3. Copy your [W&B API Key](https://wandb.ai/authorize) into the `secrets.json` file. We'll use this file to make a [Pachyderm secret](https://docs.pachyderm.com/latest/reference/pachctl/pachctl_create_secret/). This keeps our access keys from being built into our container or put in plaintext somewhere.
+3. Copy your [W&B API Key](https://wandb.ai/authorize) into the `secrets.json` file. We'll use this file to make a [Pachyderm secret](https://docs.pachyderm.com/2.3.x/how-tos/advanced-data-operations/secrets/#create-your-secret-in-pachyderm). This keeps our access keys from being built into our container or put in plaintext somewhere.
 4. Create the secret with `pachctl create secret -f secrets.json`
 5. Run `make all` to create a data repository and the pipeline. 
 

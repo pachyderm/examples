@@ -14,6 +14,8 @@ The dataset used for this example is the COCO 128 dataset, which is a subset of 
 ## Notebook
 For the detailed walkthrough, view our [notebook version of this example](Object%20Detection%20Example.ipynb). 
 
+We also have a simplified [Weights and Biases notebook](Pachyderm%20with%20WandB%20Object%20Detection.ipynb) for experimenting with the experiment tracking setup here
+
 ## TLDR; 
 Just give me the code!
 
