@@ -19,6 +19,7 @@
 - [Toloka Integration](https://github.com/Toloka/toloka-pachyderm) - Uses Pachyderm to create crowdsourced annotation jobs for news headlines in Toloka, aggregate the labeled data, and train a model.
 
 ## Data Warehouse
+- [BigQuery](./bigquery) -  Connector to ingests the result of a BigQuery query into Pachyderm as a parquet file. 
 - [Churn Prediction with Snowflake](./snowflake) - Create a churn analysis model for a music streaming service with Pachyderm and Snowflake using the Data Warehouse integration. 
 
 ## Machine Learning
