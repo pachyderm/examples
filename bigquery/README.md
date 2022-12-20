@@ -44,7 +44,7 @@ With a namespace
 kubectl create secret generic gbqsecret --from-file=gbq-pachyderm-creds.json -n mynamespace
 ```
 
-3. Run the pipeline template with jsonnet. Note, this pipeline will not run immediately, but rather will wait until the next cron tick. E.g. if you have it set to 30s, you will wait 30s until the first run of the pipeline. 
+3. Run the pipeline template with jsonnet. Note, this pipeline will not run immediately, but rather will wait until the next cron tick. E.g. if you have it set to `5m`, you will wait 5 minutes until the first run of the pipeline. 
 
 ```bash
 $ pachctl update pipeline --jsonnet gbq_ingest.jsonnet \
@@ -57,7 +57,7 @@ $ pachctl update pipeline --jsonnet gbq_ingest.jsonnet \
 
 ## Additional Details
 ### Cron Spec 
-In some cases, you may not want your cron pipeline to run every 30 seconds as shown in the example above. For example, when testing a large ingestion, you may want to run the pipeline manually. To do this, you can use a cron specification that never triggers, such as `--arg cronSpec="* * 31 2 *"`. This value will never trigger the cron pipeline (it refers to a nonexistent date - 31st of Feb). 
+In some cases, you may not want your cron pipeline to run every 5 minutes as shown in the example above. For example, when testing a large ingestion, you may want to run the pipeline manually. To do this, you can use a cron specification that never triggers, such as `--arg cronSpec="* * 31 2 *"`. This value will never trigger the cron pipeline (it refers to a nonexistent date - 31st of Feb). 
 
 To manually trigger the cron pipeline, run the following command:
 ```bash
