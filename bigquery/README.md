@@ -32,7 +32,7 @@ optional arguments:
                         Google Cloud Service account file
 ```
 
-1. Once you have a service account key, save it as `mycreds.json`.
+1. Once you have a service account key, save it with a descriptive name. In this example, we will use `gbq-pachyderm-creds.json`
 
 2. Create the secret (be sure to add the namespace if your cluster is deployed in one).
 
