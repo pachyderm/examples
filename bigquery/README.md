@@ -37,11 +37,11 @@ optional arguments:
 2. Create the secret (be sure to add the namespace if your cluster is deployed in one).
 
 ```bash
-kubectl create secret generic gbqsecret --from-file=mycreds.json
+kubectl create secret generic gbqsecret --from-file=gbq-pachyderm-creds.json
 ```
 With a namespace
 ```bash
-kubectl create secret generic gbqsecret --from-file=mycreds.json -n mynamespace
+kubectl create secret generic gbqsecret --from-file=gbq-pachyderm-creds.json -n mynamespace
 ```
 
 3. Run the pipeline template with jsonnet.  
@@ -65,6 +65,6 @@ You can configure your own pipeline spec with the secret by using these paramete
 and
 ```json
     "env": {
-        "GOOGLE_APPLICATION_CREDENTIALS": "/kubesecret/mycreds.json"
+        "GOOGLE_APPLICATION_CREDENTIALS": "/kubesecret/gbq-pachyderm-creds.json"
     },
 ```
