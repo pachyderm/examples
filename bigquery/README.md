@@ -44,17 +44,29 @@ With a namespace
 kubectl create secret generic gbqsecret --from-file=gbq-pachyderm-creds.json -n mynamespace
 ```
 
-3. Run the pipeline template with jsonnet.  
+3. Run the pipeline template with jsonnet. Note, this pipeline will not run immediately, but rather will wait until the next cron tick. E.g. if you have it set to 30s, you will wait 30s until the first run of the pipeline. 
 
 ```bash
 $ pachctl update pipeline --jsonnet gbq_ingest.jsonnet \
 --arg inputQuery="SELECT country_name, alpha_2_code FROM bigquery-public-data.utility_us.country_code_iso WHERE alpha_2_code LIKE 'A%'" \
 --arg outFile="gbq_output.parquet" \
---arg project="<project_name>" \
---arg cronSpec="@every 30s"
+--arg project="<gcp_project_name>" \
+--arg cronSpec="@every 5m"
+--arg credsFile="gbq-pachyderm-creds.json"
 ```
 
-## Configuring your own pipeline spec
+## Additional Details
+### Cron Spec 
+In some cases, you may not want your cron pipeline to run every 30 seconds as shown in the example above. For example, when testing a large ingestion, you may want to run the pipeline manually. To do this, you can use a cron specification that never triggers, such as `--arg cronSpec="* * 31 2 *"`. This value will never trigger the cron pipeline (it refers to a nonexistent date - 31st of Feb). 
+
+To manually trigger the cron pipeline, run the following command:
+```bash
+pachctl run cron gbq_ingest 
+```
+
+For more information on using cron with Pachyderm pipelines, see the [cron documentation](https://docs.pachyderm.com/2.4.x/concepts/pipeline-concepts/pipeline/cron/). 
+
+### Configuring your own pipeline spec
 You can configure your own pipeline spec with the secret by using these parameters in the pipeline spec. 
 
 ```json
@@ -68,3 +80,10 @@ and
         "GOOGLE_APPLICATION_CREDENTIALS": "/kubesecret/gbq-pachyderm-creds.json"
     },
 ```
+
+### Links to Relevant Documentation
+- [Pachyderm documentation](https://docs.pachyderm.com/)
+- [Pachyderm cron spec documentation](https://docs.pachyderm.com/2.4.x/concepts/pipeline-concepts/pipeline/cron/)
+- [Google Cloud Platform documentation](https://cloud.google.com/docs)
+- [BigQuery API documentation](https://cloud.google.com/bigquery/docs/reference/rest/)
+- [Troubleshooting tips for the BigQuery API](https://cloud.google.com/bigquery/troubleshooting-errors)
