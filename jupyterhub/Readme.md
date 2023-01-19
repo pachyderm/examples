@@ -21,9 +21,7 @@ helm repo update
 ```
 
 ```
-
 helm install jupyter jupyterhub/jupyterhub --values values.yaml
-
 ```
 
 Note: Change the version numbers noted in the values.yaml to match the version of Pachyderm
