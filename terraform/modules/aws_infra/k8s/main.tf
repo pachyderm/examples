@@ -1,4 +1,4 @@
-resource "kubernetes_secret_v1" "pachaform_secrets" {
+resource "kubernetes_secret_v1" "pachyderm_secrets" {
   metadata {
     name      = "${var.project_name}-secrets"
     namespace = var.namespace
@@ -14,15 +14,15 @@ resource "kubernetes_secret_v1" "pachaform_secrets" {
 
     enterprise-license-key : var.enterprise_license_key,
     postgresql_password : var.db_password,
-        upstream-idps = yamlencode([
+    upstream-idps = yamlencode([
       {
         id : "okta",
         name : "okta",
         type : "oidc",
         jsonConfig : jsonencode({
-          "issuer" : var.oidc_issuer,
-          "clientID" : var.oidc_client_id,
-          "clientSecret" : var.oidc_client_secret,
+          "issuer" : var.okta_oidc_issuer,
+          "clientID" : var.okta_oidc_client_id,
+          "clientSecret" : var.okta_oidc_client_secret,
           "redirectURI" : "http://${var.dns_name}/dex/callback",
           "insecureEnableGroups" : true,
           "insecureSkipEmailVerified" : true,
@@ -30,13 +30,30 @@ resource "kubernetes_secret_v1" "pachaform_secrets" {
           "forwardedLoginParams" : ["login_hint"],
           "scopes" : ["groups", "email", "profile"],
           "claimMapping" : {
-          "groups" : "groups"
+            "groups" : "groups"
           }
         })
-    }])
+      },
+      {
+        id : "github",
+        name : "GitHub",
+        type : "github",
+        config : {
+          "clientID" : var.github_oidc_client_id,
+          "clientSecret" : var.github_oidc_client_secret,
+          "redirectURI" : "http://${var.dns_name}/dex/callback",
+          "insecureEnableGroups" : true,
+          "insecureSkipEmailVerified" : true,
+          "insecureSkipIssuerCallbackDomainCheck" : true,
+          "scopes" : ["groups", "email", "profile"],
+          "claimMapping" : {
+            "groups" : "groups"
+          }
+        }
+      }
+    ])
   }
 }
-
 
 resource "kubernetes_storage_class" "gp3" {
   metadata {
@@ -48,29 +65,11 @@ resource "kubernetes_storage_class" "gp3" {
     fsType = "ext4"
   }
   volume_binding_mode = "Immediate"
-
-  depends_on = [
-    aws_eks_cluster.pachaform_cluster
-  ]
 }
 
 
 resource "null_resource" "kubectl" {
-  depends_on = [
-    aws_eks_cluster.pachaform_cluster,
-  ]
   provisioner "local-exec" {
-    command = "aws eks --region ${var.region} update-kubeconfig --name ${aws_eks_cluster.pachaform_cluster.name}"
+    command = "aws eks --region ${var.region} update-kubeconfig --name ${var.cluster_name} --alias ${var.project_name}"
   }
-}
-
-data "kubernetes_service" "pachd_proxy" {
-  metadata {
-    name      = "pachyderm-proxy"
-    namespace = var.namespace
-  }
-  depends_on = [
-    aws_eks_node_group.pachaform_nodes,
-    helm_release.pachaform,
-  ]
 }

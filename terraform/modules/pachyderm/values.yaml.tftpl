@@ -7,6 +7,7 @@ global:
     postgresqlExistingSecretKey: postgresql_password
     postgresqlDatabase: ${POSTGRESQL_DATABASE}
     postgresqlHost: ${POSTGRESQL_HOST}
+    postgresqlAuthType: ${POSTGRESQL_AUTH_TYPE}
 
 loki-stack:
   loki:
@@ -18,12 +19,23 @@ loki-stack:
 console:
   image:
     tag: ${CONSOLE_IMAGE_TAG}
+  priorityClassName: "system-node-critical"
   config:
     oauthClientSecretSecretName: ${PROJECT_SECRETS}
 
+pachw:
+  maxReplicas: 10
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "1G"
+
 pachd:
+  replicas: 1
   image:
+    repository: ${PACHD_IMAGE_REPO}
     tag: ${PACHD_IMAGE_TAG}
+  priorityClassName: "system-node-critical"
   logLevel: ${LOG_LEVEL}
   lokiDeploy: ${LOKI_DEPLOY}
   lokiLogging: ${LOKI_LOGGING}
@@ -33,10 +45,16 @@ pachd:
   enterpriseSecretSecretName: ${PROJECT_SECRETS}
   oauthClientSecretSecretName: ${PROJECT_SECRETS}
   localhostIssuer: "true"
+  pachAuthClusterRoleBindings:
+    user:${PACH_ADMIN}:
+    - clusterAdmin
   serviceAccount:
     additionalAnnotations:
       eks.amazonaws.com/role-arn: ${BUCKET_ROLE_ARN}
   worker:
+    image:
+      repository: ${WORKER_IMAGE_REPO}
+      tag: ${WORKER_IMAGE_TAG}
     serviceAccount:
       additionalAnnotations:
         eks.amazonaws.com/role-arn: ${BUCKET_ROLE_ARN}
@@ -52,19 +70,24 @@ pachd:
 etcd:
   storageClass: ${ETCD_STORAGE_CLASS}
   storageSize: ${ETCD_STORAGE_SIZE}
+  priorityClassName: "system-node-critical"
   resources:
     requests:
       cpu: ${ETCD_CPU_REQUEST}
       memory: ${ETCD_MEMORY_REQUEST}
+    
 
 pgbouncer:
+  priorityClassName: "system-node-critical"
   maxConnections: ${PGBOUNCER_MAX_CONNECTIONS}
   defaultPoolSize: ${PGBOUNCER_DEFAULT_POOL_SIZE}
+
 
 postgresql:
   enabled: false
 
 proxy:
+  priorityClassName: "system-node-critical"
   enabled: true
   host: ${DNS_NAME}
   service:
