@@ -1,17 +1,34 @@
-resource "aws_db_subnet_group" "pachaform_db_subnet_group" {
-  name        = "${var.project_name}-db-subnet-group"
-  description = "Pachyderm DB Subnet Group"
-  subnet_ids = [
-    aws_subnet.pachaform_public_subnet_1.id,
-    aws_subnet.pachaform_public_subnet_2.id,
-  ]
-  depends_on = [
-    aws_route_table_association.pachaform_public_rta_1,
-    aws_route_table_association.pachaform_public_rta_2,
-  ]
+terraform {
+  required_providers {
+    postgresql = {
+      source  = "cyrilgdn/postgresql"
+      version = "1.16.0"
+    }
+
+  }
 }
 
-resource "aws_db_instance" "pachaform_postgres" {
+provider "postgresql" {
+  scheme    = "awspostgres"
+  host      = aws_db_instance.postgres.address
+  username  = aws_db_instance.postgres.username
+  port      = aws_db_instance.postgres.port
+  password  = aws_db_instance.postgres.password
+  superuser = false
+
+  expected_version = aws_db_instance.postgres.engine_version
+}
+
+resource "aws_db_subnet_group" "db_subnet_group" {
+  name        = "${var.project_name}-db-subnet-group"
+  description = "Pachyderm DB Subnet Group"
+  subnet_ids = var.public_subnet_ids
+  tags = {
+    Owner = var.admin_user
+  }
+}
+
+resource "aws_db_instance" "postgres" {
   identifier             = "${var.project_name}-postgres"
   allocated_storage      = var.db_storage
   max_allocated_storage  = var.db_max_storage
@@ -22,19 +39,19 @@ resource "aws_db_instance" "pachaform_postgres" {
   password               = var.db_password
   db_name                = "pachyderm"
   iops                   = var.db_iops
-  db_subnet_group_name   = aws_db_subnet_group.pachaform_db_subnet_group.name
-  vpc_security_group_ids = [aws_security_group.pachaform_sg.id]
+  db_subnet_group_name   = aws_db_subnet_group.db_subnet_group.name
+  vpc_security_group_ids = [var.sg_id]
   skip_final_snapshot    = true
   publicly_accessible    = true
   apply_immediately      = true
 
+  tags = {
+    Owner = var.admin_user
+  }
+
   depends_on = [
-    aws_db_subnet_group.pachaform_db_subnet_group,
-    aws_internet_gateway.pachaform_internet_gateway,
-    aws_security_group.pachaform_sg,
-    aws_nat_gateway.pachaform_nat_gateway,
-    aws_route.pachaform_private_route,
-    aws_route.pachaform_public_route,
+    var.nat_gateway_id,
+    var.rta_id_list
   ]
 }
 
@@ -42,10 +59,7 @@ resource "postgresql_database" "dex" {
   name = "dex"
 
   depends_on = [
-    aws_db_instance.pachaform_postgres,
-    aws_nat_gateway.pachaform_nat_gateway,
-    aws_security_group.pachaform_sg,
-    aws_route.pachaform_public_route,
+    aws_db_instance.postgres,
   ]
 }
 
@@ -58,10 +72,9 @@ resource "postgresql_grant" "full_crud_dex" {
 
   depends_on = [
     postgresql_database.dex,
-    aws_security_group.pachaform_sg,
   ]
   lifecycle {
-    ignore_changes = all
+    ignore_changes = [privileges]
   }
 }
 
@@ -73,12 +86,9 @@ resource "postgresql_grant" "full_crud_pachyderm" {
   privileges  = ["ALL"]
 
   depends_on = [
-    aws_db_instance.pachaform_postgres,
-    aws_nat_gateway.pachaform_nat_gateway,
-    aws_security_group.pachaform_sg,
-    aws_route.pachaform_public_route,
+    aws_db_instance.postgres,
   ]
   lifecycle {
-    ignore_changes = all
+    ignore_changes = [privileges]
   }
 }

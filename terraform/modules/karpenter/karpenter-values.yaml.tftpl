@@ -1,0 +1,14 @@
+serviceAccount:
+  create: "${SERVICE_ACCOUNT_CREATE}"
+  name: "${SERVICE_ACCOUNT_NAME}"
+  annotations: {
+    "eks.amazonaws.com/role-arn": "${SERVICE_ACCOUNT_ROLE_ARN}"
+  }
+
+settings:
+  aws:
+    clusterName: "${CLUSTER_NAME}"
+    clusterEndpoint: "${CLUSTER_ENDPOINT}"
+    defaultInstanceProfile: "${DEFAULT_INSTANCE_PROFILE}"
+    tags:
+      OWNER: "${OWNER}"

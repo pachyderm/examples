@@ -7,6 +7,7 @@ global:
     postgresqlExistingSecretKey: postgresql_password
     postgresqlDatabase: ${POSTGRESQL_DATABASE}
     postgresqlHost: ${POSTGRESQL_HOST}
+    postgresqlAuthType: ${POSTGRESQL_AUTH_TYPE}
 
 loki-stack:
   loki:
@@ -21,8 +22,13 @@ console:
   priorityClassName: "system-node-critical"
   config:
     oauthClientSecretSecretName: ${PROJECT_SECRETS}
-  nodeSelector:
-    node_tag: "${NODE_TAG}"
+
+pachw:
+  maxReplicas: 10
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "1G"
 
 pachd:
   replicas: 1
@@ -30,8 +36,6 @@ pachd:
     repository: ${PACHD_IMAGE_REPO}
     tag: ${PACHD_IMAGE_TAG}
   priorityClassName: "system-node-critical"
-  nodeSelector:
-    node_tag: "${NODE_TAG}"
   logLevel: ${LOG_LEVEL}
   lokiDeploy: ${LOKI_DEPLOY}
   lokiLogging: ${LOKI_LOGGING}
@@ -63,32 +67,20 @@ pachd:
       cpu: ${PACHD_CPU_REQUEST}
       memory: ${PACHD_MEMORY_REQUEST}
 
-kubeEventTail:
-  image:
-    repository: jrockway/kube-event-tail
-    tag: "v0.0.6-multiarchtest"
-
 etcd:
   storageClass: ${ETCD_STORAGE_CLASS}
   storageSize: ${ETCD_STORAGE_SIZE}
   priorityClassName: "system-node-critical"
-  image:
-    repository: "pachyderm/etcd"
-    tag: "v3.5.2"
   resources:
     requests:
       cpu: ${ETCD_CPU_REQUEST}
       memory: ${ETCD_MEMORY_REQUEST}
-  nodeSelector:
-    node_tag: "${NODE_TAG}"
     
 
 pgbouncer:
   priorityClassName: "system-node-critical"
   maxConnections: ${PGBOUNCER_MAX_CONNECTIONS}
   defaultPoolSize: ${PGBOUNCER_DEFAULT_POOL_SIZE}
-  nodeSelector:
-    node_tag: "${NODE_TAG}"
 
 
 postgresql:
@@ -96,8 +88,6 @@ postgresql:
 
 proxy:
   priorityClassName: "system-node-critical"
-  nodeSelector:
-    node_tag: "${NODE_TAG}"
   enabled: true
   host: ${DNS_NAME}
   service:

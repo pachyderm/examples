@@ -1,13 +1,15 @@
-ingress:
-  enabled: true
-  hosts:
-    - ${NOTEBOOK_DNS_NAME}
-  annotations:
-    kubernetes.io/ingress.class: nginx
-    external-dns.alpha.kubernetes.io/hostname: ${NOTEBOOK_DNS_NAME}
+proxy:
+  service:
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname:  ${NOTEBOOK_DNS_NAME}
+prePuller:
+  hook:
+    enabled: false
+  continuous:
+    enabled: false
 singleuser:
     defaultUrl: "/lab"
-    cmd: "start-singleuser.sh"
+    cmd: ["sh","-c", "mkdir -p ~/.pachyderm && cp /config/config.json ~/.pachyderm && start-singleuser.sh"]
     image:
         name: pachyderm/notebooks-user
         tag: ${NOTEBOOKS_USER_VERSION}
@@ -21,11 +23,13 @@ singleuser:
     extraContainers:
         - name: mount-server-manager
           image: ${MOUNT_SERVER_IMAGE}
-          command: [ "/bin/bash", "-c", "mount-server" ]
+          command: ["sh","-c", "mkdir -p ~/.pachyderm && cp /config/config.json ~/.pachyderm && mount-server"]
           volumeMounts:
               - name: shared-pfs
                 mountPath: /pfs
                 mountPropagation: Bidirectional
+              - name: files
+                mountPath: /config
           securityContext:
               privileged: true
               runAsUser: 0
@@ -37,9 +41,23 @@ singleuser:
         extraVolumes:
             - name: shared-pfs
               emptyDir: {}
+    extraFiles:
+      config.json:
+        mountPath: /config/config.json
+        data:
+          v2:
+            active_context: mount-server
+            contexts:
+              mount-server:
+                source: 2
+                pachd_address: grpc://pachd.${NAMESPACE}
+            metrics: true
 hub:
+  nodeSelector:
+    kubernetes.io/arch: amd64
   config:
     Authenticator:
+      auto_login: true
       admin_users:
       - ${HUB_ADMIN_USER}
     GenericOAuthenticator:

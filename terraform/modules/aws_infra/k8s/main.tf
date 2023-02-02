@@ -1,4 +1,4 @@
-resource "kubernetes_secret_v1" "pachaform_secrets" {
+resource "kubernetes_secret_v1" "pachyderm_secrets" {
   metadata {
     name      = "${var.project_name}-secrets"
     namespace = var.namespace
@@ -41,13 +41,19 @@ resource "kubernetes_secret_v1" "pachaform_secrets" {
         config : {
           "clientID" : var.github_oidc_client_id,
           "clientSecret" : var.github_oidc_client_secret,
-          "redirectURI" : "http://${var.dns_name}/dex/callback"
+          "redirectURI" : "http://${var.dns_name}/dex/callback",
+          "insecureEnableGroups" : true,
+          "insecureSkipEmailVerified" : true,
+          "insecureSkipIssuerCallbackDomainCheck" : true,
+          "scopes" : ["groups", "email", "profile"],
+          "claimMapping" : {
+            "groups" : "groups"
+          }
         }
       }
     ])
   }
 }
-
 
 resource "kubernetes_storage_class" "gp3" {
   metadata {
@@ -59,19 +65,11 @@ resource "kubernetes_storage_class" "gp3" {
     fsType = "ext4"
   }
   volume_binding_mode = "Immediate"
-
-  depends_on = [
-    aws_eks_cluster.pachaform_cluster
-  ]
 }
 
 
 resource "null_resource" "kubectl" {
-  depends_on = [
-    aws_eks_cluster.pachaform_cluster,
-  ]
   provisioner "local-exec" {
-    command = "aws eks --region ${var.region} update-kubeconfig --name ${aws_eks_cluster.pachaform_cluster.name} --alias ${var.project_name}"
+    command = "aws eks --region ${var.region} update-kubeconfig --name ${var.cluster_name} --alias ${var.project_name}"
   }
 }
-
