@@ -1,0 +1,39 @@
+---
+# Example YAML file for running Regenie
+
+# Step 1 parameters
+step1:
+  bed: example/example
+  exclude: example/snplist_rm.txt
+  covarFile: example/covariates.txt
+  phenoFile: example/phenotype_bin.txt
+  remove: example/fid_iid_to_remove.txt
+  bsize: 100
+  bt: true
+  lowmem: true
+  lowmem-prefix: tmp_rg
+  out: fit_bin_out
+
+  # Optional parameters (uncomment to use)
+  # optional_params:
+  #   threads: 4
+  #   chrList: 1-22
+
+# Step 2 parameters
+step2:
+  bgen: example/example.bgen
+  covarFile: example/covariates.txt
+  phenoFile: example/phenotype_bin.txt
+  remove: example/fid_iid_to_remove.txt
+  bsize: 200
+  bt: true
+  firth: true
+  approx: true
+  pThresh: 0.01
+  pred: fit_bin_out_pred.list
+  out: test_bin_out_firth
+
+# Note: the `optional_params` key is optional and can be used to specify additional
+# optional parameters for Regenie. To use this key, uncomment it and add any desired
+# key-value pairs to specify optional parameters.
+...

@@ -1,0 +1,41 @@
+{
+    "pipeline": {
+        "name": "step2"
+    },
+    "description": "runs the second step of regenie",
+    "transform": {
+        "cmd": [
+            "python3",
+            "step2.py",
+            "/pfs/data",
+            "/pfs/step1",
+            "/pfs/config"
+        ],
+        "image": "pachyderm/regenie:1.0.0"
+    },
+    "input": {
+        "cross": [
+            {
+                "pfs": {
+                    "repo": "data",
+                    "glob": "/"
+                }
+            },
+            {
+                "pfs": {
+                    "repo": "config",
+                    "glob": "/*"
+                }
+            },
+            {
+                "pfs": {
+                    "repo": "step1",
+                    "glob": "/"
+                }
+            }
+        ]
+    },
+    "scheduling_spec": {
+        "node_selector": {"kubernetes.io/arch": "amd64"}
+    }
+}
