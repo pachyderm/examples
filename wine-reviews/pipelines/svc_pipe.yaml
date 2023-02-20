@@ -1,0 +1,21 @@
+pipeline:
+  name: classifer-serving
+input:
+  pfs:
+    glob: /
+    repo: train_model
+service:
+  external_port: 30888
+  internal_port: 8000
+transform:
+  cmd:
+    - python
+    - service.py
+  image: "docker.pachdemo.cloud/wine-classifier:2.4.1"
+  image_pull_secrets:
+    - regcred
+  env:
+    MODEL_DIR: /pfs/train_model/model-best
+parallelism_spec:
+  constant: 1
+autoscaling: false
