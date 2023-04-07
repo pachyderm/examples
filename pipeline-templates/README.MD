@@ -17,9 +17,9 @@ pachctl create pipeline --jsonnet https://raw.githubusercontent.com/pachyderm/ex
 --arg lines=1000 --arg source="myrepo"
 ```
 Combining:
-This will combine all the files in the `mypipeline_split` repo and combine them into a single file
+This will combine all the files in the `mypipeline_split` repo and combine them into a single file called `/pfs/out/combined.csv`
 ```bash
 pachctl create pipeline --jsonnet https://raw.githubusercontent.com/pachyderm/examples/master/pipeline-templates/split-combine/splitcombine.jsonnet \
---arg name="mypipeline_2" --arg mode="combine" --arg source="mypipeline_split"
+--arg name="mypipeline_2" --arg mode="combine" --arg source="mypipeline_split" --arg output="/pfs/out/combined.csv"
 ```
 ---
