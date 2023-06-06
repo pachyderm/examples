@@ -52,6 +52,7 @@ CVS
 .env
 .aws/config
 .ipynb_checkpoints
+__pycache__
 
 # Project Specific #
 ####################
