@@ -1,0 +1,27 @@
+{
+  "pipeline": {
+    "name": "predict-catdog"
+  },
+  "description": "A pipeline that classifies images from the predict repo using models in the models repo.",
+  "input": {
+    "cross": [{
+      "pfs": {
+        "glob": "/*",
+        "repo": "predict"
+      }
+    }, {
+      "pfs": {
+        "glob": "/*",
+        "repo": "models"
+      }
+    }
+   ]
+  },
+  "transform": {
+    "cmd": ["python3", "/predict.py"],
+    "image": "jeffrifwald/cats-vs-dogs-predict:1.3"
+  },
+  "parallelism_spec": {
+    "constant": 2
+  }
+}

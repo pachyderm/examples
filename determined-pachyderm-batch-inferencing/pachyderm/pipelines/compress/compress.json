@@ -1,0 +1,24 @@
+{
+  "pipeline": {
+    "name": "compress"
+  },
+  "description": "A pipeline that compresses images from the train and test data sets.",
+  "input": {
+    "cross": [{
+      "pfs": {
+        "glob": "/",
+        "repo": "train"
+      }
+    },
+    {
+      "pfs": {
+        "glob": "/",
+        "repo": "test"
+      }
+    }]
+  },
+  "transform": {
+    "cmd": ["python3", "/compress.py"],
+    "image": "jeffrifwald/cats-vs-dogs-compress:1.0"
+  }
+}
