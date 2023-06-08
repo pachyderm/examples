@@ -21,8 +21,12 @@
     },
     "transform": {
         "cmd": [
-            "python", "predict.py", "--model", "/pfs/model/object_detection_model.pt", "--data-dir", "/pfs/inference_images/", "--output-dir", "/pfs/out/"
+            "python", "predict.py", "--datum-batching",
+            "--model", "/pfs/model/object_detection_model.pt",
+            "--data-dir", "/pfs/inference_images/",
+            "--output-dir", "/pfs/out/"
         ],
-        "image": "bonenfan5ben/obj-det:04"
+        "image": "bonenfan5ben/obj-det:04",
+        "datum_batching": true
     }
 }

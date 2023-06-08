@@ -64,4 +64,7 @@ pachctl create pipeline -f /pachyderm/ls_to_coco.json
 
 # Add more data (automatically runs pipelines)
 pachctl put file -r inference_images@master:/car6.jpeg -f images/car6.jpeg
+
+# Try datum batching to improve the prediction pipeline's efficiency
+pachctl update pipeline -f pachyderm/predictions_datum_batching.json --reprocess
 ```
