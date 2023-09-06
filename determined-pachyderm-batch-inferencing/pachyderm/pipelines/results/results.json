@@ -2,7 +2,7 @@
   "pipeline": {
     "name": "results"
   },
-  "description": "A pipeline merges results from the predict pipelines.",
+  "description": "A pipeline that merges results from the predict pipelines.",
   "input": {
     "pfs": {
       "glob": "/",

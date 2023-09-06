@@ -46,9 +46,9 @@ class CatDogDataset(Dataset):
         return sample
 
 
-def download_pach_repo(pachyderm_host, pachyderm_port, project, repo, commit, root):
+def download_pach_repo(pachyderm_host, pachyderm_port, project, repo, branch, root):
     client = python_pachyderm.Client(host=pachyderm_host, port=pachyderm_port)
-    commit = python_pachyderm.pfs.Commit(repo=repo, id=commit, project=project)
+    commit = python_pachyderm.pfs.Commit(repo=repo, branch=branch, project=project)
     files = []
     fpaths = []
 

@@ -1,11 +1,11 @@
 description: catdog_single_train
 data:
   pachyderm:
-    host: localhost
-    port: 80
-    project: catdog
+    host: PACHD_HOST
+    port: PACHD_PORT
+    project: batch-inference-1
     repo: compress
-    commit: fbc3668bd5434ba6b918b07290371207
+    branch: master
 hyperparameters:
   learning_rate: 0.005
   global_batch_size: 16
@@ -15,9 +15,9 @@ searcher:
   name: single
   metric: accuracy
   max_length:
-    batches: 200
+    batches: 100
   smaller_is_better: false
 entrypoint: model_def:CatDogModel
 scheduling_unit: 10
 min_validation_period:
-  batches: 100
+  batches: 10

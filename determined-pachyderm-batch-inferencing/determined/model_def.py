@@ -71,7 +71,7 @@ class CatDogModel(PyTorchTrial):
             pachyderm_port,
             data_config["pachyderm"]["project"],
             data_config["pachyderm"]["repo"],
-            data_config["pachyderm"]["commit"],
+            data_config["pachyderm"]["branch"],
             data_dir,
         )
         return data_dir
