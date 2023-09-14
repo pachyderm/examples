@@ -75,7 +75,7 @@ def predict(model, model_name, img_path):
     img = io.imread(img_path)
     test_img = Image.fromarray(img)
     test_img = transform(test_img)
-    device = torch.device("cpu")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     with torch.no_grad():
         model_result = model(test_img.unsqueeze(0).to(device))
