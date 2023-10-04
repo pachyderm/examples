@@ -11,7 +11,7 @@
   },
   "transform": {
     "cmd": ["python3", "/results.py"],
-    "image": "jeffrifwald/cats-vs-dogs-results:1.7"
+    "image": "jeffrifwald/cats-vs-dogs-results:1.8"
   },
   "autoscaling": true
 }

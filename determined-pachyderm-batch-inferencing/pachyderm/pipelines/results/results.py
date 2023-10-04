@@ -3,6 +3,9 @@ from skimage import io
 import plotly.express as px
 import plotly.graph_objects as pgo
 from plotly.subplots import make_subplots
+import plotly.io as pio
+
+pio.kaleido.scope.chromium_args += ("--single-process",)
 
 INPUT_PATH = "/pfs/predict-catdog/*/data/*.csv"
 OUTPUT_PATH = "/pfs/out"
