@@ -20,5 +20,6 @@
   "transform": {
     "cmd": ["python3", "/compress.py"],
     "image": "jeffrifwald/cats-vs-dogs-compress:1.0"
-  }
+  },
+  "autoscaling": true
 }

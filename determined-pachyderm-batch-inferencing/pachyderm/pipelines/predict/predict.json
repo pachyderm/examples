@@ -23,5 +23,6 @@
   },
   "parallelism_spec": {
     "constant": 2
-  }
+  },
+  "autoscaling": true
 }
