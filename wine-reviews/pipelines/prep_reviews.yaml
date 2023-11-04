@@ -1,0 +1,30 @@
+pipeline:
+  name: prep_reviews
+description: ""
+input:
+  pfs:
+    glob: /
+    repo: wine-reviews
+    name: reviews
+    branch: master
+transform:
+  cmd:
+    - python
+    - data_prep.py
+    - --input_dir
+    - /pfs/reviews/
+    - --output_dir
+    - /pfs/out
+    - --min_reviews
+    - "5"
+    - --dataset_size
+    - "20000"
+    - --top_n
+    - "50"
+  image: "docker.pachdemo.cloud/wine-classifier:2.2"
+  image_pull_secrets:
+    - regcred
+parallelism_spec:
+  constant: 1
+autoscaling: true
+ 

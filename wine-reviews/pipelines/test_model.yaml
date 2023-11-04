@@ -1,0 +1,27 @@
+pipeline:
+  name: test_model
+description: ""
+input:
+  cross:
+    - pfs:
+        glob: /
+        repo: prep_files
+        branch: master
+    - pfs:
+        glob: /
+        repo: train_model
+        branch: master
+transform:
+  cmd:
+    - spacy
+    - evaluate
+    - /pfs/train_model/model-best
+    - /pfs/prep_files/test.spacy
+    - -o
+    - /pfs/out/test.json
+  image: "docker.pachdemo.cloud/wine-classifier:2.0"
+  image_pull_secrets:
+    - regcred
+parallelism_spec:
+  constant: 1
+autoscaling: true

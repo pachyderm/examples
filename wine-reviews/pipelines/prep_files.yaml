@@ -1,0 +1,22 @@
+pipeline:
+  name: prep_files
+description: ""
+input:
+  pfs:
+    glob: /
+    repo: split_data
+    branch: master
+transform:
+  cmd:
+    - python
+    - prep_files.py
+    - --input_dir
+    - /pfs/split_data/
+    - --output_dir
+    - /pfs/out
+  image: "docker.pachdemo.cloud/wine-classifier:2.0"
+  image_pull_secrets:
+    - regcred
+parallelism_spec:
+  constant: 1
+autoscaling: true

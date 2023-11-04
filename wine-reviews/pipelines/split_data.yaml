@@ -1,0 +1,24 @@
+pipeline:
+  name: split_data
+description: ""
+input:
+  pfs:
+    glob: /data.csv
+    repo: prep_reviews
+    branch: master
+transform:
+  cmd:
+    - python
+    - split.py
+    - --input_dir
+    - /pfs/prep_reviews/
+    - --output_dir
+    - /pfs/out
+    - --test-size
+    - "0.3"
+  image: "docker.pachdemo.cloud/wine-classifier:2.0"
+  image_pull_secrets:
+    - regcred
+parallelism_spec:
+  constant: 1
+autoscaling: true

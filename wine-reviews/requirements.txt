@@ -1,0 +1,10 @@
+cython
+pandas
+scikit-learn
+matplotlib
+spacy
+IPython
+seaborn
+spacy-lookups-data
+nltk
+gradio

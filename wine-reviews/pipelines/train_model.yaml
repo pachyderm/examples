@@ -1,0 +1,26 @@
+pipeline:
+  name: train_model
+description: ""
+input:
+  pfs:
+    glob: /
+    repo: prep_files
+    branch: master  
+    
+transform:
+  cmd:
+    - spacy
+    - train
+    - /app/config.cfg
+    - --paths.train
+    - /pfs/prep_files/train.spacy
+    - --paths.dev
+    - /pfs/prep_files/valid.spacy
+    - --output
+    - /pfs/out
+  image: "docker.pachdemo.cloud/wine-classifier:2.3"
+  image_pull_secrets:
+    - regcred
+parallelism_spec:
+  constant: 1
+autoscaling: true
